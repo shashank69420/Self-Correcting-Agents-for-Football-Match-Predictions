@@ -1,0 +1,7 @@
+pandas
+numpy
+scipy
+penaltyblog
+requests
+duckdb
+rapidfuzz
