@@ -24,13 +24,19 @@ OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'outputs')
 STAGE2_CSV_PATH = os.path.join(OUTPUT_DIR, 'stage2_forecasts.csv')
 
 
-def print_test_period_audit(fixtures, TEST_START):
-    test_df = fixtures[fixtures["date"] >= TEST_START]
+def print_test_period_audit(fixtures, TEST_INDEX):
+    # Select the test set by row identity from the Stage 1 split, not by date: the last
+    # training match can share a kickoff time with the first test match.
+    test_df_audit = fixtures.loc[fixtures.index.isin(TEST_INDEX)]
+    assert len(test_df_audit) == len(TEST_INDEX), (
+        f"Audit test set has {len(test_df_audit)} fixtures but the Stage 1 test set has "
+        f"{len(TEST_INDEX)}; fixtures and df indices do not refer to the same rows."
+    )
     print("TEST PERIOD AUDIT")
-    print(f"Fixtures: {len(test_df)}")
-    print(f"Matched: {test_df['matched'].sum()} ({test_df['matched'].mean()*100:.2f}%)")
-    print(f"Both sides 11 starters: {test_df['both_starting_XI'].sum()} ({test_df['both_starting_XI'].mean()*100:.2f}%)")
-    if test_df['both_starting_XI'].mean() >= 0.90:
+    print(f"Fixtures: {len(test_df_audit)}")
+    print(f"Matched: {test_df_audit['matched'].sum()} ({test_df_audit['matched'].mean()*100:.2f}%)")
+    print(f"Both sides 11 starters: {test_df_audit['both_starting_XI'].sum()} ({test_df_audit['both_starting_XI'].mean()*100:.2f}%)")
+    if test_df_audit['both_starting_XI'].mean() >= 0.90:
         print("GATE A (TEST PERIOD): PASSED")
     else:
         print("GATE A (TEST PERIOD): FAILED")
@@ -45,6 +51,7 @@ def main(LINEUP_ADJUSTMENTS=None, audit=False):
     ingest_failures = []
     df = ingest_and_clean_fixtures(ingest_failures)
     train_df, test_df = chronological_split(df)
+    TEST_INDEX = test_df.index
 
     # Stage 1: static Dixon-Coles baseline
     clf = fit_baseline(train_df)
@@ -311,7 +318,9 @@ def main(LINEUP_ADJUSTMENTS=None, audit=False):
         # Opt-in (python main.py --audit): downloads large Transfermarkt tables.
         from lineup_audit import LEAGUE_IDS, build_lineup_audit
         fixtures, audit_table = build_lineup_audit(df, LEAGUE_IDS, LEAGUES, SEASONS, ingest_failures)
-        print_test_period_audit(fixtures, TEST_START)
+        if not fixtures.index.equals(df.index):
+            raise ValueError("fixtures.index differs from df.index; test rows cannot be selected by identity.")
+        print_test_period_audit(fixtures, TEST_INDEX)
     return STAGE2_FORECASTS, TEST_START
 
 
