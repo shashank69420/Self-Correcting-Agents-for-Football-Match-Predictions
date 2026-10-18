@@ -4,6 +4,7 @@ Moved verbatim and NOT called by main.py: it downloads large external tables and
 # [Certain] The eight Transfermarkt IDs below are candidates, not verified facts.
 # This cell checks them against competitions before matching any fixtures.
 import gc
+import os
 import importlib.util
 import subprocess
 import sys
@@ -73,7 +74,9 @@ except requests.HTTPError as exc:
     category_counts.clear()
     gc.collect()
 
-    db_path = "/content/transfermarkt-datasets.duckdb"
+    output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "outputs")
+    os.makedirs(output_dir, exist_ok=True)
+    db_path = os.path.join(output_dir, "transfermarkt-datasets.duckdb")
     db_url = f"{BASE_URL}/transfermarkt-datasets.duckdb"
     print(f"Downloading {db_url}", flush=True)
     with requests.get(db_url, stream=True, timeout=(20, 180)) as response:

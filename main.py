@@ -18,11 +18,12 @@ from stage3_detector import (PREDICTION_LEAD_MINUTES, calibration_summary,
                              prediction_surprise_score, prepare_lineup_offsets,
                              run_change_filter, select_change_scale)
 
-# The original wrote to the Colab path; fall back to the working directory elsewhere.
-STAGE2_CSV_PATH = '/content/stage2_forecasts.csv' if os.path.isdir('/content') else 'stage2_forecasts.csv'
+# Generated files go in a project-relative outputs/ folder.
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'outputs')
+STAGE2_CSV_PATH = os.path.join(OUTPUT_DIR, 'stage2_forecasts.csv')
 
 
-def main():
+def main(LINEUP_ADJUSTMENTS=None):
     print("=" * 60)
     print("PROJECT B12: EXTRACTING 2019-2026 DATASET METRICS")
     print("=" * 60)
@@ -126,8 +127,9 @@ def main():
     stage3_predictions, stage3_final_team_states = run_change_filter(df, CHANGE_SCALE, home_adv=home_adv)
     stage2_export = (stage3_predictions if CHANGE_SCALE == 0.0
                      else run_change_filter(df, 0.0, home_adv=home_adv)[0])
-    globals()['STAGE2_FORECASTS'] = stage2_export.copy()
-    globals()['TEST_START'] = test_df['date'].min()
+    STAGE2_FORECASTS = stage2_export.copy()
+    TEST_START = test_df['date'].min()
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
     stage2_export.to_csv(STAGE2_CSV_PATH, index=False)
     stage3_test = stage3_predictions.loc[test_df.index]
     stage3_common_test = stage3_test.loc[stage2_common_test.index]
@@ -149,8 +151,7 @@ def main():
     print(f'Max extra variance per component: {stage3_test.max_extra_component_variance.max():.6f}')
 
     # Optional real lineup integration. Missing data is explicitly unevaluated.
-    lineup_input = globals().get('LINEUP_ADJUSTMENTS', None)
-    lineup_offsets = prepare_lineup_offsets(df, lineup_input)
+    lineup_offsets = prepare_lineup_offsets(df, LINEUP_ADJUSTMENTS)
     ablation = [dict(Model='Stage 2 baseline', Status='evaluated', **comparison.iloc[1].drop('Model').to_dict()),
                 dict(Model='Baseline + change detector', Status='evaluated', **stage3_metrics)]
     lineup_predictions = combined_predictions = None
@@ -291,10 +292,11 @@ def main():
     print('\nACTUAL SUBSEQUENT MATCHES AFTER UPSETS (deduplicated):')
     print(pd.DataFrame(post_upset_results).to_string(index=False, float_format=lambda x: f'{x:.7f}'))
     print('=' * 70)
+    return STAGE2_FORECASTS, TEST_START
 
 
-def export_sanity_checks():
-    # Notebook cell that followed main(); reads the STAGE2_FORECASTS / TEST_START globals set by main().
+def export_sanity_checks(STAGE2_FORECASTS, TEST_START):
+    # Notebook cell that followed main(); takes the STAGE2_FORECASTS / TEST_START that main() returns.
     f = STAGE2_FORECASTS
     print('rows:', len(f))
     print('has rate columns:', {'lambda_home', 'mu_away'} <= set(f.columns))
@@ -319,5 +321,5 @@ def export_sanity_checks():
 
 
 if __name__ == "__main__":
-    main()
-    export_sanity_checks()
+    STAGE2_FORECASTS, TEST_START = main()
+    export_sanity_checks(STAGE2_FORECASTS, TEST_START)

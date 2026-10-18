@@ -4,3 +4,4 @@ __pycache__/
 stage2_forecasts.csv
 *.pkl
 *.duckdb
+outputs/
