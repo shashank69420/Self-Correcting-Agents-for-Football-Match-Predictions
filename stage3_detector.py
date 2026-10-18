@@ -51,7 +51,8 @@ class ChangeEvidence:
 def prepare_lineup_offsets(matches, adjustments=None):
     """Precomputed player-based log-rate deltas, keyed to real fixtures.
 
-    Define LINEUP_ADJUSTMENTS as a DataFrame BEFORE running this model cell.
+    Pass the lineup table as the `adjustments` DataFrame; main() forwards its
+    LINEUP_ADJUSTMENTS parameter (default None, meaning no lineup data).
     Required: date, competition, team_home, team_away, available_at,
     ratings_asof, home_attack_delta, home_defence_delta, away_attack_delta,
     away_defence_delta. Defence effects use the concession-tendency sign.
