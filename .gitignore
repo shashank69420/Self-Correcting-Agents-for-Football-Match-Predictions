@@ -5,3 +5,4 @@ stage2_forecasts.csv
 *.pkl
 *.duckdb
 outputs/
+data/

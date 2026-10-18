@@ -3,12 +3,13 @@ Project B12: 2019-2026 Data & Baseline Metric Extraction Script
 Orchestrates Stage 1 (static Dixon-Coles), Stage 2 (sequential Bayesian filter)
 and Stage 3 (persistent change detector) in the original order.
 """
+import argparse
 import os
 
 import numpy as np
 import pandas as pd
 
-from data_pipeline import chronological_split, ingest_and_clean_fixtures
+from data_pipeline import LEAGUES, SEASONS, chronological_split, ingest_and_clean_fixtures
 from metrics import (brier_and_log_loss, outcome_classes, paired_week_block_ci,
                      probability_metrics, stage2_rps)
 from stage1_baseline import evaluate_baseline_rps, fit_baseline
@@ -23,13 +24,26 @@ OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'outputs')
 STAGE2_CSV_PATH = os.path.join(OUTPUT_DIR, 'stage2_forecasts.csv')
 
 
-def main(LINEUP_ADJUSTMENTS=None):
+def print_test_period_audit(fixtures, TEST_START):
+    test_df = fixtures[fixtures["date"] >= TEST_START]
+    print("TEST PERIOD AUDIT")
+    print(f"Fixtures: {len(test_df)}")
+    print(f"Matched: {test_df['matched'].sum()} ({test_df['matched'].mean()*100:.2f}%)")
+    print(f"Both sides 11 starters: {test_df['both_starting_XI'].sum()} ({test_df['both_starting_XI'].mean()*100:.2f}%)")
+    if test_df['both_starting_XI'].mean() >= 0.90:
+        print("GATE A (TEST PERIOD): PASSED")
+    else:
+        print("GATE A (TEST PERIOD): FAILED")
+
+
+def main(LINEUP_ADJUSTMENTS=None, audit=False):
     print("=" * 60)
     print("PROJECT B12: EXTRACTING 2019-2026 DATASET METRICS")
     print("=" * 60)
 
     # Data pipeline
-    df = ingest_and_clean_fixtures()
+    ingest_failures = []
+    df = ingest_and_clean_fixtures(ingest_failures)
     train_df, test_df = chronological_split(df)
 
     # Stage 1: static Dixon-Coles baseline
@@ -292,6 +306,12 @@ def main(LINEUP_ADJUSTMENTS=None):
     print('\nACTUAL SUBSEQUENT MATCHES AFTER UPSETS (deduplicated):')
     print(pd.DataFrame(post_upset_results).to_string(index=False, float_format=lambda x: f'{x:.7f}'))
     print('=' * 70)
+
+    if audit:
+        # Opt-in (python main.py --audit): downloads large Transfermarkt tables.
+        from lineup_audit import LEAGUE_IDS, build_lineup_audit
+        fixtures, audit_table = build_lineup_audit(df, LEAGUE_IDS, LEAGUES, SEASONS, ingest_failures)
+        print_test_period_audit(fixtures, TEST_START)
     return STAGE2_FORECASTS, TEST_START
 
 
@@ -321,5 +341,9 @@ def export_sanity_checks(STAGE2_FORECASTS, TEST_START):
 
 
 if __name__ == "__main__":
-    STAGE2_FORECASTS, TEST_START = main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--audit', action='store_true',
+                        help='also run the Transfermarkt lineup audit (downloads large files)')
+    args = parser.parse_args()
+    STAGE2_FORECASTS, TEST_START = main(audit=args.audit)
     export_sanity_checks(STAGE2_FORECASTS, TEST_START)

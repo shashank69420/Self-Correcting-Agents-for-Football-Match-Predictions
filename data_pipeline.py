@@ -3,14 +3,18 @@ import pandas as pd
 import penaltyblog as pb
 
 
-def ingest_and_clean_fixtures():
-    leagues = ["ENG Premier League", "ESP La Liga", "DEU Bundesliga 1",
-               "ITA Serie A", "FRA Ligue 1", "NLD Eredivisie", "PRT Liga 1", "TUR Super Lig",
-    ]
-    seasons = [
-        "2019-2020", "2020-2021", "2021-2022",
-        "2022-2023", "2023-2024", "2024-2025", "2025-2026"
-    ]
+LEAGUES = ["ENG Premier League", "ESP La Liga", "DEU Bundesliga 1",
+           "ITA Serie A", "FRA Ligue 1", "NLD Eredivisie", "PRT Liga 1", "TUR Super Lig",
+]
+SEASONS = [
+    "2019-2020", "2020-2021", "2021-2022",
+    "2022-2023", "2023-2024", "2024-2025", "2025-2026"
+]
+
+
+def ingest_and_clean_fixtures(ingest_failures=None):
+    leagues = LEAGUES
+    seasons = SEASONS
 
     dataframes = []
     print("\n[1/4] Scraping/Ingesting match data across 7 seasons...")
@@ -22,6 +26,8 @@ def ingest_and_clean_fixtures():
                 dataframes.append(df_temp)
                 print(f"  ✓ Ingested {league} {season}")
             except Exception as e:
+                if ingest_failures is not None:
+                    ingest_failures.append((league, season, repr(e)))
                 print(f"  ✗ Could not ingest {league} {season}: {e}")
 
     # Concatenate all dataframes efficiently (O(N) memory allocation)
