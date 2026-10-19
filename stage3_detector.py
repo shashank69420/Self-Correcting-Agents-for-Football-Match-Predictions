@@ -48,6 +48,14 @@ class ChangeEvidence:
         return persistent
 
 
+def load_lineup_adjustments(path):
+    """Reads a lineup adjustments CSV (written by lineup.py) for prepare_lineup_offsets.
+
+    Timestamps stay as text here; prepare_lineup_offsets parses and validates them.
+    """
+    return pd.read_csv(path)
+
+
 def prepare_lineup_offsets(matches, adjustments=None):
     """Precomputed player-based log-rate deltas, keyed to real fixtures.
 

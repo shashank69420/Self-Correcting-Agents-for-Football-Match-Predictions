@@ -16,8 +16,8 @@ from stage1_baseline import evaluate_baseline_rps, fit_baseline
 from stage2_dynamic import (PROCESS_NOISE, compute_home_adv, print_final_team_states,
                             run_sequential_filter)
 from stage3_detector import (PREDICTION_LEAD_MINUTES, calibration_summary,
-                             prediction_surprise_score, prepare_lineup_offsets,
-                             run_change_filter, select_change_scale)
+                             load_lineup_adjustments, prediction_surprise_score,
+                             prepare_lineup_offsets, run_change_filter, select_change_scale)
 
 # Generated files go in a project-relative outputs/ folder.
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'outputs')
@@ -181,6 +181,13 @@ def main(LINEUP_ADJUSTMENTS=None, audit=False, refresh=False):
     if lineup_offsets.lineup_available.any():
         lineup_predictions, _ = run_change_filter(df, 0.0, lineup_offsets=lineup_offsets, home_adv=home_adv)
         combined_predictions, _ = run_change_filter(df, CHANGE_SCALE, lineup_offsets=lineup_offsets, home_adv=home_adv)
+        # Offsets exist only for TEST_INDEX rows, so every earlier forecast must equal Stage 2 exactly,
+        # and the Stage 2 row must still equal the no-lineup regression anchors.
+        from lineup import assert_baseline_anchors
+        outside_test = df.index[~df.index.isin(TEST_INDEX)]
+        pd.testing.assert_frame_equal(lineup_predictions.loc[outside_test, prob_columns],
+                                      stage2_export.loc[outside_test, prob_columns], check_exact=True)
+        assert_baseline_anchors(comparison.iloc[1])
         for name, forecasts in [('Baseline + lineup', lineup_predictions),
                                  ('Baseline + lineup + detector', combined_predictions)]:
             values = probability_metrics(forecasts.loc[stage2_common_test.index, prob_columns], common_actual_class)
@@ -237,6 +244,8 @@ def main(LINEUP_ADJUSTMENTS=None, audit=False, refresh=False):
                 print_lineup_subset('SECONDARY, DESCRIPTIVE: max |delta| > 0.05', material_ids)
             else:
                 print('  SECONDARY, DESCRIPTIVE: max |delta| > 0.05 (N=0); metrics/CI N/A')
+            # Uncovered rows can also move: the filter updates with the lineup-adjusted rates.
+            print_lineup_subset('DESCRIPTIVE: all common rows', stage2_common_test.index)
         else:
             print('  Share with max |delta| > 0.05: N/A; no covered common-test rows.')
             print('  Baseline vs Baseline + lineup metrics/CI: N/A (empty subset).')
@@ -357,6 +366,10 @@ if __name__ == "__main__":
                         help='also run the Transfermarkt lineup audit (downloads large files)')
     parser.add_argument('--refresh', action='store_true',
                         help='re-download fixtures and overwrite the data/fixtures_raw.pkl cache')
+    parser.add_argument('--lineup', nargs='?', const=os.path.join(OUTPUT_DIR, 'lineup_adjustments.csv'),
+                        default=None, metavar='PATH',
+                        help='evaluate a lineup adjustments CSV (default outputs/lineup_adjustments.csv)')
     args = parser.parse_args()
-    STAGE2_FORECASTS, TEST_START = main(audit=args.audit, refresh=args.refresh)
+    LINEUP_ADJUSTMENTS = load_lineup_adjustments(args.lineup) if args.lineup else None
+    STAGE2_FORECASTS, TEST_START = main(LINEUP_ADJUSTMENTS, audit=args.audit, refresh=args.refresh)
     export_sanity_checks(STAGE2_FORECASTS, TEST_START)
