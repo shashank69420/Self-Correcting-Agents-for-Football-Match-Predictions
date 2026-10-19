@@ -1,7 +1,8 @@
 pandas
 numpy
 scipy
-penaltyblog
+penaltyblog==1.12.3
 requests
 duckdb
 rapidfuzz
+statsmodels
