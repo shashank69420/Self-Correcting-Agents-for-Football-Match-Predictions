@@ -42,9 +42,9 @@ If a change moves any of these, stop and report. Do not update the numbers.
 
 ## Gates
 - Gate A (test-period lineup coverage >= 90% full XI): PASSED.
-- Gate B (Poisson GLM on training data: c_att > 0 and c_def < 0, both 95% CIs
-  exclude zero): NOT YET RUN. If it fails, stop and report a validated null.
-  Do not build the adjustments file.
+- Gate B: FAILED (2026-10-19). c_att +0.0950 CI [0.0487, 0.1413];
+  c_def -0.0022 CI [-0.0413, 0.0368]. Final for the locked spec. Code and
+  details are on branch gate-b-lineup.
 
 ## Lineup estimation rules
 - Estimation cutoff: ESTIMATION_CUTOFF = TEST_START - 24 hours. Gate B and
@@ -76,3 +76,26 @@ If a change moves any of these, stop and report. Do not update the numbers.
 Work is split across sessions in separate worktrees. See PLAN.md for each
 session's files and tasks. Only edit files in your session's ownership list.
 Never run git checkout, switch, merge, or worktree commands; the user merges.
+
+## Failure protocol
+Trigger: a gate fails, an expected number moves, a test fails, or a result
+contradicts the written expectation.
+1. Stop changing code. Do not retry with other settings to flip a result.
+2. Run /diagnose. It is read-only plus descriptive checks.
+3. Classify the cause with evidence: (a) implementation bug (code disagrees
+   with the written spec); (b) data problem (coverage, join, leakage);
+   (c) true null or underpowered; (d) spec problem (gate or proxy badly chosen).
+4. Act by class:
+   - (a) Fix only if you can show the code disagrees with the spec; add a
+     regression test; confirm expected numbers are unchanged.
+   - (b) Fix if the fix is spec-neutral, otherwise stop and ask.
+   - (c) and (d) Report. Do not change the spec. Offer options tagged
+     [pre-registered] or [post-hoc] with one recommendation.
+5. Never without my explicit approval: change a locked spec item, threshold
+   or gate; use test-period data in any decision; change an expected number;
+   run more than one post-hoc specification per gate; edit files outside your
+   ownership.
+6. Log every deviation, failed gate and post-hoc run in DECISIONS.md with
+   date, what was decided, and who approved it.
+7. Post-hoc results are labelled EXPLORATORY in every printout, report and
+   commit message. A gate verdict is never overwritten.
