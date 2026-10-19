@@ -3,6 +3,7 @@ training data, and (only if Gate B passes) the test-period adjustments file that
 main.py --lineup feeds to prepare_lineup_offsets.
 
 Run: python -X utf8 lineup.py  (uses the data/ cache only; never downloads)."""
+import argparse
 import contextlib
 import io
 import json
@@ -26,6 +27,12 @@ ADJUSTMENTS_PATH = os.path.join(OUTPUT_DIR, 'lineup_adjustments.csv')
 PLACEBO_PATH = os.path.join(OUTPUT_DIR, 'lineup_adjustments_placebo.csv')
 SUMMARY_PATH = os.path.join(OUTPUT_DIR, 'gate_b_summary.txt')
 COEFFICIENTS_PATH = os.path.join(OUTPUT_DIR, 'gate_b_coefficients.json')
+ATTACK_ONLY_PATH = os.path.join(OUTPUT_DIR, 'lineup_adjustments_attack_only.csv')
+ATTACK_ONLY_PLACEBO_PATH = os.path.join(OUTPUT_DIR, 'lineup_adjustments_attack_only_placebo.csv')
+EXPLORATORY_LABEL = ('EXPLORATORY (post-hoc, attack-only; chosen after Gate B failed, '
+                     'from training data only)')
+# Gate B primary c_att to 4 dp; guards against a stale or re-estimated coefficients file.
+FROZEN_C_ATT = 0.0950
 
 # Only the columns the features need; players.* is never read.
 TABLE_COLUMNS = {
@@ -404,6 +411,44 @@ def placebo_adjustments(adjustments, seed=PLACEBO_SEED):
     return placebo
 
 
+def frozen_attack_coefficient(path=COEFFICIENTS_PATH):
+    """c_att from the Gate B primary fit (training data only), never re-estimated."""
+    with open(path, encoding='utf-8') as handle:
+        coefficients = json.load(handle)
+    c_att = float(coefficients['c_att'])
+    if coefficients['verdict'] != 'FAILED' or round(c_att, 4) != FROZEN_C_ATT:
+        raise ValueError(f'{path} is not the Gate B primary fit (verdict FAILED, c_att {FROZEN_C_ATT}).')
+    return c_att
+
+
+def save_adjustments(df, features, test_index, test_start, cutoff, c_att, c_def, paths, label=''):
+    """Coverage rule, frozen-coefficient deltas, asserts, one placebo, and a round trip
+    through main.py's loader. paths = (adjustments, placebo). False if coverage < 90%."""
+    prefix = f'{label} ' if label else ''
+    test_window = df.index.isin(test_index)
+    covered = features['complete_home'] & features['complete_away']
+    test_coverage = covered[test_window].mean()
+    if test_coverage < MIN_TEST_COVERAGE:
+        print(f'{prefix}Test-window complete-feature coverage {test_coverage:.2%} < 90%: stopping before evaluation.')
+        return False
+    expected_rows = int(covered[test_window].sum())
+    adjustments = build_adjustments(df, features, test_index, test_start, cutoff, c_att, c_def)
+    validate_adjustments(adjustments, test_index, test_start, expected_rows)
+    placebo = placebo_adjustments(adjustments)
+    validate_adjustments(placebo, test_index, test_start, expected_rows)
+    for path, table in zip(paths, (adjustments, placebo)):
+        table.to_csv(path, index=False)
+        # Round trip through main.py's loader: every row must land on its own fixture.
+        offsets = prepare_lineup_offsets(df, load_lineup_adjustments(path))
+        if not offsets.index[offsets['lineup_available']].equals(table.index):
+            raise ValueError(f'{path} did not round-trip onto the same fixtures.')
+        np.testing.assert_allclose(offsets.loc[table.index, EFFECT_COLUMNS].to_numpy(),
+                                   table[EFFECT_COLUMNS].to_numpy(), rtol=0, atol=1e-12)
+        print(f'{prefix}Wrote {len(table)} rows to {os.path.relpath(path, PROJECT_DIR)}')
+    print(f'{prefix}Test coverage: {expected_rows}/{len(test_index)} ({test_coverage:.2%}).')
+    return True
+
+
 def assert_baseline_anchors(metrics):
     for name, anchor in BASELINE_ANCHORS.items():
         if abs(float(metrics[name]) - anchor) >= ANCHOR_TOLERANCE:
@@ -498,28 +543,43 @@ def main():
         print('Gate B failed: adjustments file not built.')
         return
 
-    covered = features['complete_home'] & features['complete_away']
-    test_coverage = covered[test_window].mean()
-    if test_coverage < MIN_TEST_COVERAGE:
-        print(f'Test-window complete-feature coverage {test_coverage:.2%} < 90%: stopping before evaluation.')
-        return
-    expected_rows = int(covered[test_window].sum())
-    adjustments = build_adjustments(df, features, TEST_INDEX, TEST_START, ESTIMATION_CUTOFF,
-                                    primary['c_att'], primary['c_def'])
-    validate_adjustments(adjustments, TEST_INDEX, TEST_START, expected_rows)
-    placebo = placebo_adjustments(adjustments)
-    validate_adjustments(placebo, TEST_INDEX, TEST_START, expected_rows)
-    for path, table in ((ADJUSTMENTS_PATH, adjustments), (PLACEBO_PATH, placebo)):
-        table.to_csv(path, index=False)
-        # Round trip through main.py's loader: every row must land on its own fixture.
-        offsets = prepare_lineup_offsets(df, load_lineup_adjustments(path))
-        if not offsets.index[offsets['lineup_available']].equals(table.index):
-            raise ValueError(f'{path} did not round-trip onto the same fixtures.')
-        np.testing.assert_allclose(offsets.loc[table.index, EFFECT_COLUMNS].to_numpy(),
-                                   table[EFFECT_COLUMNS].to_numpy(), rtol=0, atol=1e-12)
-        print(f'Wrote {len(table)} rows to {os.path.relpath(path, PROJECT_DIR)}')
-    print(f'Test coverage: {expected_rows}/{len(TEST_INDEX)} ({test_coverage:.2%}).')
+    save_adjustments(df, features, TEST_INDEX, TEST_START, ESTIMATION_CUTOFF,
+                     primary['c_att'], primary['c_def'], (ADJUSTMENTS_PATH, PLACEBO_PATH))
+
+
+def attack_only_main():
+    """The one approved post-hoc specification (DECISIONS.md, 2026-10-19): frozen Gate B
+    c_att, every defence delta 0. Gate B stays FAILED; nothing here is re-estimated."""
+    c_att = frozen_attack_coefficient()
+    df = ingest_and_clean_fixtures([], refresh=False)
+    train_df, test_df = chronological_split(df)
+    TEST_INDEX = test_df.index
+    TEST_START = test_df['date'].min()
+    ESTIMATION_CUTOFF = estimation_cutoff(TEST_START)
+    if len(df) != TOTAL_FIXTURES or len(TEST_INDEX) != TEST_FIXTURES:
+        raise ValueError(f'Unexpected frame sizes: {len(df)} fixtures, {len(TEST_INDEX)} test rows.')
+
+    tables = load_local_tables()
+    links = link_fixtures(df, tables)
+    print('\n' + '=' * 70)
+    print(f'LINEUP ADJUSTMENTS: {EXPLORATORY_LABEL}')
+    print('=' * 70)
+    print(f'{EXPLORATORY_LABEL}: frozen c_att={c_att:.5f} from the Gate B primary fit; '
+          f'c_def=0 (all defence deltas are 0). Gate B verdict stays FAILED.')
+    print(f'{EXPLORATORY_LABEL}: TEST_START {TEST_START}; ESTIMATION_CUTOFF {ESTIMATION_CUTOFF}')
+    valued, status = value_starters(df, links, tables)
+    fallback = fallback_value(tables['player_valuations'], ESTIMATION_CUTOFF)
+    features = build_features(df, links, valued, status, fallback)
+    report_features(features, df.index.isin(TEST_INDEX), f'{EXPLORATORY_LABEL} Test window (TEST_INDEX)')
+    save_adjustments(df, features, TEST_INDEX, TEST_START, ESTIMATION_CUTOFF, c_att, 0.0,
+                     (ATTACK_ONLY_PATH, ATTACK_ONLY_PLACEBO_PATH), EXPLORATORY_LABEL)
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--exploratory-attack-only', action='store_true',
+                        help=f'{EXPLORATORY_LABEL}: write the attack-only adjustments file')
+    if parser.parse_args().exploratory_attack_only:
+        attack_only_main()
+    else:
+        main()

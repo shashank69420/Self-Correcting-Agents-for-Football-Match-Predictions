@@ -222,3 +222,31 @@ def test_adjustments_csv_round_trip(tmp_path):
     assert list(offsets.index[offsets['lineup_available']]) == [100, 101]
     np.testing.assert_array_equal(offsets.loc[[100, 101], lineup.EFFECT_COLUMNS].to_numpy(),
                                   adjustments[lineup.EFFECT_COLUMNS].to_numpy())
+
+
+# EXPLORATORY (post-hoc, attack-only): frozen c_att, defence deltas exactly 0, attack clipped.
+def test_attack_only_adjustments():
+    dates = pd.to_datetime(['2025-01-20 15:00', '2025-02-01 13:00', '2025-02-02 15:00', '2025-02-03 20:00'])
+    df = pd.DataFrame({'date': dates, 'competition': 'ENG Premier League',
+                       'team_home': ['A', 'C', 'E', 'G'], 'team_away': ['B', 'D', 'F', 'H']})
+    features = pd.DataFrame({'A_home': [0.3, 1.0, -0.4, 0.2], 'A_away': [0.1, -1.0, 0.25, 0.0],
+                             'D_home': [0.5, -0.9, 0.7, 0.3], 'D_away': [-0.2, 0.8, -0.6, 0.1],
+                             'complete_home': [True, True, True, False],
+                             'complete_away': [True, True, True, True]}, index=df.index)
+    test_index, test_start = pd.Index([1, 2, 3]), dates[1]
+    adjustments = lineup.build_adjustments(df, features, test_index, test_start,
+                                           test_start - pd.Timedelta(hours=24), 0.6, 0.0)
+    assert list(adjustments.index) == [1, 2]
+    np.testing.assert_array_equal(adjustments[['home_defence_delta', 'away_defence_delta']].to_numpy(), 0.0)
+    np.testing.assert_allclose(adjustments['home_attack_delta'], [0.5, -0.24])
+    np.testing.assert_allclose(adjustments['away_attack_delta'], [-0.5, 0.15])
+    lineup.validate_adjustments(adjustments, test_index, test_start, 2)
+
+
+def test_frozen_attack_coefficient(tmp_path):
+    path = tmp_path / 'coefficients.json'
+    path.write_text('{"verdict": "FAILED", "c_att": 0.09502689643741223}', encoding='utf-8')
+    assert lineup.frozen_attack_coefficient(path) == 0.09502689643741223
+    path.write_text('{"verdict": "FAILED", "c_att": 0.1}', encoding='utf-8')
+    with pytest.raises(ValueError):
+        lineup.frozen_attack_coefficient(path)

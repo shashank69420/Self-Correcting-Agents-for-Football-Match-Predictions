@@ -42,7 +42,7 @@ def print_test_period_audit(fixtures, TEST_INDEX):
         print("GATE A (TEST PERIOD): FAILED")
 
 
-def main(LINEUP_ADJUSTMENTS=None, audit=False, refresh=False):
+def main(LINEUP_ADJUSTMENTS=None, audit=False, refresh=False, lineup_label=None):
     print("=" * 60)
     print("PROJECT B12: EXTRACTING 2019-2026 DATASET METRICS")
     print("=" * 60)
@@ -178,7 +178,11 @@ def main(LINEUP_ADJUSTMENTS=None, audit=False, refresh=False):
     ablation = [dict(Model='Stage 2 baseline', Status='evaluated', **comparison.iloc[1].drop('Model').to_dict()),
                 dict(Model='Baseline + change detector', Status='evaluated', **stage3_metrics)]
     lineup_predictions = combined_predictions = None
+    # Post-hoc lineup runs carry their label on every lineup printout; plain runs print as before.
+    label_suffix = f' -- {lineup_label}' if lineup_label else ''
     if lineup_offsets.lineup_available.any():
+        if lineup_label:
+            print(f'\nLINEUP EVALUATION{label_suffix}')
         lineup_predictions, _ = run_change_filter(df, 0.0, lineup_offsets=lineup_offsets, home_adv=home_adv)
         combined_predictions, _ = run_change_filter(df, CHANGE_SCALE, lineup_offsets=lineup_offsets, home_adv=home_adv)
         # Offsets exist only for TEST_INDEX rows, so every earlier forecast must equal Stage 2 exactly,
@@ -193,13 +197,14 @@ def main(LINEUP_ADJUSTMENTS=None, audit=False, refresh=False):
             values = probability_metrics(forecasts.loc[stage2_common_test.index, prob_columns], common_actual_class)
             ablation.append(dict(Model=name, Status='evaluated; partial lineup coverage possible', **values))
         covered = lineup_offsets.loc[stage2_common_test.index].lineup_available
-        print(f'Lineup coverage on common test: {covered.sum()}/{len(covered)} at T-{PREDICTION_LEAD_MINUTES} minutes.')
+        print(f'Lineup coverage on common test: {covered.sum()}/{len(covered)} at T-{PREDICTION_LEAD_MINUTES} minutes.'
+              + label_suffix)
         print('Detector scale is frozen from no-lineup validation; joint retuning remains separate.')
     else:
         for name in ('Baseline + lineup', 'Baseline + lineup + detector'):
             ablation.append(dict(Model=name, Status='NOT EVALUATED: no historical lineup data'))
     ablation = pd.DataFrame(ablation)
-    print('\nFOUR-WAY ABLATION')
+    print('\nFOUR-WAY ABLATION' + label_suffix)
     print(ablation.to_string(index=False, float_format=lambda x: f'{x:.7f}'))
 
     if lineup_offsets.lineup_available.any():
@@ -211,7 +216,7 @@ def main(LINEUP_ADJUSTMENTS=None, audit=False, refresh=False):
             lineup_probs = lineup_predictions.loc[ids, prob_columns].to_numpy(float)
             baseline_metrics = probability_metrics(baseline_probs, actual)
             lineup_metrics = probability_metrics(lineup_probs, actual)
-            print(f'  {label} (N={len(ids)}):')
+            print(f'  {label} (N={len(ids)}){label_suffix}:')
             for name, values in [('Baseline', baseline_metrics), ('Baseline + lineup', lineup_metrics)]:
                 print(f"    {name}: RPS={values['RPS']:.7f}, Brier={values['Brier']:.7f}, "
                       f"LogLoss={values['LogLoss']:.7f}, Accuracy={values['Accuracy']:.7f}")
@@ -233,7 +238,7 @@ def main(LINEUP_ADJUSTMENTS=None, audit=False, refresh=False):
                           'away_attack_delta', 'away_defence_delta']
         common_offsets = lineup_offsets.loc[stage2_common_test.index]
         covered_ids = common_offsets.index[common_offsets.lineup_available]
-        print('\nLINEUP SIGNIFICANCE ON IDENTICAL COMMON TEST MATCHES')
+        print('\nLINEUP SIGNIFICANCE ON IDENTICAL COMMON TEST MATCHES' + label_suffix)
         print(f'  Covered rows: {len(covered_ids)}/{len(stage2_common_test)}')
         if len(covered_ids):
             material_mask = common_offsets.loc[covered_ids, effect_columns].abs().max(axis=1) > 0.05
@@ -369,7 +374,10 @@ if __name__ == "__main__":
     parser.add_argument('--lineup', nargs='?', const=os.path.join(OUTPUT_DIR, 'lineup_adjustments.csv'),
                         default=None, metavar='PATH',
                         help='evaluate a lineup adjustments CSV (default outputs/lineup_adjustments.csv)')
+    parser.add_argument('--lineup-label', default=None, metavar='TEXT',
+                        help='label printed on every lineup printout (required wording for post-hoc runs)')
     args = parser.parse_args()
     LINEUP_ADJUSTMENTS = load_lineup_adjustments(args.lineup) if args.lineup else None
-    STAGE2_FORECASTS, TEST_START = main(LINEUP_ADJUSTMENTS, audit=args.audit, refresh=args.refresh)
+    STAGE2_FORECASTS, TEST_START = main(LINEUP_ADJUSTMENTS, audit=args.audit, refresh=args.refresh,
+                                        lineup_label=args.lineup_label)
     export_sanity_checks(STAGE2_FORECASTS, TEST_START)
