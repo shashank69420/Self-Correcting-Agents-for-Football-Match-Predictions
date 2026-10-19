@@ -1,6 +1,16 @@
 """Fixture ingestion, cleaning and the 80/20 chronological split."""
+import os
+
 import pandas as pd
 import penaltyblog as pb
+
+# Local cache of the raw concatenated penaltyblog fixtures (data/ is gitignored).
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+# Pickle, not CSV: it keeps every dtype exactly (datetime64[us] columns, and b365_ch, which
+# the scraper returns as text for Eredivisie 2022-23 and as floats elsewhere). Only ever
+# loaded from this self-written file; it is tied to the pandas version that wrote it, so
+# pass --refresh after upgrading pandas.
+RAW_FIXTURES_PATH = os.path.join(PROJECT_DIR, 'data', 'fixtures_raw.pkl')
 
 
 LEAGUES = ["ENG Premier League", "ESP La Liga", "DEU Bundesliga 1",
@@ -12,26 +22,42 @@ SEASONS = [
 ]
 
 
-def ingest_and_clean_fixtures(ingest_failures=None):
+def ingest_and_clean_fixtures(ingest_failures=None, refresh=False):
     leagues = LEAGUES
     seasons = SEASONS
 
-    dataframes = []
     print("\n[1/4] Scraping/Ingesting match data across 7 seasons...")
-    for league in leagues:
-        for season in seasons:
-            try:
-                fb = pb.scrapers.FootballData(league, season)
-                df_temp = fb.get_fixtures()
-                dataframes.append(df_temp)
-                print(f"  ✓ Ingested {league} {season}")
-            except Exception as e:
-                if ingest_failures is not None:
-                    ingest_failures.append((league, season, repr(e)))
-                print(f"  ✗ Could not ingest {league} {season}: {e}")
+    if not refresh and os.path.exists(RAW_FIXTURES_PATH):
+        df = pd.read_pickle(RAW_FIXTURES_PATH)
+        print(f"  ✓ Ingested all league-seasons from local cache {os.path.relpath(RAW_FIXTURES_PATH, PROJECT_DIR)}"
+              " (pass --refresh to re-download)")
+    else:
+        dataframes = []
+        failures_before = len(ingest_failures) if ingest_failures is not None else 0
+        for league in leagues:
+            for season in seasons:
+                try:
+                    fb = pb.scrapers.FootballData(league, season)
+                    df_temp = fb.get_fixtures()
+                    dataframes.append(df_temp)
+                    print(f"  ✓ Ingested {league} {season}")
+                except Exception as e:
+                    if ingest_failures is not None:
+                        ingest_failures.append((league, season, repr(e)))
+                    print(f"  ✗ Could not ingest {league} {season}: {e}")
 
-    # Concatenate all dataframes efficiently (O(N) memory allocation)
-    df = pd.concat(dataframes, ignore_index=True)
+        # Concatenate all dataframes efficiently (O(N) memory allocation)
+        df = pd.concat(dataframes, ignore_index=True)
+
+        # Cache the raw frame, before dropna / date conversion / sort. A frame missing a
+        # league-season would silently become the cache, so only a complete ingest is saved.
+        failed = (len(ingest_failures) > failures_before if ingest_failures is not None
+                  else len(dataframes) < len(leagues) * len(seasons))
+        if failed:
+            print("  ! Ingest incomplete; fixture cache not written.")
+        else:
+            os.makedirs(os.path.dirname(RAW_FIXTURES_PATH), exist_ok=True)
+            df.to_pickle(RAW_FIXTURES_PATH)
 
     # Preprocessing & Data Sanitization
     print("\n[2/4] Sanitizing and chronologically sorting dataset...")

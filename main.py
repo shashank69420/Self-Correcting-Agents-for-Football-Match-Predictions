@@ -42,14 +42,16 @@ def print_test_period_audit(fixtures, TEST_INDEX):
         print("GATE A (TEST PERIOD): FAILED")
 
 
-def main(LINEUP_ADJUSTMENTS=None, audit=False):
+def main(LINEUP_ADJUSTMENTS=None, audit=False, refresh=False):
     print("=" * 60)
     print("PROJECT B12: EXTRACTING 2019-2026 DATASET METRICS")
     print("=" * 60)
 
     # Data pipeline
     ingest_failures = []
-    df = ingest_and_clean_fixtures(ingest_failures)
+    # Backtest-only cache (data/fixtures_raw.pkl); refresh=True always re-ingests.
+    # The forward logger must never use this cache: it needs live fixtures every run.
+    df = ingest_and_clean_fixtures(ingest_failures, refresh=refresh)
     train_df, test_df = chronological_split(df)
     TEST_INDEX = test_df.index
 
@@ -353,6 +355,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--audit', action='store_true',
                         help='also run the Transfermarkt lineup audit (downloads large files)')
+    parser.add_argument('--refresh', action='store_true',
+                        help='re-download fixtures and overwrite the data/fixtures_raw.pkl cache')
     args = parser.parse_args()
-    STAGE2_FORECASTS, TEST_START = main(audit=args.audit)
+    STAGE2_FORECASTS, TEST_START = main(audit=args.audit, refresh=args.refresh)
     export_sanity_checks(STAGE2_FORECASTS, TEST_START)
