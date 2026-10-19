@@ -6,3 +6,5 @@ stage2_forecasts.csv
 *.duckdb
 outputs/
 data/
+*.csv
+.ipynb_checkpoints/
