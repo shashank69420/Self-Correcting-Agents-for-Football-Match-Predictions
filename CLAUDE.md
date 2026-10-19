@@ -46,8 +46,28 @@ If a change moves any of these, stop and report. Do not update the numbers.
   exclude zero): NOT YET RUN. If it fails, stop and report a validated null.
   Do not build the adjustments file.
 
+## Lineup estimation rules
+- Estimation cutoff: ESTIMATION_CUTOFF = TEST_START - 24 hours. Gate B and
+  any fitting use only matches dated before this cutoff.
+- Burn-in filter (estimation only, not applied to the adjustments file):
+  exclude a match if either team has fewer than 10 prior appearances in the
+  full dataset, or if lambda_home or mu_away is outside [0.15, 6.0]. Print
+  the number dropped, per season.
+- Features: starting XI only (type = starting lineup). Attack line = midfield
+  plus attack positions; defence line = goalkeeper plus defender positions.
+  Verify the position values by printing them before mapping. Player value =
+  last valuation strictly before the match date. Team usual = mean of that
+  team's previous 10 matches, requiring at least 5, otherwise missing.
+  A and D = log ratio against usual, winsorized to [-1, 1].
+- Adjustments: delta = clip(coefficient * feature, -0.5, 0.5). Rows only for
+  fixtures with date >= TEST_START and complete features.
+- Asserts before saving the adjustments file: no row with date < TEST_START;
+  available_at < date for every row (available_at = date - 60 minutes); no
+  NaN; (team_home, team_away, date) unique.
+
 ## Git
-- One branch per task. Commit after each working step.
+- Setup commits may go straight to main. From Session A and B onward, one
+  branch per task. Commit after each working step.
 - Commit message format: "<area>: <what changed>".
 - Never force-push. Never amend a pushed commit.
 - Run python main.py and confirm the expected numbers before every commit.
