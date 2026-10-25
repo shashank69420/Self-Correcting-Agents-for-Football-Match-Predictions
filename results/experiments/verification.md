@@ -223,3 +223,72 @@ def main(out_path):
 if __name__ == '__main__':
     main(sys.argv[1])
 ```
+
+## 5. Market-gap row sets (second verification)
+
+All tables below are selection-period, not out-of-sample. Same code path as the harness: `harness.split_index`, `harness.market_probs`, `harness.summary`. TEST rows are not scored.
+
+### DEV
+
+- Window by date: 2020-07-01 to 2023-06-30; rows in window before the TEST carve-out: 8769
+- TEST_INDEX rows inside the window: 0 (none)
+- Rows scored (harness DEV): 8769; same as by-date rows after carve-out: True
+- Rows with closing odds (valid avg_ch/avg_cd/avg_ca): 8740; without: 29
+
+#### DEV, all rows (8769) -- selection-period, not out-of-sample
+
+| model | n | RPS | Brier | LogLoss | Accuracy |
+|---|---|---|---|---|---|
+| Baseline | 8769 | 0.208130 | 0.200744 | 1.011496 | 0.516136 |
+| P1 | 8769 | 0.204332 | 0.197854 | 0.997085 | 0.522637 |
+
+#### DEV, closing-odds rows (8740) -- selection-period, not out-of-sample
+
+| model | n | RPS | Brier | LogLoss | Accuracy |
+|---|---|---|---|---|---|
+| Closing market | 8740 | 0.195427 | 0.191240 | 0.966510 | 0.536613 |
+| Baseline | 8740 | 0.208616 | 0.201240 | 1.013704 | 0.514645 |
+| P1 | 8740 | 0.204753 | 0.198299 | 0.999035 | 0.521167 |
+
+#### DEV gap closed by P1, closing-odds rows -- selection-period, not out-of-sample
+
+Formula (same for every metric): (baseline - P1) / (baseline - market).
+
+| metric | baseline | P1 | market | gap closed |
+|---|---|---|---|---|
+| RPS | 0.208616 | 0.204753 | 0.195427 | 29.29% |
+| Brier | 0.201240 | 0.198299 | 0.191240 | 29.41% |
+| LogLoss | 1.013704 | 0.999035 | 0.966510 | 31.08% |
+
+### VAL
+
+- Window by date: 2023-07-01 to 2025-02-01 (last non-TEST match); rows in window before the TEST carve-out: 8120
+- TEST_INDEX rows inside the window: 3829 (VAL is open-ended by date, so its window contains TEST rows by date; they are excluded by TEST_INDEX, never scored)
+- Rows scored (harness VAL): 4291; same as by-date rows after carve-out: True
+- Rows with closing odds (valid avg_ch/avg_cd/avg_ca): 4291; without: 0
+
+#### VAL, all rows (4291) -- selection-period, not out-of-sample
+
+| model | n | RPS | Brier | LogLoss | Accuracy |
+|---|---|---|---|---|---|
+| Baseline | 4291 | 0.200834 | 0.197826 | 1.003838 | 0.517828 |
+| P1 | 4291 | 0.196652 | 0.194585 | 0.981172 | 0.525985 |
+
+#### VAL, closing-odds rows (4291) -- selection-period, not out-of-sample
+
+| model | n | RPS | Brier | LogLoss | Accuracy |
+|---|---|---|---|---|---|
+| Closing market | 4291 | 0.185724 | 0.186530 | 0.943917 | 0.562340 |
+| Baseline | 4291 | 0.200834 | 0.197826 | 1.003838 | 0.517828 |
+| P1 | 4291 | 0.196652 | 0.194585 | 0.981172 | 0.525985 |
+
+#### VAL gap closed by P1, closing-odds rows -- selection-period, not out-of-sample
+
+Formula (same for every metric): (baseline - P1) / (baseline - market).
+
+| metric | baseline | P1 | market | gap closed |
+|---|---|---|---|---|
+| RPS | 0.200834 | 0.196652 | 0.185724 | 27.68% |
+| Brier | 0.197826 | 0.194585 | 0.186530 | 28.69% |
+| LogLoss | 1.003838 | 0.981172 | 0.943917 | 37.83% |
+
