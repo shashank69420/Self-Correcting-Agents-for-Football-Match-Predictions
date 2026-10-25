@@ -1,0 +1,20 @@
+# Files the experiments branch may change since its merge-base with main (fnmatch patterns, one per line).
+# "append-only" means the diff against the merge-base may only add lines.
+# Changing this file to make the gate pass needs the user's approval.
+exp_model.py
+exp_harness.py
+run_experiments.py
+tests/test_exp.py
+EXPERIMENTS.md
+results/experiments/*
+DECISIONS.md  append-only
+# Approved exceptions X1-X5 (2026-10-26), plus the files those tasks created
+tools/*
+tests/test_gate.py
+results/sources/*
+results/audit/*
+results/FINDINGS.md
+results/claims.json
+.claude/commands/gate.md
+.claude/settings.json
+CLAUDE.md  append-only

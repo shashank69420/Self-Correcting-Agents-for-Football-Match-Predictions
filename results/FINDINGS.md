@@ -1,20 +1,22 @@
 # B12 findings
 
-Every number below is copied from a file; the source is in brackets. Where no file records a number it says
-"not recorded". Sources: `results/experiments/*` (RE), `DECISIONS.md` (DEC), `CLAUDE.md` (CL),
-`EXPERIMENTS.md` (EXP) and the saved `main.py` log `data/run_cached.txt` (LOG). `outputs/` holds only
-`stage2_forecasts.csv`, which is not used for any number here.
+Every number below is checked by `tools/verify_claims.py` against `results/claims.json`: each number maps to a
+repository file and a pattern that must match next to it. Where no file records a number it says "not recorded".
+Sources are tracked files: `results/sources/` (the Stage 1-5 notebook output and the Transfermarkt README),
+`results/audit/` (the Gate A audit run), `results/experiments/`, `DECISIONS.md` and `CLAUDE.md`.
 
 ## 1. Data and pipeline
-- 8 leagues (ENG, ESP, DEU, ITA, FRA, NLD, PRT, TUR), 7 seasons (2019-20 to 2025-26), 19,145 valid matches [LOG].
-- 80/20 chronological split: training 15,316 matches, 2019-08-02 to 2025-02-01; test 3,829 matches,
-  2025-02-01 to 2026-05-24 [LOG]. One training match shares the first test kickoff, so TEST is always selected by
-  row identity, never by date [EXP, `verification.md`].
-- Transfermarkt matching: 19,140 of 19,145 matched: **not recorded** in any file.
-- Gate A (test-period lineup coverage >= 90% full XI): PASSED. 3,829 test fixtures, 100% matched [CL]. The measured
-  full-XI percentage is not recorded.
+- 56 league-seasons: 8 leagues (ENG, ESP, DEU, ITA, FRA, NLD, PRT, TUR) x 7 seasons (2019-20 to 2025-26), 19,145 valid
+  matches.
+- 80% / 20% chronological split: training 15,316 matches, 2019-08-02 to 2025-02-01; test 3,829 matches,
+  2025-02-01 to 2026-05-24. One training match shares the first test kickoff, so TEST is always selected by row
+  identity, never by date.
+- Transfermarkt matching (`python main.py --audit`, `results/audit/gate_a_audit.txt`): strictly matched 19,140 of
+  19,145 fixtures. Data files unchanged by the audit (sha256 before and after identical).
+- Gate A, test period: 3,829 fixtures, 3,829 matched (100.00%), both sides 11 starters 3,826 (99.92%), against the
+  90% threshold. GATE A: PASSED.
 
-## 2. Baselines (3,545 common test rows; Stage 1 skips 284 test matches with unseen teams [LOG])
+## 2. Baselines (3,545 common test rows; Stage 1 skips 284 test matches with unseen teams)
 
 | Model | RPS | Brier | Log-loss |
 |---|---|---|---|
@@ -22,34 +24,38 @@ Every number below is copied from a file; the source is in brackets. Where no fi
 | Stage 2 (sequential filter) | 0.2060203 | 0.1998337 | 1.0056991 |
 | Closing market average, same 3,545 rows | 0.1926041 | 0.1898924 | 0.9598217 |
 
-[LOG]. Stage 2 RPS on all 3,829 held-out matches: 0.2059 [CL]. The Stage 2 vs market RPS gap is not recorded as a
-number; the two RPS values are in the table. The market uses later information than the T-60 forecasts, so it is a
-benchmark only.
+Stage 2 RPS on all 3,829 held-out matches: 0.2059. The Stage 2 minus market RPS gap is 0.0134162 (derived from the two
+RPS values above). The market uses later information than the T-60 forecasts, so it is a benchmark only.
 
-## 3. Surprise mechanism (Stages 3 to 5)
+## 3. Surprise mechanism (Stages 3 to 5), all retrospective on the inspected test window
 - **Stage 3, persistent change detector (one ordinary Poisson update; evidence only raises future process noise).**
-  Validation (3 chronological folds on training data) selected CHANGE_SCALE 0 (training log-loss 0.9979680 at 0;
-  scales 0.25 to 2 were not eligible), so the detector never added variance: 0 of 3,829 test matches had extra
-  variance, Stage 3 equals Stage 2 on every metric, and Stage 3 minus Stage 2 RPS is 0.0 with CI [0, 0] [LOG].
-  Cause: validation found no gain, so the extra variance was never used. Kept for the record as a negative result [CL].
-- **Stages 4 and 5: not recorded.** No file in the repository describes or reports them.
+  Validation (three chronological folds on training data) selected CHANGE_SCALE 0 (log-loss 0.9979680 at 0; every
+  larger scale was not eligible), so the detector never added variance: 0 of 3,829 test matches had extra variance, and
+  Stage 3 equals Stage 2 on every metric (Stage 3 minus Stage 2 RPS 0.0). Cause: validation found no gain.
+- **Stage 4, surprise multiplier on the mean step (SUPERSEDED, confirmed sign-inverted: higher surprise gave a smaller
+  correction).** Validation selected sensitivity 0.25; log-loss difference -0.0010106, 95% CI [-0.0025560, 0.0001155],
+  which includes zero. Test, 3,545 rows: RPS 0.2058885 and log-loss 1.0054757 against Stage 2's 0.2060203 and
+  1.0056991. Descriptive only. Cause: the update direction was inverted, so no reliable effect.
+- **Stage 5, corrected direction (surprise scales the mean step).** Validation selected sensitivity 0 (log-loss
+  0.9979680 at 0 against 1.0066392 at 0.25, 1.0092615 at 0.5 and 1.0136471 at 1), so surprise scaling was inactive and
+  all forecasts equal Stage 2 (multiplier mean, min and max all 1.0000000). Cause: every positive sensitivity made
+  validation log-loss worse.
 
 ## 4. Lineup Gate B: FAILED (2026-10-19)
-- c_att +0.0950, CI [0.0487, 0.1413]; c_def -0.0022, CI [-0.0413, 0.0368]. Final for the locked spec [CL]. The gate's
+- c_att +0.0950, CI [0.0487, 0.1413]; c_def -0.0022, CI [-0.0413, 0.0368]. Final for the locked spec. The gate's
   pass criterion is not restated in the files; the c_def interval includes 0.
 - Diagnosis (read-only `/diagnose`): class (c) true null for the defence term, with (d) weak defence-line proxy as
   secondary. Independent GLM and feature recomputation reproduced the fit; 0/200 within-season placebos passed the
-  gate; minimum detectable c_def 0.056, power 99.8% for an attack-sized effect [DEC].
+  gate; minimum detectable c_def 0.056, power 99.8% for an attack-sized effect.
 - Exploratory attack-only run (post-hoc, chosen after Gate B failed, from training data only; the single approved
-  post-hoc spec): frozen c_att +0.09503, defence deltas 0, coverage 3,786 of 3,829 (98.88%). Log-loss difference
-  +0.000109 (slightly worse), 95% CI [-0.000669, +0.000878] on 3,543 covered common rows: no improvement, not
-  significant. Placebo +0.000148, CI [-0.000677, +0.001007] [DEC].
+  post-hoc spec): frozen c_att +0.09503, defence deltas 0, coverage 3786/3829 (98.88%). Log-loss difference
+  +0.000109 (slightly worse), 95% CI [-0.000669, +0.000878] on 3543 covered common rows: no improvement, not
+  significant. Placebo +0.000148, CI [-0.000677, +0.001007].
 
 ## 5. P1 (learned parameters): selection-period, not out-of-sample
-P1 = E1 + E3 + E5 on top of Stage 2: process_noise 0.005 (was 0.01), initial_var 0.3 (was 1.0), cold_defence 0.3 for
-teams first seen after their league's first season, rate clip [0.15, 6.0] on, Dixon-Coles rho -0.04. E2 (drift),
-E4 (league effects) and E6 (recalibration) were rejected; calibration is null [RE `candidate_p1.json`].
-Selection used DEV (2020-07-01 to 2023-06-30, 8,769 rows) and VAL (2023-07-01 to 2025-02-01, 4,291 rows) only.
+P1 = E1 + E3 + E5 on top of Stage 2: process_noise 0.005, initial_var 0.3, cold_defence 0.3 for teams first seen
+after their league's first season, rate clip [0.15, 6.0] on, Dixon-Coles rho -0.04. E2 (drift), E4 (league effects)
+and E6 (recalibration) were rejected; calibration is null. Selection used DEV (8,769 rows) and VAL (4,291 rows) only.
 
 | Exp | Chosen | Log-loss change [99% CI] | Holm p | Verdict |
 |---|---|---|---|---|
@@ -60,7 +66,7 @@ Selection used DEV (2020-07-01 to 2023-06-30, 8,769 rows) and VAL (2023-07-01 to
 | E5 | rho -0.04 | -0.000552 [-0.000999, -0.000116] | 0.002999 | ACCEPTED |
 | E6 | T 1.255 plus class bias | -0.002784 [-0.006639, +0.001068] (VAL only) | 0.074963 | REJECTED |
 
-[RE `harness_report.md`, `verification.md`]. Selection-period, not out-of-sample (VAL took part in selection).
+Selection-period, not out-of-sample (VAL took part in selection).
 
 | Split (selection-period, not out-of-sample) | Model | RPS | Brier | Log-loss | Accuracy |
 |---|---|---|---|---|---|
@@ -72,15 +78,15 @@ Selection used DEV (2020-07-01 to 2023-06-30, 8,769 rows) and VAL (2023-07-01 to
 Share of the Stage 2 to closing-market gap closed by P1 on rows with closing odds: RPS 29.29% (DEV, 8,740 rows),
 27.68% (VAL, 4,291 rows). VAL log-loss gap closed is 37.83%, but 11 VAL rows with a baseline rate outside
 [0.15, 6.0] carry 36% of the VAL log-loss gain (9 DEV rows: 1%); on all other rows P1 still improves (VAL
-0.994245 to 0.979695) [RE `verification.md`].
+0.994245 to 0.979695).
 
 ## 6. One-shot TEST result: retrospective holdout: examined in Stages 1-5 and P1 selection
-P1's parameters were selected on DEV and VAL only; this was the first scoring of P1 on TEST [RE `test_once.md`].
+P1's parameters were selected on DEV/VAL only; this is the first scoring of P1 on TEST_INDEX.
 Pre-registered rule: P1 is a TEST improvement only if the 95% paired week-block CI (2000 resamples, seed 20261026)
 upper bound on the mean log-loss difference (P1 minus Stage 2) over all 3,829 TEST rows is below 0.
 
 - **Primary:** log-loss 1.008321 (Stage 2) to 0.995493 (P1); difference **-0.012828**, 95% CI
-  **[-0.015519, -0.010091]**. Upper bound below 0: **ACCEPTED** as a TEST improvement [RE `test_once.md`, DEC].
+  **[-0.015519, -0.010091]**. Upper bound below 0: **ACCEPTED** as a TEST improvement.
 - **Secondary, descriptive.** All 3,829 rows: RPS 0.205946 to 0.202357, Brier 0.200442 to 0.197737, accuracy
   0.516584 to 0.521285. Common 3,545 rows: RPS 0.206020 to 0.202578, Brier 0.199834 to 0.197250, log-loss
   1.005699 to 0.993635 (difference -0.012065, CI [-0.014553, -0.009332]), accuracy 0.518759 to 0.524118.
@@ -94,18 +100,19 @@ upper bound on the mean log-loss difference (P1 minus Stage 2) over all 3,829 TE
 - Market odds are a benchmark only (closing odds are later than T-60). Non-closing odds are described by
   football-data.co.uk/notes.txt as: "Betting odds for weekend games are collected Friday afternoons, and on Tuesday
   afternoons for midweek games." That is a schedule, not a per-match timestamp, so the snapshot-odds timing is
-  schedule-level only [RE `verification.md`, DEC].
-- Transfermarkt data is a frozen snapshot; its freeze date is not recorded in these files.
+  schedule-level only.
+- Transfermarkt data is a frozen upstream snapshot: its README states "Updates are paused. The dataset is current to
+  6 July 2026." (`results/sources/transfermarkt_readme.txt`, read 2026-10-25). The date the local `data/*.gz` files
+  were downloaded is not recorded.
 - The test window is not fresh: it was examined during Stages 1-5, and P1 was then scored on it once. All TEST
   results are retrospective.
-- One post-hoc lineup run (attack-only, Gate B stays FAILED) [DEC].
+- One post-hoc lineup run (attack-only, Gate B stays FAILED).
 - The `--lineup` path is verified only by tests and the end-to-end check.
 - `home_adv` is Stage 2's fixed value from the whole training window, so DEV and VAL forecasts carry slight
-  look-ahead within the training window; DEV and VAL are selection-period numbers [EXP].
-- **The TEST scoring script is not in the repository.** `test_once.py` (and `split_test.py` for the descriptive
-  split) live in the session scratchpad, outside the ownership list. Until they are moved into the repo, the TEST
-  numbers above cannot be regenerated from the repo alone.
+  look-ahead within the training window; DEV and VAL are selection-period numbers.
+- The TEST scoring scripts are in the repository: `results/experiments/test_once.py` and `split_test.py`, with
+  `test_once_README.md`. A reproduction run (`results/experiments/test_once_repro.txt`) gave log-loss difference
+  -0.012828 and CI [-0.015519, -0.010091], matching the original. A rerun is a reproduction, not a new test.
 
 ## 8. Forward test
-Not started. `outputs/forward/` does not exist, and the `forward-logger` branch tip is the docs commit `7cf1b3b`,
-with no `forward_logger.py`.
+Not started. `outputs/forward/` does not exist, and the `forward-logger` branch has no `forward_logger.py`.

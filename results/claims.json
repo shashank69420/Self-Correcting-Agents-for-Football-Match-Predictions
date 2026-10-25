@@ -1,0 +1,981 @@
+{
+ "note": "One entry per number in results/FINDINGS.md; checked by tools/verify_claims.py. Changing it to make the gate pass needs approval.",
+ "claims": [
+  {
+   "id": "c001",
+   "value": "7",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "across 7 seasons"
+  },
+  {
+   "id": "c002",
+   "value": "56",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "Execution data: 56 SHA"
+  },
+  {
+   "id": "c_leagues",
+   "value": "8",
+   "derived": {
+    "inputs": [
+     "c002",
+     "c001"
+    ],
+    "formula": "a / b"
+   }
+  },
+  {
+   "id": "c004",
+   "value": "19,145",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "Total Valid Matches: 19145",
+   "source_value": "19145"
+  },
+  {
+   "id": "c005",
+   "value": "80%",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "First 15316 matches \\(80%\\)"
+  },
+  {
+   "id": "c006",
+   "value": "20%",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "Final 3829 matches \\(20%\\)"
+  },
+  {
+   "id": "c007",
+   "value": "15,316",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "First 15316 matches",
+   "source_value": "15316"
+  },
+  {
+   "id": "c008",
+   "value": "3,829",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "Final 3829 matches",
+   "source_value": "3829"
+  },
+  {
+   "id": "c009",
+   "value": "2019-08-02",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "Training Date Range: 2019-08-02 to 2025-02-01"
+  },
+  {
+   "id": "c010",
+   "value": "2025-02-01",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "Training Date Range: 2019-08-02 to 2025-02-01"
+  },
+  {
+   "id": "c011",
+   "value": "2026-05-24",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "Testing Date Range:  2025-02-01 to 2026-05-24"
+  },
+  {
+   "id": "c012",
+   "value": "19,140",
+   "source": "results/audit/gate_a_audit.txt",
+   "locator": "STRICTLY MATCHED: 19,140 / 19,145"
+  },
+  {
+   "id": "c013",
+   "value": "100.00%",
+   "source": "results/audit/gate_a_audit.txt",
+   "locator": "Matched: 3829 \\(100\\.00%\\)"
+  },
+  {
+   "id": "c014",
+   "value": "3,826",
+   "source": "results/audit/gate_a_audit.txt",
+   "locator": "Both sides 11 starters: 3826",
+   "source_value": "3826"
+  },
+  {
+   "id": "c015",
+   "value": "11",
+   "source": "results/audit/gate_a_audit.txt",
+   "locator": "Both sides 11 starters"
+  },
+  {
+   "id": "c016",
+   "value": "99.92%",
+   "source": "results/audit/gate_a_audit.txt",
+   "locator": "Both sides 11 starters: 3826 \\(99\\.92%\\)"
+  },
+  {
+   "id": "c017",
+   "value": "90%",
+   "source": "CLAUDE.md",
+   "locator": "Gate A \\(test-period lineup coverage >= 90% full XI\\)"
+  },
+  {
+   "id": "c018",
+   "value": "284",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "Stage 1 skipped 284 of those matches"
+  },
+  {
+   "id": "c019",
+   "value": "3,545",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "IDENTICAL-MATCH COMPARISON \\(3545 matches\\)",
+   "source_value": "3545"
+  },
+  {
+   "id": "c020",
+   "value": "0.2057245",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "^Stage 1 [^\\n]{0,200}?0\\.2057245"
+  },
+  {
+   "id": "c021",
+   "value": "0.1994488",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "^Stage 1 [^\\n]{0,200}?0\\.1994488"
+  },
+  {
+   "id": "c022",
+   "value": "1.0022933",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "^Stage 1 [^\\n]{0,200}?1\\.0022933"
+  },
+  {
+   "id": "c023",
+   "value": "0.2060203",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "^Stage 2 [^\\n]{0,200}?0\\.2060203"
+  },
+  {
+   "id": "c024",
+   "value": "0.1998337",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "^Stage 2 [^\\n]{0,200}?0\\.1998337"
+  },
+  {
+   "id": "c025",
+   "value": "1.0056991",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "^Stage 2 [^\\n]{0,200}?1\\.0056991"
+  },
+  {
+   "id": "c026",
+   "value": "0.1926041",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "^Market closing average \\(normalized\\) [^\\n]{0,200}?0\\.1926041"
+  },
+  {
+   "id": "c027",
+   "value": "0.1898924",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "^Market closing average \\(normalized\\) [^\\n]{0,200}?0\\.1898924"
+  },
+  {
+   "id": "c028",
+   "value": "0.9598217",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "^Market closing average \\(normalized\\) [^\\n]{0,200}?0\\.9598217"
+  },
+  {
+   "id": "c029",
+   "value": "0.2059",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "Stage 2 RPS on ALL 3829 held-out matches: 0\\.2059"
+  },
+  {
+   "id": "c_gap",
+   "value": "0.0134162",
+   "derived": {
+    "inputs": [
+     "c023",
+     "c026"
+    ],
+    "formula": "a - b"
+   }
+  },
+  {
+   "id": "c031",
+   "value": "0",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "Selected CHANGE_SCALE: 0"
+  },
+  {
+   "id": "c032",
+   "value": "0.9979680",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "0\\.0000000 0\\.2023143 0\\.1969495 0\\.9979680"
+  },
+  {
+   "id": "c033",
+   "value": "0.0",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "Stage 3 minus Stage 2 RPS:  0\\.0"
+  },
+  {
+   "id": "c034",
+   "value": "0.25",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "Selected sensitivity \\(log-loss only\\): 0\\.25"
+  },
+  {
+   "id": "c035",
+   "value": "-0.0010106",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "Validation log-loss difference \\(selected minus zero\\): -0\\.0010106"
+  },
+  {
+   "id": "c036",
+   "value": "-0.0025560",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "bootstrap CI: \\[-0\\.0025560, 0\\.0001155\\]"
+  },
+  {
+   "id": "c037",
+   "value": "0.0001155",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "bootstrap CI: \\[-0\\.0025560, 0\\.0001155\\]"
+  },
+  {
+   "id": "c038",
+   "value": "0.2058885",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "^Stage 4 0\\.2058885 0\\.1997573 1\\.0054757"
+  },
+  {
+   "id": "c039",
+   "value": "1.0054757",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "^Stage 4 0\\.2058885 0\\.1997573 1\\.0054757"
+  },
+  {
+   "id": "c040",
+   "value": "1.0066392",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "0\\.2500000 0\\.2041165 0\\.1980405 1\\.0066392"
+  },
+  {
+   "id": "c041",
+   "value": "0.5",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "0\\.5000000 0\\.2052037 0\\.1987613 1\\.0092615",
+   "source_value": "0.5000000"
+  },
+  {
+   "id": "c042",
+   "value": "1.0092615",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "0\\.5000000 0\\.2052037 0\\.1987613 1\\.0092615"
+  },
+  {
+   "id": "c043",
+   "value": "1",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "1\\.0000000 0\\.2069544 0\\.1999853 1\\.0136471",
+   "source_value": "1.0000000"
+  },
+  {
+   "id": "c044",
+   "value": "1.0136471",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "1\\.0000000 0\\.2069544 0\\.1999853 1\\.0136471"
+  },
+  {
+   "id": "c045",
+   "value": "1.0000000",
+   "source": "results/sources/stage45_notebook_output.txt",
+   "locator": "Stage 5 test multiplier mean/min/max: 1\\.0000000 / 1\\.0000000 / 1\\.0000000"
+  },
+  {
+   "id": "c046",
+   "value": "2026-10-19",
+   "source": "DECISIONS.md",
+   "locator": "2026-10-19 Gate B FAILED"
+  },
+  {
+   "id": "c047",
+   "value": "+0.0950",
+   "source": "CLAUDE.md",
+   "locator": "c_att \\+0\\.0950 CI"
+  },
+  {
+   "id": "c048",
+   "value": "0.0487",
+   "source": "CLAUDE.md",
+   "locator": "c_att \\+0\\.0950 CI \\[0\\.0487, 0\\.1413\\]"
+  },
+  {
+   "id": "c049",
+   "value": "0.1413",
+   "source": "CLAUDE.md",
+   "locator": "c_att \\+0\\.0950 CI \\[0\\.0487, 0\\.1413\\]"
+  },
+  {
+   "id": "c050",
+   "value": "-0.0022",
+   "source": "CLAUDE.md",
+   "locator": "c_def -0\\.0022 CI \\[-0\\.0413, 0\\.0368\\]"
+  },
+  {
+   "id": "c051",
+   "value": "-0.0413",
+   "source": "CLAUDE.md",
+   "locator": "c_def -0\\.0022 CI \\[-0\\.0413, 0\\.0368\\]"
+  },
+  {
+   "id": "c052",
+   "value": "0.0368",
+   "source": "CLAUDE.md",
+   "locator": "c_def -0\\.0022 CI \\[-0\\.0413, 0\\.0368\\]"
+  },
+  {
+   "id": "c053",
+   "value": "200",
+   "source": "DECISIONS.md",
+   "locator": "0/200 within-season placebos"
+  },
+  {
+   "id": "c054",
+   "value": "0.056",
+   "source": "DECISIONS.md",
+   "locator": "MDE for c_def 0\\.056"
+  },
+  {
+   "id": "c055",
+   "value": "99.8%",
+   "source": "DECISIONS.md",
+   "locator": "power\\s+99\\.8%"
+  },
+  {
+   "id": "c056",
+   "value": "+0.09503",
+   "source": "DECISIONS.md",
+   "locator": "Frozen c_att = \\+0\\.09503"
+  },
+  {
+   "id": "c057",
+   "value": "3786",
+   "source": "DECISIONS.md",
+   "locator": "\\(3786/3829"
+  },
+  {
+   "id": "c058",
+   "value": "3829",
+   "source": "DECISIONS.md",
+   "locator": "\\(3786/3829"
+  },
+  {
+   "id": "c059",
+   "value": "98.88%",
+   "source": "DECISIONS.md",
+   "locator": "3786/3829, 98\\.88%"
+  },
+  {
+   "id": "c060",
+   "value": "+0.000109",
+   "source": "DECISIONS.md",
+   "locator": "LogLoss diff \\+0\\.000109"
+  },
+  {
+   "id": "c061",
+   "value": "-0.000669",
+   "source": "DECISIONS.md",
+   "locator": "\\[-0\\.000669, \\+0\\.000878\\]"
+  },
+  {
+   "id": "c062",
+   "value": "+0.000878",
+   "source": "DECISIONS.md",
+   "locator": "\\[-0\\.000669, \\+0\\.000878\\]"
+  },
+  {
+   "id": "c063",
+   "value": "3543",
+   "source": "DECISIONS.md",
+   "locator": "on 3543 covered common rows"
+  },
+  {
+   "id": "c064",
+   "value": "+0.000148",
+   "source": "DECISIONS.md",
+   "locator": "Placebo \\+0\\.000148"
+  },
+  {
+   "id": "c065",
+   "value": "-0.000677",
+   "source": "DECISIONS.md",
+   "locator": "\\[-0\\.000677,\\s+\\+0\\.001007\\]"
+  },
+  {
+   "id": "c066",
+   "value": "+0.001007",
+   "source": "DECISIONS.md",
+   "locator": "\\[-0\\.000677,\\s+\\+0\\.001007\\]"
+  },
+  {
+   "id": "c067",
+   "value": "95%",
+   "source": "DECISIONS.md",
+   "locator": "95% paired week-block CI"
+  },
+  {
+   "id": "c068",
+   "value": "0.005",
+   "source": "results/experiments/candidate_p1.json",
+   "locator": "\"process_noise\": 0\\.005"
+  },
+  {
+   "id": "c069",
+   "value": "0.3",
+   "source": "results/experiments/candidate_p1.json",
+   "locator": "\"initial_var\": 0\\.3"
+  },
+  {
+   "id": "c070",
+   "value": "-0.04",
+   "source": "results/experiments/candidate_p1.json",
+   "locator": "\"rho\": -0\\.04"
+  },
+  {
+   "id": "c071",
+   "value": "0.15",
+   "source": "CLAUDE.md",
+   "locator": "is outside \\[0\\.15, 6\\.0\\]"
+  },
+  {
+   "id": "c072",
+   "value": "6.0",
+   "source": "CLAUDE.md",
+   "locator": "is outside \\[0\\.15, 6\\.0\\]"
+  },
+  {
+   "id": "c073",
+   "value": "8,769",
+   "source": "results/experiments/verification.md",
+   "locator": "Rows scored \\(harness DEV\\): 8769",
+   "source_value": "8769"
+  },
+  {
+   "id": "c074",
+   "value": "4,291",
+   "source": "results/experiments/verification.md",
+   "locator": "Rows scored \\(harness VAL\\): 4291",
+   "source_value": "4291"
+  },
+  {
+   "id": "c075",
+   "value": "8,740",
+   "source": "results/experiments/verification.md",
+   "locator": "### DEV: 8740 of 8769",
+   "source_value": "8740"
+  },
+  {
+   "id": "c076",
+   "value": "99%",
+   "source": "results/experiments/E1.md",
+   "locator": "99% paired week-block CI"
+  },
+  {
+   "id": "c077",
+   "value": "-0.015803",
+   "source": "results/experiments/E1.md",
+   "locator": ": -0\\.015803; 99% paired week-block CI \\[-0\\.020189, -0\\.012334\\]"
+  },
+  {
+   "id": "c078",
+   "value": "-0.020189",
+   "source": "results/experiments/E1.md",
+   "locator": ": -0\\.015803; 99% paired week-block CI \\[-0\\.020189, -0\\.012334\\]"
+  },
+  {
+   "id": "c079",
+   "value": "-0.012334",
+   "source": "results/experiments/E1.md",
+   "locator": ": -0\\.015803; 99% paired week-block CI \\[-0\\.020189, -0\\.012334\\]"
+  },
+  {
+   "id": "c080",
+   "value": "-0.000768",
+   "source": "results/experiments/E3.md",
+   "locator": ": -0\\.000768; 99% paired week-block CI \\[-0\\.001715, -0\\.000099\\]"
+  },
+  {
+   "id": "c081",
+   "value": "-0.001715",
+   "source": "results/experiments/E3.md",
+   "locator": ": -0\\.000768; 99% paired week-block CI \\[-0\\.001715, -0\\.000099\\]"
+  },
+  {
+   "id": "c082",
+   "value": "-0.000099",
+   "source": "results/experiments/E3.md",
+   "locator": ": -0\\.000768; 99% paired week-block CI \\[-0\\.001715, -0\\.000099\\]"
+  },
+  {
+   "id": "c083",
+   "value": "-0.000552",
+   "source": "results/experiments/E5.md",
+   "locator": ": -0\\.000552; 99% paired week-block CI \\[-0\\.000999, -0\\.000116\\]"
+  },
+  {
+   "id": "c084",
+   "value": "-0.000999",
+   "source": "results/experiments/E5.md",
+   "locator": ": -0\\.000552; 99% paired week-block CI \\[-0\\.000999, -0\\.000116\\]"
+  },
+  {
+   "id": "c085",
+   "value": "-0.000116",
+   "source": "results/experiments/E5.md",
+   "locator": ": -0\\.000552; 99% paired week-block CI \\[-0\\.000999, -0\\.000116\\]"
+  },
+  {
+   "id": "c086",
+   "value": "-0.002784",
+   "source": "results/experiments/E6.md",
+   "locator": ": -0\\.002784; 99% paired week-block CI \\[-0\\.006639, \\+0\\.001068\\]"
+  },
+  {
+   "id": "c087",
+   "value": "-0.006639",
+   "source": "results/experiments/E6.md",
+   "locator": ": -0\\.002784; 99% paired week-block CI \\[-0\\.006639, \\+0\\.001068\\]"
+  },
+  {
+   "id": "c088",
+   "value": "+0.001068",
+   "source": "results/experiments/E6.md",
+   "locator": ": -0\\.002784; 99% paired week-block CI \\[-0\\.006639, \\+0\\.001068\\]"
+  },
+  {
+   "id": "c089",
+   "value": "0.000000",
+   "source": "results/experiments/E2.md",
+   "locator": ": \\+0\\.000000; 99% paired week-block CI"
+  },
+  {
+   "id": "c090",
+   "value": "1.255",
+   "source": "results/experiments/E6.md",
+   "locator": "\\| 1\\.255113 \\|"
+  },
+  {
+   "id": "c091",
+   "value": "0.002999",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| E1 \\|[^\\n]{0,200}?0\\.002999"
+  },
+  {
+   "id": "c092",
+   "value": "0.002999",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| E5 \\|[^\\n]{0,200}?0\\.002999"
+  },
+  {
+   "id": "c093",
+   "value": "0.005997",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| E3 \\|[^\\n]{0,200}?0\\.005997"
+  },
+  {
+   "id": "c094",
+   "value": "1.000000",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| E2 \\|[^\\n]{0,200}?1\\.000000"
+  },
+  {
+   "id": "c095",
+   "value": "0.074963",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| E6 \\|[^\\n]{0,200}?0\\.074963"
+  },
+  {
+   "id": "c096",
+   "value": "0.20813",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Baseline \\| 8769 \\|[^\\n]{0,200}?0\\.20813"
+  },
+  {
+   "id": "c097",
+   "value": "0.20074",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Baseline \\| 8769 \\|[^\\n]{0,200}?0\\.20074"
+  },
+  {
+   "id": "c098",
+   "value": "1.01150",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Baseline \\| 8769 \\|[^\\n]{0,200}?1\\.01150"
+  },
+  {
+   "id": "c099",
+   "value": "0.51614",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Baseline \\| 8769 \\|[^\\n]{0,200}?0\\.51614"
+  },
+  {
+   "id": "c100",
+   "value": "0.20433",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Candidate \\| 8769 \\|[^\\n]{0,200}?0\\.20433"
+  },
+  {
+   "id": "c101",
+   "value": "0.19785",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Candidate \\| 8769 \\|[^\\n]{0,200}?0\\.19785"
+  },
+  {
+   "id": "c102",
+   "value": "0.99709",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Candidate \\| 8769 \\|[^\\n]{0,200}?0\\.99709"
+  },
+  {
+   "id": "c103",
+   "value": "0.52264",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Candidate \\| 8769 \\|[^\\n]{0,200}?0\\.52264"
+  },
+  {
+   "id": "c104",
+   "value": "0.20083",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Baseline \\| 4291 \\|[^\\n]{0,200}?0\\.20083"
+  },
+  {
+   "id": "c105",
+   "value": "0.19783",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Baseline \\| 4291 \\|[^\\n]{0,200}?0\\.19783"
+  },
+  {
+   "id": "c106",
+   "value": "1.00384",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Baseline \\| 4291 \\|[^\\n]{0,200}?1\\.00384"
+  },
+  {
+   "id": "c107",
+   "value": "0.51783",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Baseline \\| 4291 \\|[^\\n]{0,200}?0\\.51783"
+  },
+  {
+   "id": "c108",
+   "value": "0.19665",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Candidate \\| 4291 \\|[^\\n]{0,200}?0\\.19665"
+  },
+  {
+   "id": "c109",
+   "value": "0.19458",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Candidate \\| 4291 \\|[^\\n]{0,200}?0\\.19458"
+  },
+  {
+   "id": "c110",
+   "value": "0.98117",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Candidate \\| 4291 \\|[^\\n]{0,200}?0\\.98117"
+  },
+  {
+   "id": "c111",
+   "value": "0.52598",
+   "source": "results/experiments/harness_report.md",
+   "locator": "\\| Candidate \\| 4291 \\|[^\\n]{0,200}?0\\.52598"
+  },
+  {
+   "id": "c112",
+   "value": "29.29%",
+   "source": "results/experiments/verification.md",
+   "locator": "Gap closed by P1: RPS 29\\.29%"
+  },
+  {
+   "id": "c113",
+   "value": "27.68%",
+   "source": "results/experiments/verification.md",
+   "locator": "RPS 27\\.68%"
+  },
+  {
+   "id": "c114",
+   "value": "37.83%",
+   "source": "results/experiments/verification.md",
+   "locator": "LogLoss 37\\.83%"
+  },
+  {
+   "id": "c115",
+   "value": "36%",
+   "source": "results/experiments/verification.md",
+   "locator": "VAL log-loss gain \\(36%\\)"
+  },
+  {
+   "id": "c116",
+   "value": "1%",
+   "source": "results/experiments/verification.md",
+   "locator": "\\(1%\\)"
+  },
+  {
+   "id": "c117",
+   "value": "9",
+   "source": "results/experiments/verification.md",
+   "locator": "\\| DEV \\| outside \\| Baseline \\| 9 \\|"
+  },
+  {
+   "id": "c118",
+   "value": "0.994245",
+   "source": "results/experiments/verification.md",
+   "locator": "\\| VAL \\| all other \\| Baseline \\| 4280 \\| 0\\.200542 \\| 0\\.197410 \\| 0\\.994245"
+  },
+  {
+   "id": "c119",
+   "value": "0.979695",
+   "source": "results/experiments/verification.md",
+   "locator": "\\| VAL \\| all other \\| P1 \\| 4280 \\| 0\\.196555 \\| 0\\.194365 \\| 0\\.979695"
+  },
+  {
+   "id": "c120",
+   "value": "2000",
+   "source": "results/experiments/test_once.md",
+   "locator": "2000 resamples"
+  },
+  {
+   "id": "c121",
+   "value": "20261026",
+   "source": "results/experiments/test_once.md",
+   "locator": "seed 20261026"
+  },
+  {
+   "id": "c122",
+   "value": "1.008321",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\(baseline 1\\.008321, P1 0\\.995493\\)"
+  },
+  {
+   "id": "c123",
+   "value": "0.995493",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\(baseline 1\\.008321, P1 0\\.995493\\)"
+  },
+  {
+   "id": "c124",
+   "value": "-0.012828",
+   "source": "results/experiments/test_once.md",
+   "locator": "P1 minus baseline: -0\\.012828"
+  },
+  {
+   "id": "c125",
+   "value": "-0.015519",
+   "source": "results/experiments/test_once.md",
+   "locator": "95% paired week-block CI: \\[-0\\.015519, -0\\.010091\\]"
+  },
+  {
+   "id": "c126",
+   "value": "-0.010091",
+   "source": "results/experiments/test_once.md",
+   "locator": "95% paired week-block CI: \\[-0\\.015519, -0\\.010091\\]"
+  },
+  {
+   "id": "c127",
+   "value": "0.205946",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| Baseline \\| 3829 \\|[^\\n]{0,200}?0\\.205946"
+  },
+  {
+   "id": "c128",
+   "value": "0.200442",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| Baseline \\| 3829 \\|[^\\n]{0,200}?0\\.200442"
+  },
+  {
+   "id": "c129",
+   "value": "0.516584",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| Baseline \\| 3829 \\|[^\\n]{0,200}?0\\.516584"
+  },
+  {
+   "id": "c130",
+   "value": "0.202357",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| P1 \\| 3829 \\|[^\\n]{0,200}?0\\.202357"
+  },
+  {
+   "id": "c131",
+   "value": "0.197737",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| P1 \\| 3829 \\|[^\\n]{0,200}?0\\.197737"
+  },
+  {
+   "id": "c132",
+   "value": "0.521285",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| P1 \\| 3829 \\|[^\\n]{0,200}?0\\.521285"
+  },
+  {
+   "id": "c133",
+   "value": "0.206020",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| Baseline \\| 3545 \\|[^\\n]{0,200}?0\\.206020"
+  },
+  {
+   "id": "c134",
+   "value": "0.199834",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| Baseline \\| 3545 \\|[^\\n]{0,200}?0\\.199834"
+  },
+  {
+   "id": "c135",
+   "value": "1.005699",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| Baseline \\| 3545 \\|[^\\n]{0,200}?1\\.005699"
+  },
+  {
+   "id": "c136",
+   "value": "0.518759",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| Baseline \\| 3545 \\|[^\\n]{0,200}?0\\.518759"
+  },
+  {
+   "id": "c137",
+   "value": "0.202578",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| P1 \\| 3545 \\|[^\\n]{0,200}?0\\.202578"
+  },
+  {
+   "id": "c138",
+   "value": "0.197250",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| P1 \\| 3545 \\|[^\\n]{0,200}?0\\.197250"
+  },
+  {
+   "id": "c139",
+   "value": "0.993635",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| P1 \\| 3545 \\|[^\\n]{0,200}?0\\.993635"
+  },
+  {
+   "id": "c140",
+   "value": "0.524118",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| P1 \\| 3545 \\|[^\\n]{0,200}?0\\.524118"
+  },
+  {
+   "id": "c141",
+   "value": "-0.012065",
+   "source": "results/experiments/test_once.md",
+   "locator": "Common rows \\(n=3545\\): log-loss P1 minus baseline -0\\.012065"
+  },
+  {
+   "id": "c142",
+   "value": "-0.014553",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\[-0\\.014553, -0\\.009332\\]"
+  },
+  {
+   "id": "c143",
+   "value": "-0.009332",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\[-0\\.014553, -0\\.009332\\]"
+  },
+  {
+   "id": "c144",
+   "value": "0.192423",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| Closing market \\| 3829 \\| 0\\.192423"
+  },
+  {
+   "id": "c145",
+   "value": "26.54%",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| RPS \\| 0\\.205946 \\| 0\\.202357 \\| 0\\.192423 \\| 26\\.54%"
+  },
+  {
+   "id": "c146",
+   "value": "26.85%",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| Brier \\| 0\\.200442 \\| 0\\.197737 \\| 0\\.190366 \\| 26\\.85%"
+  },
+  {
+   "id": "c147",
+   "value": "27.47%",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| LogLoss \\| 1\\.008321 \\| 0\\.995493 \\| 0\\.961623 \\| 27\\.47%"
+  },
+  {
+   "id": "c148",
+   "value": "1",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| outside \\| 1 \\| 0\\.027037"
+  },
+  {
+   "id": "c149",
+   "value": "-0.02%",
+   "source": "results/experiments/test_once.md",
+   "locator": "outside rows: -0\\.02%"
+  },
+  {
+   "id": "c150",
+   "value": "0.027037",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| outside \\| 1 \\| 0\\.027037 \\| 0\\.035196"
+  },
+  {
+   "id": "c151",
+   "value": "0.035196",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| outside \\| 1 \\| 0\\.027037 \\| 0\\.035196"
+  },
+  {
+   "id": "c152",
+   "value": "3,828",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| other \\| 3828 \\| 1\\.008578",
+   "source_value": "3828"
+  },
+  {
+   "id": "c153",
+   "value": "1.008578",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| other \\| 3828 \\| 1\\.008578 \\| 0\\.995744"
+  },
+  {
+   "id": "c154",
+   "value": "0.995744",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| other \\| 3828 \\| 1\\.008578 \\| 0\\.995744"
+  },
+  {
+   "id": "c155",
+   "value": "3,544",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| other \\| 3544 \\| 1\\.005975",
+   "source_value": "3544"
+  },
+  {
+   "id": "c156",
+   "value": "1.005975",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| other \\| 3544 \\| 1\\.005975 \\| 0\\.993905"
+  },
+  {
+   "id": "c157",
+   "value": "0.993905",
+   "source": "results/experiments/test_once.md",
+   "locator": "\\| other \\| 3544 \\| 1\\.005975 \\| 0\\.993905"
+  },
+  {
+   "id": "c158",
+   "value": "6 July 2026",
+   "source": "results/sources/transfermarkt_readme.txt",
+   "locator": "current to 6 July 2026"
+  },
+  {
+   "id": "c159",
+   "value": "2026-10-25",
+   "source": "results/sources/transfermarkt_readme.txt",
+   "locator": "Date read: 2026-10-25"
+  }
+ ]
+}
