@@ -1,0 +1,158 @@
+{
+  "experiment": "E2",
+  "title": "Drift",
+  "verdict": "REJECTED",
+  "grid": [
+    {
+      "drift_per_day": 0.0,
+      "season_var": 0.0
+    },
+    {
+      "drift_per_day": 0.0,
+      "season_var": 0.02
+    },
+    {
+      "drift_per_day": 0.0,
+      "season_var": 0.05
+    },
+    {
+      "drift_per_day": 0.0002,
+      "season_var": 0.0
+    },
+    {
+      "drift_per_day": 0.0002,
+      "season_var": 0.02
+    },
+    {
+      "drift_per_day": 0.0002,
+      "season_var": 0.05
+    },
+    {
+      "drift_per_day": 0.0005,
+      "season_var": 0.0
+    },
+    {
+      "drift_per_day": 0.0005,
+      "season_var": 0.02
+    },
+    {
+      "drift_per_day": 0.0005,
+      "season_var": 0.05
+    }
+  ],
+  "chosen": {
+    "drift_per_day": 0.0,
+    "season_var": 0.0
+  },
+  "incumbent_params": {
+    "process_noise": 0.005,
+    "initial_var": 0.3,
+    "drift_per_day": 0.0,
+    "drift_cap_days": 30.0,
+    "season_gap_days": 45.0,
+    "season_var": 0.0,
+    "cold_attack": 0.0,
+    "cold_defence": 0.0,
+    "clip_rates": false,
+    "rate_bounds": [
+      0.15,
+      6.0
+    ],
+    "league_k": null,
+    "rho": 0.0
+  },
+  "incumbent_dev_logloss": 0.9979621541739149,
+  "incumbent_val_logloss": 0.9833962345389887,
+  "chosen_dev_logloss": 0.9979621541739149,
+  "chosen_val_logloss": 0.9833962345389887,
+  "ci_rows": "DEV+VAL",
+  "n_dev": 8769,
+  "n_val": 4291,
+  "n_ci": 13060,
+  "mean_delta_logloss": 0.0,
+  "ci99": [
+    0.0,
+    0.0
+  ],
+  "p_one_sided": 1.0,
+  "checks": {
+    "(i) DEV log-loss improves": false,
+    "(ii) VAL log-loss improves": false,
+    "(iii) 99% CI upper bound < 0": false
+  },
+  "seconds": 12.4,
+  "candidates": [
+    {
+      "drift_per_day": 0.0,
+      "season_var": 0.0,
+      "dev_logloss": 0.9979621541739149,
+      "val_logloss": 0.9833962345389887,
+      "dev_rps": 0.20457304621523356,
+      "val_rps": 0.1969352749630897
+    },
+    {
+      "drift_per_day": 0.0,
+      "season_var": 0.02,
+      "dev_logloss": 0.9999725118504768,
+      "val_logloss": 0.9841713496785855,
+      "dev_rps": 0.20507548007798948,
+      "val_rps": 0.19716361165479204
+    },
+    {
+      "drift_per_day": 0.0,
+      "season_var": 0.05,
+      "dev_logloss": 1.0029597040920577,
+      "val_logloss": 0.9856503252347116,
+      "dev_rps": 0.20582342017382205,
+      "val_rps": 0.19759839770816953
+    },
+    {
+      "drift_per_day": 0.0002,
+      "season_var": 0.0,
+      "dev_logloss": 1.0017009943051398,
+      "val_logloss": 0.9871351674249821,
+      "dev_rps": 0.2055549703999041,
+      "val_rps": 0.19801504881109727
+    },
+    {
+      "drift_per_day": 0.0002,
+      "season_var": 0.02,
+      "dev_logloss": 1.0035948984470682,
+      "val_logloss": 0.9878751194985771,
+      "dev_rps": 0.20602384055662307,
+      "val_rps": 0.19824162424222777
+    },
+    {
+      "drift_per_day": 0.0002,
+      "season_var": 0.05,
+      "dev_logloss": 1.0063795256492658,
+      "val_logloss": 0.9892303169185833,
+      "dev_rps": 0.20671052494266787,
+      "val_rps": 0.19864548086126535
+    },
+    {
+      "drift_per_day": 0.0005,
+      "season_var": 0.0,
+      "dev_logloss": 1.006948964407561,
+      "val_logloss": 0.9922887308252968,
+      "dev_rps": 0.20692207916937974,
+      "val_rps": 0.19950514770626274
+    },
+    {
+      "drift_per_day": 0.0005,
+      "season_var": 0.02,
+      "dev_logloss": 1.008688988595131,
+      "val_logloss": 0.9929912014467862,
+      "dev_rps": 0.20734484811035062,
+      "val_rps": 0.19972340888758966
+    },
+    {
+      "drift_per_day": 0.0005,
+      "season_var": 0.05,
+      "dev_logloss": 1.0112343269702893,
+      "val_logloss": 0.9942260093590178,
+      "dev_rps": 0.20795832945407294,
+      "val_rps": 0.20009165188570482
+    }
+  ]
+}

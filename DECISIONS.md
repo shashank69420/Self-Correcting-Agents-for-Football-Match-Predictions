@@ -22,3 +22,5 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   0.997962, VAL 1.003838 -> 0.983396, DEV+VAL diff -0.015803, 99% CI [-0.020189, -0.012334].
   Deviation: first invocation crashed before writing output (missing results dir); identical grid re-run
   once. Approved: n/a, pre-registered rule.
+- 2026-10-25 E2 REJECTED: best DEV candidate is drift 0, season_var 0 (= incumbent); every positive drift
+  or season extra is worse on DEV and VAL. Approved: n/a, pre-registered rule.
