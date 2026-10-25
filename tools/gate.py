@@ -4,6 +4,7 @@ Prints one line per check, then "GATE: PASS" or "GATE: FAIL (n)"; exit code 0 or
 The constants below are the expected values. Changing them needs the user's approval.
 """
 import fnmatch
+import importlib.util
 import os
 import re
 import subprocess
@@ -14,6 +15,7 @@ sys.path.insert(0, os.path.join(ROOT, 'tools'))
 import verify_claims  # noqa: E402
 
 EXPECTED_BRANCH = 'main'
+EXPECTED_TESTS = 45
 ANCHORS = dict(stage1_rps='0.2057', stage2_rps='0.2060', all_3829_rps='0.2059', change_scale='0')
 FORBIDDEN_PREFIXES = ('data/', 'outputs/', 'venv/')
 FORBIDDEN_SUFFIXES = ('.csv', '.pkl')
@@ -56,27 +58,20 @@ def check_anchors():
 
 
 def check_tests():
-    result = run([sys.executable, '-X', 'utf8', '-m', 'unittest', 'discover', '-s', 'tests'])
-    output = result.stdout + result.stderr
-    ran = re.search(r'Ran (\d+) tests?', output)
-    if result.returncode == 0:
-        return [(True, f'tests: {ran.group(1) if ran else "?"} ran, OK')]
-    skipped, total, failed = [], 0, []
-    for name in sorted(os.listdir(os.path.join(ROOT, 'tests'))):
-        if not (name.startswith('test_') and name.endswith('.py')):
-            continue
-        part = run([sys.executable, '-X', 'utf8', '-m', 'unittest', f'tests.{name[:-3]}'])
-        text = part.stdout + part.stderr
-        count = re.search(r'Ran (\d+) tests?', text)
-        if part.returncode != 0 and "No module named 'pytest'" in text:
-            skipped.append(f'tests/{name}')
-        elif part.returncode != 0:
-            failed.append(f'tests/{name}')
-        else:
-            total += int(count.group(1)) if count else 0
-    if failed:
-        return [(False, f'tests: failing {failed}, expected none; see: python -m unittest discover -s tests')]
-    return [(True, f'tests: {total} ran, OK; SKIPPED (pytest not installed): {skipped}')]
+    """Full suite under tests/ with pytest when it is importable, else unittest; total must equal EXPECTED_TESTS."""
+    if importlib.util.find_spec('pytest') is not None:
+        runner = 'pytest'
+        result = run([sys.executable, '-X', 'utf8', '-m', 'pytest', '-q', '-p', 'no:cacheprovider', 'tests'])
+        counts = re.findall(r'(\d+) (passed|failed|skipped|errors?|xfailed|xpassed)', result.stdout)
+        total = sum(int(n) for n, _ in counts)
+    else:
+        runner = 'unittest'
+        result = run([sys.executable, '-X', 'utf8', '-m', 'unittest', 'discover', '-s', 'tests'])
+        ran = re.search(r'Ran (\d+) tests?', result.stdout + result.stderr)
+        total = int(ran.group(1)) if ran else 0
+    ok = result.returncode == 0 and total == EXPECTED_TESTS
+    return [(ok, f'tests: {total} ran with {runner}, OK' if ok
+             else f'tests: actual {total} with {runner} (exit {result.returncode}), expected {EXPECTED_TESTS} passing')]
 
 
 def check_claims():
@@ -104,10 +99,19 @@ def load_ownership():
     return patterns
 
 
+def ownership_base():
+    with open(os.path.join(ROOT, 'tools', 'ownership.txt'), encoding='utf-8') as handle:
+        for line in handle:
+            match = re.match(r'#\s*base:\s*([0-9a-f]{7,40})', line)
+            if match:
+                return match.group(1)
+    return ''
+
+
 def check_ownership():
-    base = git('merge-base', 'HEAD', 'main').stdout.strip()
-    if not base:
-        return [(False, 'ownership: no merge-base with main, expected one')]
+    base = ownership_base()
+    if not git('cat-file', '-e', f'{base}^{{commit}}').returncode == 0:
+        return [(False, f'ownership: base commit {base!r} not found')]
     changed = [p for p in git('diff', '--name-only', base).stdout.splitlines() if p]
     patterns = load_ownership()
     outside, removed = [], []
