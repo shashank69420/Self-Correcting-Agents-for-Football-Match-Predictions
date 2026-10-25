@@ -1,0 +1,194 @@
+{
+  "experiment": "E1",
+  "title": "Hyperparameters",
+  "verdict": "ACCEPTED",
+  "grid": [
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.3
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.6
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 1.0
+    },
+    {
+      "process_noise": 0.01,
+      "initial_var": 0.3
+    },
+    {
+      "process_noise": 0.01,
+      "initial_var": 0.6
+    },
+    {
+      "process_noise": 0.01,
+      "initial_var": 1.0
+    },
+    {
+      "process_noise": 0.02,
+      "initial_var": 0.3
+    },
+    {
+      "process_noise": 0.02,
+      "initial_var": 0.6
+    },
+    {
+      "process_noise": 0.02,
+      "initial_var": 1.0
+    },
+    {
+      "process_noise": 0.04,
+      "initial_var": 0.3
+    },
+    {
+      "process_noise": 0.04,
+      "initial_var": 0.6
+    },
+    {
+      "process_noise": 0.04,
+      "initial_var": 1.0
+    }
+  ],
+  "chosen": {
+    "process_noise": 0.005,
+    "initial_var": 0.3
+  },
+  "incumbent_params": {
+    "process_noise": 0.01,
+    "initial_var": 1.0,
+    "drift_per_day": 0.0,
+    "drift_cap_days": 30.0,
+    "season_gap_days": 45.0,
+    "season_var": 0.0,
+    "cold_attack": 0.0,
+    "cold_defence": 0.0,
+    "clip_rates": false,
+    "rate_bounds": [
+      0.15,
+      6.0
+    ],
+    "league_k": null,
+    "rho": 0.0
+  },
+  "incumbent_dev_logloss": 1.0114956838814553,
+  "incumbent_val_logloss": 1.0038382482405808,
+  "chosen_dev_logloss": 0.9979621541739149,
+  "chosen_val_logloss": 0.9833962345389887,
+  "ci_rows": "DEV+VAL",
+  "n_dev": 8769,
+  "n_val": 4291,
+  "n_ci": 13060,
+  "mean_delta_logloss": -0.01580338459410069,
+  "ci99": [
+    -0.020188818555266795,
+    -0.012333729746087388
+  ],
+  "p_one_sided": 0.0004997501249375312,
+  "checks": {
+    "(i) DEV log-loss improves": true,
+    "(ii) VAL log-loss improves": true,
+    "(iii) 99% CI upper bound < 0": true
+  },
+  "seconds": 11.0,
+  "candidates": [
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.3,
+      "dev_logloss": 0.9979621541739149,
+      "val_logloss": 0.9833962345389887,
+      "dev_rps": 0.20457304621523356,
+      "val_rps": 0.1969352749630897
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.6,
+      "dev_logloss": 0.9992429057568434,
+      "val_logloss": 0.9868030779871013,
+      "dev_rps": 0.2049386863254143,
+      "val_rps": 0.1973393911111164
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 1.0,
+      "dev_logloss": 1.0004825877688766,
+      "val_logloss": 0.9923693421057241,
+      "dev_rps": 0.20526557943973922,
+      "val_rps": 0.19776782401032034
+    },
+    {
+      "process_noise": 0.01,
+      "initial_var": 0.3,
+      "dev_logloss": 1.0089310560907485,
+      "val_logloss": 0.9940139182887895,
+      "dev_rps": 0.20745203478760257,
+      "val_rps": 0.1999987648138903
+    },
+    {
+      "process_noise": 0.01,
+      "initial_var": 0.6,
+      "dev_logloss": 1.0102039176730806,
+      "val_logloss": 0.9977746542650797,
+      "dev_rps": 0.20780238116357364,
+      "val_rps": 0.20042110898271626
+    },
+    {
+      "process_noise": 0.01,
+      "initial_var": 1.0,
+      "dev_logloss": 1.0114956838814553,
+      "val_logloss": 1.0038382482405808,
+      "dev_rps": 0.2081304901135415,
+      "val_rps": 0.20083372398296764
+    },
+    {
+      "process_noise": 0.02,
+      "initial_var": 0.3,
+      "dev_logloss": 1.0272157484993418,
+      "val_logloss": 1.0111197796547362,
+      "dev_rps": 0.21207393372074065,
+      "val_rps": 0.20474133363008523
+    },
+    {
+      "process_noise": 0.02,
+      "initial_var": 0.6,
+      "dev_logloss": 1.0284953911259427,
+      "val_logloss": 1.0151563937460282,
+      "dev_rps": 0.2124065568099368,
+      "val_rps": 0.2051596065801533
+    },
+    {
+      "process_noise": 0.02,
+      "initial_var": 1.0,
+      "dev_logloss": 1.0298749770633044,
+      "val_logloss": 1.0213738782376605,
+      "dev_rps": 0.21273150932019771,
+      "val_rps": 0.2055483173200795
+    },
+    {
+      "process_noise": 0.04,
+      "initial_var": 0.3,
+      "dev_logloss": 1.0573309725512368,
+      "val_logloss": 1.03929541449663,
+      "dev_rps": 0.21914838273968248,
+      "val_rps": 0.21176741605002544
+    },
+    {
+      "process_noise": 0.04,
+      "initial_var": 0.6,
+      "dev_logloss": 1.058634458958355,
+      "val_logloss": 1.0435664421432922,
+      "dev_rps": 0.21945647770799256,
+      "val_rps": 0.21215212357410657
+    },
+    {
+      "process_noise": 0.04,
+      "initial_var": 1.0,
+      "dev_logloss": 1.0601285241740224,
+      "val_logloss": 1.0496535106080502,
+      "dev_rps": 0.21976348474058988,
+      "val_rps": 0.21250023182783
+    }
+  ]
+}

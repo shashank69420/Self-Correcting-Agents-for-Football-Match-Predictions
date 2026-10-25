@@ -205,6 +205,7 @@ def run_experiment(name, df, test_index, home_adv):
              *[f'- {key}: {"yes" if value else "NO"}' for key, value in checks.items()], '',
              f'Verdict: **{payload["verdict"]}**.', '']
     markdown = '\n'.join(lines)
+    os.makedirs(RESULTS_DIR, exist_ok=True)
     with open(result_path(name, 'md'), 'w', encoding='utf-8') as handle:
         handle.write(markdown)
     write_json(name, payload)

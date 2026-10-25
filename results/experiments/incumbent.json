@@ -1,0 +1,23 @@
+{
+  "params": {
+    "process_noise": 0.005,
+    "initial_var": 0.3,
+    "drift_per_day": 0.0,
+    "drift_cap_days": 30.0,
+    "season_gap_days": 45.0,
+    "season_var": 0.0,
+    "cold_attack": 0.0,
+    "cold_defence": 0.0,
+    "clip_rates": false,
+    "rate_bounds": [
+      0.15,
+      6.0
+    ],
+    "league_k": null,
+    "rho": 0.0
+  },
+  "calibration": null,
+  "accepted": [
+    "E1"
+  ]
+}
