@@ -1,7 +1,7 @@
 # Files the experiments branch may change since its merge-base with main (fnmatch patterns, one per line).
 # "append-only" means the diff against the merge-base may only add lines.
 # Changing this file to make the gate pass needs the user's approval.
-# base: 7cf1b3b
+# base: 17af108f3be5159f4cf34269887d072074b1fba2
 exp_model.py
 exp_harness.py
 run_experiments.py
@@ -19,3 +19,5 @@ results/claims.json
 .claude/commands/gate.md
 .claude/settings.json
 CLAUDE.md  append-only
+# Approved exception (2026-10-26): pytest config that scopes collection to tests/
+pytest.ini

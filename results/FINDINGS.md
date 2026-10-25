@@ -113,6 +113,9 @@ upper bound on the mean log-loss difference (P1 minus Stage 2) over all 3,829 TE
 - The TEST scoring scripts are in the repository: `results/experiments/test_once.py` and `split_test.py`, with
   `test_once_README.md`. A reproduction run (`results/experiments/test_once_repro.txt`) gave log-loss difference
   -0.012828 and CI [-0.015519, -0.010091], matching the original. A rerun is a reproduction, not a new test.
+- During tooling work a plain pytest run re-imported a TEST scoring script once and reran the already-scored
+  comparison; the output file was restored from git before commit and no parameter, row or rule changed. Logged in
+  DECISIONS.md.
 
 ## 8. Forward test
 Not started. `outputs/forward/` does not exist, and the `forward-logger` branch has no `forward_logger.py`.

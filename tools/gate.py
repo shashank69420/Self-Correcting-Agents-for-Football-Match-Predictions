@@ -15,7 +15,7 @@ sys.path.insert(0, os.path.join(ROOT, 'tools'))
 import verify_claims  # noqa: E402
 
 EXPECTED_BRANCH = 'main'
-EXPECTED_TESTS = 45
+EXPECTED_TESTS = 46
 ANCHORS = dict(stage1_rps='0.2057', stage2_rps='0.2060', all_3829_rps='0.2059', change_scale='0')
 FORBIDDEN_PREFIXES = ('data/', 'outputs/', 'venv/')
 FORBIDDEN_SUFFIXES = ('.csv', '.pkl')
@@ -108,23 +108,32 @@ def ownership_base():
     return ''
 
 
-def check_ownership():
-    base = ownership_base()
-    if not git('cat-file', '-e', f'{base}^{{commit}}').returncode == 0:
-        return [(False, f'ownership: base commit {base!r} not found')]
-    changed = [p for p in git('diff', '--name-only', base).stdout.splitlines() if p]
-    patterns = load_ownership()
+def ownership_failures(changed, patterns, removes_lines):
+    """Paths outside the allowlist, and append-only paths for which removes_lines(path) is true."""
     outside, removed = [], []
     for path in changed:
         rule = next(((p, a) for p, a in patterns if fnmatch.fnmatch(path, p)), None)
         if rule is None:
             outside.append(path)
-        elif rule[1]:
-            diff = git('diff', '-U0', base, '--', path).stdout.splitlines()
-            if any(line.startswith('-') and not line.startswith('---') for line in diff):
-                removed.append(path)
+        elif rule[1] and removes_lines(path):
+            removed.append(path)
+    return outside, removed
+
+
+def check_ownership():
+    base = ownership_base()
+    if not git('cat-file', '-e', f'{base}^{{commit}}').returncode == 0:
+        return [(False, f'ownership: base commit {base!r} not found')]
+    # Committed plus staged changes: the same list as <base> HEAD on a clean tree, and it also sees staged files.
+    changed = [p for p in git('diff', '--cached', '--name-only', base).stdout.splitlines() if p]
+
+    def removes_lines(path):
+        diff = git('diff', '--cached', '-U0', base, '--', path).stdout.splitlines()
+        return any(line.startswith('-') and not line.startswith('---') for line in diff)
+
+    outside, removed = ownership_failures(changed, load_ownership(), removes_lines)
     ok = not outside and not removed
-    return [(ok, f'ownership: {len(changed)} changed file(s), all allowed' if ok
+    return [(ok, f'ownership: {len(changed)} changed file(s) since {base[:7]}, all allowed' if ok
              else f'ownership: outside the allowlist {outside}; lines removed from append-only files {removed}; '
                   'expected none')]
 

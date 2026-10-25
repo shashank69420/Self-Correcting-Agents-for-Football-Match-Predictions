@@ -1,4 +1,4 @@
-"""Synthetic tests for tools/verify_claims.py. Run: python -X utf8 -m unittest tests.test_gate -v"""
+"""Synthetic tests for tools/verify_claims.py and the gate's ownership check. Run: python -X utf8 -m unittest tests.test_gate -v"""
 import json
 import os
 import sys
@@ -6,6 +6,7 @@ import tempfile
 import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'tools'))
+import gate  # noqa: E402
 import verify_claims  # noqa: E402
 
 FINDINGS_TEXT = '## 1. Data\nThe model scored 0.2057 on 3,545 rows (derived gap 0.0131).\n'
@@ -88,6 +89,18 @@ class VerifyClaimsTest(unittest.TestCase):
 
     def test_repository_claims_hold(self):
         self.assertEqual(verify_claims.verify(), [])
+
+
+class OwnershipTest(unittest.TestCase):
+    def test_changed_files_against_allowlist(self):
+        patterns = gate.load_ownership()
+        no_removals = lambda path: False  # noqa: E731
+        allowed = ['exp_model.py', 'results/experiments/E1.md', 'tools/gate.py', 'DECISIONS.md']
+        self.assertEqual(gate.ownership_failures(allowed, patterns, no_removals), ([], []))
+        outside, _ = gate.ownership_failures(allowed + ['main.py'], patterns, no_removals)
+        self.assertEqual(outside, ['main.py'])
+        _, removed = gate.ownership_failures(allowed, patterns, lambda path: path == 'DECISIONS.md')
+        self.assertEqual(removed, ['DECISIONS.md'])
 
 
 if __name__ == '__main__':
