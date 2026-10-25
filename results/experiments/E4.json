@@ -1,0 +1,89 @@
+{
+  "experiment": "E4",
+  "title": "League effects",
+  "verdict": "REJECTED",
+  "grid": [
+    {
+      "league_k": null
+    },
+    {
+      "league_k": 100
+    },
+    {
+      "league_k": 300
+    },
+    {
+      "league_k": 1000
+    }
+  ],
+  "chosen": {
+    "league_k": null
+  },
+  "incumbent_params": {
+    "process_noise": 0.005,
+    "initial_var": 0.3,
+    "drift_per_day": 0.0,
+    "drift_cap_days": 30.0,
+    "season_gap_days": 45.0,
+    "season_var": 0.0,
+    "cold_attack": 0.0,
+    "cold_defence": 0.3,
+    "clip_rates": true,
+    "rate_bounds": [
+      0.15,
+      6.0
+    ],
+    "league_k": null,
+    "rho": 0.0
+  },
+  "incumbent_dev_logloss": 0.9972885515501735,
+  "incumbent_val_logloss": 0.9824347745055446,
+  "chosen_dev_logloss": 0.9972885515501735,
+  "chosen_val_logloss": 0.9824347745055446,
+  "ci_rows": "DEV+VAL",
+  "n_dev": 8769,
+  "n_val": 4291,
+  "n_ci": 13060,
+  "mean_delta_logloss": 0.0,
+  "ci99": [
+    0.0,
+    0.0
+  ],
+  "p_one_sided": 1.0,
+  "checks": {
+    "(i) DEV log-loss improves": false,
+    "(ii) VAL log-loss improves": false,
+    "(iii) 99% CI upper bound < 0": false
+  },
+  "seconds": 12.2,
+  "candidates": [
+    {
+      "league_k": NaN,
+      "dev_logloss": 0.9972885515501735,
+      "val_logloss": 0.9824347745055446,
+      "dev_rps": 0.2043702974478748,
+      "val_rps": 0.1967672695772656
+    },
+    {
+      "league_k": 100.0,
+      "dev_logloss": 0.9979799931222568,
+      "val_logloss": 0.9818398289815261,
+      "dev_rps": 0.2045848929004039,
+      "val_rps": 0.196632815816213
+    },
+    {
+      "league_k": 300.0,
+      "dev_logloss": 0.9976717734023366,
+      "val_logloss": 0.9818622909277374,
+      "dev_rps": 0.20449040707275298,
+      "val_rps": 0.19663342662745895
+    },
+    {
+      "league_k": 1000.0,
+      "dev_logloss": 0.9973847298069736,
+      "val_logloss": 0.9819453247626329,
+      "dev_rps": 0.2044017334764919,
+      "val_rps": 0.19664594202059
+    }
+  ]
+}
