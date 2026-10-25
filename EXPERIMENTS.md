@@ -94,3 +94,43 @@ Chosen minus incumbent log-loss on DEV+VAL (n=13060): +0.000000; 99% paired week
 - (iii) 99% CI upper bound < 0: NO
 
 Verdict: **REJECTED**.
+
+## E3: Cold start and rate clip -- ACCEPTED
+
+Incumbent: `{"process_noise": 0.005, "initial_var": 0.3}` (empty = Stage 2 defaults). Grid run time 20.3 s. All numbers are selection-period, retrospective, not out-of-sample.
+
+| cold_attack | cold_defence | clip_rates | dev_logloss | val_logloss | dev_rps | val_rps |
+|---|---|---|---|---|---|---|
+| 0.000000 | 0.000000 | False | 0.997962 | 0.983396 | 0.204573 | 0.196935 |
+| 0.000000 | 0.000000 | True | 0.997959 | 0.982923 | 0.204572 | 0.196958 |
+| 0.000000 | 0.150000 | False | 0.997554 | 0.983218 | 0.204451 | 0.196823 |
+| 0.000000 | 0.150000 | True | 0.997551 | 0.982635 | 0.204450 | 0.196852 |
+| 0.000000 | 0.300000 | False | 0.997292 | 0.983123 | 0.204371 | 0.196733 |
+| 0.000000 | 0.300000 | True | 0.997289 | 0.982435 | 0.204370 | 0.196767 |
+| 0.150000 | 0.000000 | False | 0.997840 | 0.983188 | 0.204506 | 0.196853 |
+| 0.150000 | 0.000000 | True | 0.997837 | 0.982719 | 0.204506 | 0.196877 |
+| 0.150000 | 0.150000 | False | 0.997548 | 0.983084 | 0.204424 | 0.196764 |
+| 0.150000 | 0.150000 | True | 0.997545 | 0.982504 | 0.204423 | 0.196793 |
+| 0.150000 | 0.300000 | False | 0.997406 | 0.983067 | 0.204383 | 0.196696 |
+| 0.150000 | 0.300000 | True | 0.997403 | 0.982380 | 0.204383 | 0.196731 |
+| 0.300000 | 0.000000 | False | 0.997867 | 0.983080 | 0.204485 | 0.196800 |
+| 0.300000 | 0.000000 | True | 0.997864 | 0.982616 | 0.204484 | 0.196824 |
+| 0.300000 | 0.150000 | False | 0.997682 | 0.983048 | 0.204438 | 0.196732 |
+| 0.300000 | 0.150000 | True | 0.997680 | 0.982471 | 0.204437 | 0.196762 |
+| 0.300000 | 0.300000 | False | 0.997653 | 0.983103 | 0.204434 | 0.196685 |
+| 0.300000 | 0.300000 | True | 0.997651 | 0.982417 | 0.204433 | 0.196720 |
+
+Chosen (lowest DEV log-loss): `{"cold_attack": 0.0, "cold_defence": 0.3, "clip_rates": true}`
+
+| | DEV log-loss (n=8769) | VAL log-loss (n=4291) |
+|---|---|---|
+| incumbent | 0.997962 | 0.983396 |
+| chosen | 0.997289 | 0.982435 |
+
+Chosen minus incumbent log-loss on DEV+VAL (n=13060): -0.000768; 99% paired week-block CI [-0.001715, -0.000099] (2000 resamples, seed 20261025); one-sided bootstrap p = 0.0015.
+
+- (i) DEV log-loss improves: yes
+- (ii) VAL log-loss improves: yes
+- (iii) 99% CI upper bound < 0: yes
+
+Verdict: **ACCEPTED**.

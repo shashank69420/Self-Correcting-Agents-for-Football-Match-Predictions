@@ -1,0 +1,303 @@
+{
+  "experiment": "E3",
+  "title": "Cold start and rate clip",
+  "verdict": "ACCEPTED",
+  "grid": [
+    {
+      "cold_attack": 0.0,
+      "cold_defence": 0.0,
+      "clip_rates": false
+    },
+    {
+      "cold_attack": 0.0,
+      "cold_defence": 0.0,
+      "clip_rates": true
+    },
+    {
+      "cold_attack": 0.0,
+      "cold_defence": 0.15,
+      "clip_rates": false
+    },
+    {
+      "cold_attack": 0.0,
+      "cold_defence": 0.15,
+      "clip_rates": true
+    },
+    {
+      "cold_attack": 0.0,
+      "cold_defence": 0.3,
+      "clip_rates": false
+    },
+    {
+      "cold_attack": 0.0,
+      "cold_defence": 0.3,
+      "clip_rates": true
+    },
+    {
+      "cold_attack": 0.15,
+      "cold_defence": 0.0,
+      "clip_rates": false
+    },
+    {
+      "cold_attack": 0.15,
+      "cold_defence": 0.0,
+      "clip_rates": true
+    },
+    {
+      "cold_attack": 0.15,
+      "cold_defence": 0.15,
+      "clip_rates": false
+    },
+    {
+      "cold_attack": 0.15,
+      "cold_defence": 0.15,
+      "clip_rates": true
+    },
+    {
+      "cold_attack": 0.15,
+      "cold_defence": 0.3,
+      "clip_rates": false
+    },
+    {
+      "cold_attack": 0.15,
+      "cold_defence": 0.3,
+      "clip_rates": true
+    },
+    {
+      "cold_attack": 0.3,
+      "cold_defence": 0.0,
+      "clip_rates": false
+    },
+    {
+      "cold_attack": 0.3,
+      "cold_defence": 0.0,
+      "clip_rates": true
+    },
+    {
+      "cold_attack": 0.3,
+      "cold_defence": 0.15,
+      "clip_rates": false
+    },
+    {
+      "cold_attack": 0.3,
+      "cold_defence": 0.15,
+      "clip_rates": true
+    },
+    {
+      "cold_attack": 0.3,
+      "cold_defence": 0.3,
+      "clip_rates": false
+    },
+    {
+      "cold_attack": 0.3,
+      "cold_defence": 0.3,
+      "clip_rates": true
+    }
+  ],
+  "chosen": {
+    "cold_attack": 0.0,
+    "cold_defence": 0.3,
+    "clip_rates": true
+  },
+  "incumbent_params": {
+    "process_noise": 0.005,
+    "initial_var": 0.3,
+    "drift_per_day": 0.0,
+    "drift_cap_days": 30.0,
+    "season_gap_days": 45.0,
+    "season_var": 0.0,
+    "cold_attack": 0.0,
+    "cold_defence": 0.0,
+    "clip_rates": false,
+    "rate_bounds": [
+      0.15,
+      6.0
+    ],
+    "league_k": null,
+    "rho": 0.0
+  },
+  "incumbent_dev_logloss": 0.9979621541739149,
+  "incumbent_val_logloss": 0.9833962345389887,
+  "chosen_dev_logloss": 0.9972885515501735,
+  "chosen_val_logloss": 0.9824347745055446,
+  "ci_rows": "DEV+VAL",
+  "n_dev": 8769,
+  "n_val": 4291,
+  "n_ci": 13060,
+  "mean_delta_logloss": -0.000768181195336655,
+  "ci99": [
+    -0.0017152334550827857,
+    -9.924307769706525e-05
+  ],
+  "p_one_sided": 0.0014992503748125937,
+  "checks": {
+    "(i) DEV log-loss improves": true,
+    "(ii) VAL log-loss improves": true,
+    "(iii) 99% CI upper bound < 0": true
+  },
+  "seconds": 20.3,
+  "candidates": [
+    {
+      "cold_attack": 0.0,
+      "cold_defence": 0.0,
+      "clip_rates": false,
+      "dev_logloss": 0.9979621541739149,
+      "val_logloss": 0.9833962345389887,
+      "dev_rps": 0.20457304621523356,
+      "val_rps": 0.1969352749630897
+    },
+    {
+      "cold_attack": 0.0,
+      "cold_defence": 0.0,
+      "clip_rates": true,
+      "dev_logloss": 0.9979590447587671,
+      "val_logloss": 0.9829230356336808,
+      "dev_rps": 0.20457229797748236,
+      "val_rps": 0.19695842747817927
+    },
+    {
+      "cold_attack": 0.0,
+      "cold_defence": 0.15,
+      "clip_rates": false,
+      "dev_logloss": 0.997553989085307,
+      "val_logloss": 0.983217896237446,
+      "dev_rps": 0.20445102846199373,
+      "val_rps": 0.19682328513835434
+    },
+    {
+      "cold_attack": 0.0,
+      "cold_defence": 0.15,
+      "clip_rates": true,
+      "dev_logloss": 0.9975509439462161,
+      "val_logloss": 0.9826350418374308,
+      "dev_rps": 0.2044502989498457,
+      "val_rps": 0.19685243038419273
+    },
+    {
+      "cold_attack": 0.0,
+      "cold_defence": 0.3,
+      "clip_rates": false,
+      "dev_logloss": 0.9972915286914524,
+      "val_logloss": 0.9831227211403071,
+      "dev_rps": 0.20437100538165823,
+      "val_rps": 0.19673271202725612
+    },
+    {
+      "cold_attack": 0.0,
+      "cold_defence": 0.3,
+      "clip_rates": true,
+      "dev_logloss": 0.9972885515501735,
+      "val_logloss": 0.9824347745055446,
+      "dev_rps": 0.2043702974478748,
+      "val_rps": 0.1967672695772656
+    },
+    {
+      "cold_attack": 0.15,
+      "cold_defence": 0.0,
+      "clip_rates": false,
+      "dev_logloss": 0.9978404173078058,
+      "val_logloss": 0.9831875405796793,
+      "dev_rps": 0.20450649422865527,
+      "val_rps": 0.19685327433414684
+    },
+    {
+      "cold_attack": 0.15,
+      "cold_defence": 0.0,
+      "clip_rates": true,
+      "dev_logloss": 0.9978373838721944,
+      "val_logloss": 0.982719176572907,
+      "dev_rps": 0.20450577378118578,
+      "val_rps": 0.19687673876483008
+    },
+    {
+      "cold_attack": 0.15,
+      "cold_defence": 0.15,
+      "clip_rates": false,
+      "dev_logloss": 0.9975477601820097,
+      "val_logloss": 0.9830843430110365,
+      "dev_rps": 0.20442350679905835,
+      "val_rps": 0.19676374785417022
+    },
+    {
+      "cold_attack": 0.15,
+      "cold_defence": 0.15,
+      "clip_rates": true,
+      "dev_logloss": 0.9975447897220827,
+      "val_logloss": 0.9825044190439577,
+      "dev_rps": 0.20442280551977537,
+      "val_rps": 0.19679318270769197
+    },
+    {
+      "cold_attack": 0.15,
+      "cold_defence": 0.3,
+      "clip_rates": false,
+      "dev_logloss": 0.9974056877018638,
+      "val_logloss": 0.9830667216100898,
+      "dev_rps": 0.20438337402100956,
+      "val_rps": 0.19669585288580935
+    },
+    {
+      "cold_attack": 0.15,
+      "cold_defence": 0.3,
+      "clip_rates": true,
+      "dev_logloss": 0.9974027838894783,
+      "val_logloss": 0.9823795767805785,
+      "dev_rps": 0.20438269433848616,
+      "val_rps": 0.19673064040391833
+    },
+    {
+      "cold_attack": 0.3,
+      "cold_defence": 0.0,
+      "clip_rates": false,
+      "dev_logloss": 0.9978665975063716,
+      "val_logloss": 0.9830801346651606,
+      "dev_rps": 0.20448493024693298,
+      "val_rps": 0.19680048232026062
+    },
+    {
+      "cold_attack": 0.3,
+      "cold_defence": 0.0,
+      "clip_rates": true,
+      "dev_logloss": 0.9978636327068505,
+      "val_logloss": 0.982616397358693,
+      "dev_rps": 0.20448423546559272,
+      "val_rps": 0.19682417316789486
+    },
+    {
+      "cold_attack": 0.3,
+      "cold_defence": 0.15,
+      "clip_rates": false,
+      "dev_logloss": 0.997682435735009,
+      "val_logloss": 0.9830477540671011,
+      "dev_rps": 0.20443780603379025,
+      "val_rps": 0.19673189676982197
+    },
+    {
+      "cold_attack": 0.3,
+      "cold_defence": 0.15,
+      "clip_rates": true,
+      "dev_logloss": 0.997679532699956,
+      "val_logloss": 0.9824706423152461,
+      "dev_rps": 0.2044371303443811,
+      "val_rps": 0.19676153097439583
+    },
+    {
+      "cold_attack": 0.3,
+      "cold_defence": 0.3,
+      "clip_rates": false,
+      "dev_logloss": 0.9976534023607424,
+      "val_logloss": 0.9831031885721281,
+      "dev_rps": 0.20443373099453155,
+      "val_rps": 0.19668491743571095
+    },
+    {
+      "cold_attack": 0.3,
+      "cold_defence": 0.3,
+      "clip_rates": true,
+      "dev_logloss": 0.9976505647233688,
+      "val_logloss": 0.9824168239044244,
+      "dev_rps": 0.2044330763924073,
+      "val_rps": 0.1967198421934564
+    }
+  ]
+}
