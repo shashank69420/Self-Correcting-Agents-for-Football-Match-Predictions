@@ -210,3 +210,20 @@ Chosen minus incumbent log-loss on VAL (n=4291): -0.002784; 99% paired week-bloc
 - (iii) 99% CI upper bound < 0: NO
 
 Verdict: **REJECTED**.
+
+## Frozen candidate P1
+Accepted: E1, E3, E5. P1 = process_noise 0.005, initial_var 0.3, cold_defence 0.3, clip_rates on, rho -0.04
+(`results/experiments/candidate_p1.json`; no calibration, E6 rejected). Holm-adjusted one-sided p:
+E1 0.0030, E3 0.0060, E5 0.0030, E6 0.0750, E2/E4 1.0.
+
+| split | model | RPS | Brier | LogLoss | Accuracy |
+|---|---|---|---|---|---|
+| DEV (8769) | Stage 2 baseline | 0.20813 | 0.20074 | 1.01150 | 0.51614 |
+| DEV (8769) | P1 | 0.20433 | 0.19785 | 0.99709 | 0.52264 |
+| VAL (4291) | Stage 2 baseline | 0.20083 | 0.19783 | 1.00384 | 0.51783 |
+| VAL (4291) | P1 | 0.19665 | 0.19458 | 0.98117 | 0.52598 |
+
+Selection-period, retrospective numbers (VAL took part in selection). P1 closes 29.3% (DEV) and 27.7% (VAL)
+of the baseline-to-closing-market RPS gap. Full harness: `results/experiments/harness_report.md`.
+Odds audit: `results/experiments/odds_audit.md` (collection timing of non-closing odds NOT established:
+football-data notes.txt was blocked from this machine). P1 has not been evaluated on TEST.

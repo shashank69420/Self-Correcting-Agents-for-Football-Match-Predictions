@@ -1,0 +1,17 @@
+{
+  "candidate": "P1",
+  "accepted_experiments": [
+    "E1",
+    "E3",
+    "E5"
+  ],
+  "params": {
+    "process_noise": 0.005,
+    "initial_var": 0.3,
+    "cold_defence": 0.3,
+    "clip_rates": true,
+    "rho": -0.04
+  },
+  "calibration": null,
+  "note": "Overrides of exp_model.DEFAULT_PARAMS; home_adv stays compute_home_adv(train_df, test_df)."
+}
