@@ -13,7 +13,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
 import verify_claims  # noqa: E402
 
-EXPECTED_BRANCH = 'experiments'
+EXPECTED_BRANCH = 'main'
 ANCHORS = dict(stage1_rps='0.2057', stage2_rps='0.2060', all_3829_rps='0.2059', change_scale='0')
 FORBIDDEN_PREFIXES = ('data/', 'outputs/', 'venv/')
 FORBIDDEN_SUFFIXES = ('.csv', '.pkl')
