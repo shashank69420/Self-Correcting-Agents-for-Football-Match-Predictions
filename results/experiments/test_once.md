@@ -76,3 +76,28 @@ Gap closed by P1 = (baseline - P1) / (baseline - market):
 - The baseline's 3545 common-row RPS (0.206020) matches the main.py anchor (0.2060). No error occurred and nothing was re-run.
 - P1's parameters were selected on DEV/VAL only; this is the first scoring of P1 on TEST_INDEX. The Stage 2 baseline on this window was already reported by main.py.
 - The script (`test_once.py`, `primary` then `secondary`) lives in the session scratchpad, not the repo (outside the ownership list). `exp_harness.scored/summary` refuse TEST rows by design, so it used `row_scores`, `market_probs`, `week_block_ci` and `metrics.probability_metrics` directly.
+
+## DESCRIPTIVE SPLIT, post-scoring, not a test
+
+TEST, one-shot, retrospective. A split of the already-scored rows above; no new comparison, no CI, no decision. Outside = baseline lambda_home or mu_away outside [0.15, 6.0] (same rows for both models); other = the rest.
+
+### All 3829 TEST rows
+
+| group | n | baseline log-loss | P1 log-loss | summed gain (baseline - P1) |
+|---|---|---|---|---|
+| outside | 1 | 0.027037 | 0.035196 | -0.008159 |
+| other | 3828 | 1.008578 | 0.995744 | 49.128279 |
+| total | 3829 | 1.008321 | 0.995493 | 49.120120 |
+
+Share of the total log-loss gain from outside rows: -0.02% (1 of 3829 rows).
+
+### 3545 common rows
+
+| group | n | baseline log-loss | P1 log-loss | summed gain (baseline - P1) |
+|---|---|---|---|---|
+| outside | 1 | 0.027037 | 0.035196 | -0.008159 |
+| other | 3544 | 1.005975 | 0.993905 | 42.777146 |
+| total | 3545 | 1.005699 | 0.993635 | 42.768987 |
+
+Share of the total log-loss gain from outside rows: -0.02% (1 of 3545 rows).
+
