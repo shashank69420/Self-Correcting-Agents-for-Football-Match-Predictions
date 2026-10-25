@@ -1,0 +1,711 @@
+============================================================
+PROJECT B12: EXTRACTING 2019-2026 DATASET METRICS
+============================================================
+
+[1/4] Scraping/Ingesting match data across 7 seasons...
+  ✓ Ingested all league-seasons from local cache data\fixtures_raw.pkl (pass --refresh to re-download)
+
+[2/4] Sanitizing and chronologically sorting dataset...
+
+============================================================
+EMPIRICAL DATASET SUMMARY (FOR SLIDES)
+============================================================
+Total Valid Matches: 19145
+Missing Values: 0
+Average Home Goals: 1.548
+Average Away Goals: 1.264
+Home Win Rate: 43.42% (8312 matches)
+Draw Rate:     25.13% (4811 matches)
+Away Win Rate: 31.45% (6022 matches)
+
+[3/4] Performing 80/20 Chronological Split...
+Training Set Cutoff: First 15316 matches (80%)
+Testing Set Size:    Final 3829 matches (20%)
+Training Date Range: 2019-08-02 to 2025-02-01
+Testing Date Range:  2025-02-01 to 2026-05-24
+
+[4/4] Fitting Dixon-Coles model with Time Decay (xi = 0.0065)...
+  ✓ Model fitting successful.
+
+============================================================
+OUT-OF-SAMPLE EVALUATION BENCHMARK
+============================================================
+Evaluated Test Matches: 3545
+Skipped (Promoted Teams): 284
+Calculated 2019-2026 Test RPS: 0.2057
+============================================================
+
+============================================================
+STAGE 2: SEQUENTIAL DYNAMIC BAYESIAN FILTER
+============================================================
+Fixed training-only home_adv: 0.20356233139056304
+Constant process noise per team appearance: 0.01
+
+============================================================
+IDENTICAL-MATCH COMPARISON (3545 matches)
+============================================================
+                 RPS     Brier   LogLoss
+Stage 1:      0.2057    0.1994    1.0023
+Stage 2:      0.2060    0.1998    1.0057
+Stage 2 RPS on ALL 3829 held-out matches: 0.2059
+Stage 1 skipped 284 of those matches.
+Stage 2 forecasts each match before updating, including during the test period.
+
+FINAL TEAM STATES (higher defence_mean means more concessions)
+Man City: attack_mean=np.float64(0.5073237500614157), defence_mean=np.float64(-0.4040416924863646), attack_var=np.float64(0.06351325542231448), defence_var=np.float64(0.09958267586181)
+Real Madrid: attack_mean=np.float64(0.4574848355363589), defence_mean=np.float64(-0.25506820662783813), attack_var=np.float64(0.0676742641755022), defence_var=np.float64(0.09650309401844567)
+Bayern Munich: attack_mean=np.float64(0.9332361427229969), defence_mean=np.float64(-0.006076922485448045), attack_var=np.float64(0.04444641288820529), defence_var=np.float64(0.08783149496428651)
+Paris SG: attack_mean=np.float64(0.6027649721928354), defence_mean=np.float64(-0.4997781609739985), attack_var=np.float64(0.06306808635931352), defence_var=np.float64(0.0985461888357867)
+Juventus: attack_mean=np.float64(0.25723667321876587), defence_mean=np.float64(-0.25271271138253915), attack_var=np.float64(0.07053552974727782), defence_var=np.float64(0.10830205580736432)
+============================================================
+STAGE 3 (RESEARCH MILESTONE): PERSISTENT CHANGE DETECTOR — CONSERVATIVE DESIGN, VALIDATED NULL RESULT
+
+======================================================================
+STAGE 3: PERSISTENT CHANGE DETECTOR; SINGLE POISSON UPDATE
+======================================================================
+  Change-detector validation fold 1/3 complete (2298 matches).
+  Change-detector validation fold 2/3 complete (2297 matches).
+  Change-detector validation fold 3/3 complete (2298 matches).
+    scale       RPS     Brier   LogLoss  Accuracy  eligible
+0.0000000 0.2023143 0.1969495 0.9979680 0.5238648      True
+0.2500000 0.2023124 0.1969482 0.9979532 0.5237197     False
+0.5000000 0.2023116 0.1969476 0.9979441 0.5235746     False
+1.0000000 0.2023121 0.1969482 0.9979366 0.5235746     False
+2.0000000 0.2023191 0.1969535 0.9979467 0.5232845     False
+Selected CHANGE_SCALE: 0
+Validation selected ordinary process noise; detector scores are still recorded.
+This conservative design is retained as a robustness milestone, not the active mechanism.
+Each match uses exactly one ordinary, unscaled observation update.
+Evaluation is retrospective: this test period has been examined previously.
+
+IDENTICAL-MATCH COMPARISON (3545 matches)
+  Model       RPS     Brier   LogLoss  Accuracy
+Stage 1 0.2057245 0.1994488 1.0022933 0.5097320
+Stage 2 0.2060203 0.1998337 1.0056991 0.5187588
+Stage 3 0.2060203 0.1998337 1.0056991 0.5187588
+Test matches with extra variance: 0/3829
+Raw surprise mean/max: 1.0667/5.0000
+Max extra variance per component: 0.000000
+
+FOUR-WAY ABLATION
+                       Model                                   Status       RPS     Brier   LogLoss  Accuracy
+            Stage 2 baseline                                evaluated 0.2060203 0.1998337 1.0056991 0.5187588
+  Baseline + change detector                                evaluated 0.2060203 0.1998337 1.0056991 0.5187588
+           Baseline + lineup NOT EVALUATED: no historical lineup data       NaN       NaN       NaN       NaN
+Baseline + lineup + detector NOT EVALUATED: no historical lineup data       NaN       NaN       NaN       NaN
+
+OUTCOME CLASSIFICATION AND CALIBRATION (Home / Draw / Away)
+Stage 1: draw probability=0.2442; actual draw rate=0.2505; draw Brier=0.1869; draw binary log-loss=0.5607
+  Class calibration ECE: {'Away': 0.02905170969383757, 'Draw': 0.01584174352172315, 'Home': 0.030943494437736096}
+  Recall H/D/A: [0.7464146  0.01013514 0.58147818] 
+  Confusion matrix (actual rows):
+ [[1145   27  362]
+ [ 531    9  348]
+ [ 449   21  653]]
+Stage 2: draw probability=0.2276; actual draw rate=0.2505; draw Brier=0.1875; draw binary log-loss=0.5627
+  Class calibration ECE: {'Away': 0.03184401470799813, 'Draw': 0.032584009200767095, 'Home': 0.03637429472707473}
+  Recall H/D/A: [0.76205997 0.01126126 0.58771149] 
+  Confusion matrix (actual rows):
+ [[1169   10  355]
+ [ 516   10  362]
+ [ 454    9  660]]
+Stage 3: draw probability=0.2276; actual draw rate=0.2505; draw Brier=0.1875; draw binary log-loss=0.5627
+  Class calibration ECE: {'Away': 0.03184401470799813, 'Draw': 0.032584009200767095, 'Home': 0.03637429472707473}
+  Recall H/D/A: [0.76205997 0.01126126 0.58771149] 
+  Confusion matrix (actual rows):
+ [[1169   10  355]
+ [ 516   10  362]
+ [ 454    9  660]]
+
+Stage 3 reliability bins:
+outcome  bin    n  forecast  observed
+   Home    0  100    0.0681    0.1300
+   Home    1  381    0.1525    0.1890
+   Home    2  521    0.2531    0.2553
+   Home    3  601    0.3496    0.3927
+   Home    4  581    0.4459    0.4492
+   Home    5  502    0.5477    0.5120
+   Home    6  392    0.6455    0.5816
+   Home    7  273    0.7441    0.6703
+   Home    8  149    0.8447    0.7651
+   Home    9   45    0.9311    0.8222
+   Draw    0  130    0.0703    0.1231
+   Draw    1  849    0.1639    0.2049
+   Draw    2 2219    0.2461    0.2713
+   Draw    3  346    0.3243    0.2746
+   Draw    4    1    0.4018    1.0000
+   Away    0  356    0.0622    0.0843
+   Away    1  695    0.1517    0.1842
+   Away    2  676    0.2502    0.2515
+   Away    3  641    0.3474    0.3167
+   Away    4  482    0.4480    0.4253
+   Away    5  317    0.5469    0.4385
+   Away    6  218    0.6460    0.6147
+   Away    7  113    0.7412    0.7080
+   Away    8   39    0.8385    0.6923
+   Away    9    8    0.9144    0.8750
+
+CLOSING-MARKET BENCHMARK: 3545 identical rows; later-information comparison
+                              Model       RPS     Brier   LogLoss  Accuracy
+Market closing average (normalized) 0.1926041 0.1898924 0.9598217 0.5478138
+   Stage 2 on identical market rows 0.2060203 0.1998337 1.0056991 0.5187588
+   Stage 3 on identical market rows 0.2060203 0.1998337 1.0056991 0.5187588
+
+Stage 3 minus Stage 2 RPS:  0.0
+95% paired week-block bootstrap interval:  [0. 0.]
+
+Top 10% most surprising matches (N=383); retrospective subgroup, not causal evidence:
+  Stage 2 RPS: 0.4530956
+  Stage 3 RPS: 0.4530956
+
+ACTUAL SUBSEQUENT MATCHES AFTER UPSETS (deduplicated):
+ next_team_appearances    n  Stage2_RPS  Stage3_RPS
+                     1  358   0.2041380   0.2041380
+                     5 1482   0.2027709   0.2027709
+                    10 2351   0.2053908   0.2053908
+======================================================================
+Reading https://pub-e682421888d945d684bcae8890b0ec20.r2.dev/data/player_valuations.csv.gz
+Reading https://pub-e682421888d945d684bcae8890b0ec20.r2.dev/data/players.csv.gz
+Reading https://pub-e682421888d945d684bcae8890b0ec20.r2.dev/data/clubs.csv.gz
+Reading https://pub-e682421888d945d684bcae8890b0ec20.r2.dev/data/competitions.csv.gz
+Reading https://pub-e682421888d945d684bcae8890b0ec20.r2.dev/data/games.csv.gz
+Reading https://pub-e682421888d945d684bcae8890b0ec20.r2.dev/data/game_lineups.csv.gz
+
+DATA SOURCE: CSV
+
+player_valuations: 656,301 rows
+Columns: ['player_id', 'date', 'market_value_in_eur', 'current_club_name', 'current_club_id', 'player_club_domestic_competition_id']
+Dtypes:
+player_id                              int64
+date                                     str
+market_value_in_eur                    int64
+current_club_name                        str
+current_club_id                        int64
+player_club_domestic_competition_id      str
+
+players: 50,149 rows
+Columns: ['player_id', 'first_name', 'last_name', 'name', 'last_season', 'current_club_id', 'player_code', 'country_of_birth', 'city_of_birth', 'country_of_citizenship', 'date_of_birth', 'sub_position', 'position', 'foot', 'height_in_cm', 'contract_expiration_date', 'agent_name', 'image_url', 'international_caps', 'international_goals', 'current_national_team_id', 'url', 'current_club_domestic_competition_id', 'current_club_name', 'market_value_in_eur', 'highest_market_value_in_eur']
+Dtypes:
+player_id                                 int64
+first_name                                  str
+last_name                                   str
+name                                        str
+last_season                               int64
+current_club_id                           int64
+player_code                                 str
+country_of_birth                            str
+city_of_birth                               str
+country_of_citizenship                      str
+date_of_birth                               str
+sub_position                                str
+position                                    str
+foot                                        str
+height_in_cm                            float64
+contract_expiration_date                    str
+agent_name                                  str
+image_url                                   str
+international_caps                      float64
+international_goals                     float64
+current_national_team_id                float64
+url                                         str
+current_club_domestic_competition_id        str
+current_club_name                           str
+market_value_in_eur                     float64
+highest_market_value_in_eur             float64
+
+clubs: 796 rows
+Columns: ['club_id', 'club_code', 'name', 'domestic_competition_id', 'total_market_value', 'squad_size', 'average_age', 'foreigners_number', 'foreigners_percentage', 'national_team_players', 'stadium_name', 'stadium_seats', 'net_transfer_record', 'coach_name', 'last_season', 'filename', 'url']
+Dtypes:
+club_id                      int64
+club_code                      str
+name                           str
+domestic_competition_id        str
+total_market_value         float64
+squad_size                   int64
+average_age                float64
+foreigners_number            int64
+foreigners_percentage      float64
+national_team_players        int64
+stadium_name                   str
+stadium_seats                int64
+net_transfer_record            str
+coach_name                     str
+last_season                  int64
+filename                       str
+url                            str
+
+competitions: 65 rows
+Columns: ['competition_id', 'competition_code', 'name', 'sub_type', 'type', 'country_id', 'country_name', 'domestic_league_code', 'confederation', 'total_clubs', 'url']
+Dtypes:
+competition_id              str
+competition_code            str
+name                        str
+sub_type                    str
+type                        str
+country_id                int64
+country_name                str
+domestic_league_code        str
+confederation               str
+total_clubs             float64
+url                         str
+
+games: 88,958 rows
+Columns: ['game_id', 'competition_id', 'season', 'round', 'date', 'home_club_id', 'away_club_id', 'home_club_goals', 'away_club_goals', 'home_club_position', 'away_club_position', 'home_club_manager_name', 'away_club_manager_name', 'stadium', 'attendance', 'referee', 'url', 'home_club_formation', 'away_club_formation', 'home_club_name', 'away_club_name', 'aggregate', 'competition_type']
+Dtypes:
+game_id                     int64
+competition_id                str
+season                      int64
+round                         str
+date                          str
+home_club_id                int64
+away_club_id                int64
+home_club_goals             int64
+away_club_goals             int64
+home_club_position        float64
+away_club_position        float64
+home_club_manager_name        str
+away_club_manager_name        str
+stadium                       str
+attendance                float64
+referee                       str
+url                           str
+home_club_formation           str
+away_club_formation           str
+home_club_name                str
+away_club_name                str
+aggregate                     str
+competition_type              str
+
+game_lineups: 3,179,016 rows
+Columns: ['game_lineups_id', 'date', 'game_id', 'player_id', 'club_id', 'player_name', 'type', 'position', 'number', 'team_captain']
+Dtypes:
+game_lineups_id      str
+date                 str
+game_id            int64
+player_id          int64
+club_id            int64
+player_name          str
+type                 str
+position             str
+number               str
+team_captain       int64
+
+players.position value_counts(dropna=False):
+position
+Defender      15961
+Midfield      14272
+Attack        13502
+Goalkeeper     5828
+Missing         586
+
+game_lineups.type value_counts(dropna=False):
+type
+starting_lineup    1780759
+substitutes        1398257
+
+game_lineups.position value_counts(dropna=False):
+position
+Centre-Back           551970
+Centre-Forward        394661
+Goalkeeper            357844
+Central Midfield      329361
+Defensive Midfield    279364
+Right-Back            230225
+Left-Back             219387
+Left Winger           205392
+Attacking Midfield    203736
+Right Winger          203171
+Right Midfield         79966
+Left Midfield          78194
+Second Striker         31981
+Attack                  3648
+midfield                3631
+Defender                3288
+Midfield                2755
+Sweeper                  439
+NaN                        3
+
+All competition_id values:
+['A1', 'AFAC', 'AFCN', 'ARG1', 'AUS1', 'BE1', 'BESC', 'BPO4', 'BRA1', 'C1', 'CDR', 'CIT', 'CL', 'CLQ', 'COPA', 'DFB', 'DFL', 'DK1', 'DKP', 'ECLQ', 'EJPL', 'EL', 'ELQ', 'ES1', 'EURO', 'FAC', 'FIWC', 'FR1', 'FRCH', 'GB1', 'GBCS', 'GR1', 'GRP', 'IT1', 'JAP1', 'KR1', 'L1', 'MEX1', 'MLS1', 'NL1', 'NLP', 'NLSC', 'NO1', 'PL1', 'PO1', 'POBE', 'POSU', 'RO1', 'RSK1', 'RU1', 'RUP', 'RUSS', 'SA1', 'SC1', 'SCI', 'SE1', 'SER1', 'SFA', 'SUC', 'TR1', 'TS1', 'UCOL', 'UKR1', 'UKRP', 'USC']
+
+Candidate league-ID verification against competitions:
+penaltyblog_league candidate_id Transfermarkt_name Transfermarkt_country  verified
+ENG Premier League          GB1   [premier-league]             [England]      True
+       ESP La Liga          ES1           [laliga]               [Spain]      True
+  DEU Bundesliga 1           L1       [bundesliga]             [Germany]      True
+       ITA Serie A          IT1          [serie-a]               [Italy]      True
+       FRA Ligue 1          FR1          [ligue-1]              [France]      True
+    NLD Eredivisie          NL1       [eredivisie]         [Netherlands]      True
+        PRT Liga 1          PO1    [liga-portugal]            [Portugal]      True
+     TUR Super Lig          TR1        [super-lig]             [Türkiye]      True
+
+Model-equivalent cleaned fixture count: 19,145
+
+Transfermarkt game counts for verified league IDs:
+competition_id
+GB1    5320
+ES1    5320
+L1     4284
+IT1    5320
+FR1    4997
+NL1    4210
+PO1    4152
+TR1    4618
+Verified club identity: Fenerbahce -> 36; candidate votes: {36: 255, 6646: 1}
+Verified club identity: Gaziantep -> 2832; candidate votes: {2832: 254, 10484: 1}
+
+Candidate ties resolved by club names: 6660
+Equal-score ties left unresolved: 1
+
+FULL penaltyblog team -> Transfermarkt club_id mapping for review:
+  penaltyblog_team  club_id        Transfermarkt_club_name candidate_club_ids_and_hits status                      resolution
+               AVS   110302                    Avs Futebol                {110302: 68} unique                single_candidate
+        AZ Alkmaar     1090                     AZ Alkmaar                 {1090: 229} unique                single_candidate
+     Ad. Demirspor     3840                Adana Demirspor                 {3840: 148} unique                single_candidate
+           Ajaccio     1147                     AC Ajaccio                  {1147: 38} unique                single_candidate
+              Ajax      610                 Ajax Amsterdam                  {610: 229} unique                single_candidate
+        Alanyaspor    11282                     Alanyaspor                {11282: 256} unique                single_candidate
+            Alaves     1108               Deportivo Alavés                 {1108: 228} unique                single_candidate
+       Almere City      723                 Almere City FC                   {723: 68} unique                single_candidate
+           Almeria     3302                     UD Almería                  {3302: 76} unique                single_candidate
+             Altay     2375                       Altay SK                  {2375: 38} unique                single_candidate
+           Alverca     2521                     FC Alverca                  {2521: 34} unique                single_candidate
+            Amiens     1416                      Amiens SC                  {1416: 28} unique                single_candidate
+            Angers     1420                     Angers SCO                 {1420: 210} unique                single_candidate
+        Ankaragucu      868                 MKE Ankaragücü                  {868: 148} unique                single_candidate
+       Antalyaspor      589                    Antalyaspor                  {589: 256} unique                single_candidate
+            Arouca     8024                      FC Arouca                 {8024: 170} unique                single_candidate
+           Arsenal       11                     Arsenal FC                   {11: 266} unique                single_candidate
+       Aston Villa      405                    Aston Villa                  {405: 266} unique                single_candidate
+          Atalanta      800                    Atalanta BC                  {800: 266} unique                single_candidate
+        Ath Bilbao      621                Athletic Bilbao                  {621: 266} unique                single_candidate
+        Ath Madrid       13             Atlético de Madrid                   {13: 266} unique                single_candidate
+          Augsburg      167                    FC Augsburg                  {167: 238} unique                single_candidate
+           Auxerre      290                     AJ Auxerre                  {290: 106} unique                single_candidate
+              Aves     3336       Desportivo Aves (- 2020)                  {3336: 34} unique                single_candidate
+         Barcelona      131                   FC Barcelona                  {131: 266} unique                single_candidate
+     Bayern Munich       27                  Bayern Munich                   {27: 238} unique                single_candidate
+        Belenenses     2457                          B SAD                 {2457: 102} unique                single_candidate
+         Benevento     4171               Benevento Calcio                  {4171: 38} unique                single_candidate
+           Benfica      294                     SL Benfica                  {294: 238} unique                single_candidate
+          Besiktas      114      Beşiktaş Jimnastik Kulübü                  {114: 256} unique                single_candidate
+             Betis      150            Real Betis Balompié                  {150: 266} unique                single_candidate
+         Bielefeld       10              Arminia Bielefeld                    {10: 68} unique                single_candidate
+          Boavista     2503                    Boavista FC                 {2503: 204} unique                single_candidate
+            Bochum       80                     VfL Bochum                   {80: 136} unique                single_candidate
+        Bodrumspor    44006                      Bodrum FK                 {44006: 36} unique                single_candidate
+           Bologna     1025     Bologna Football Club 1909                 {1025: 266} unique                single_candidate
+          Bordeaux       40          FC Girondins Bordeaux                   {40: 104} unique                single_candidate
+       Bournemouth      989                AFC Bournemouth                  {989: 190} unique                single_candidate
+         Brentford     1148                   Brentford FC                 {1148: 190} unique                single_candidate
+           Brescia       19                 Brescia Calcio                    {19: 38} unique                single_candidate
+             Brest     3911              Stade Brestois 29                 {3911: 244} unique                single_candidate
+          Brighton     1237         Brighton & Hove Albion                 {1237: 266} unique                single_candidate
+           Burnley     1132                     Burnley FC                 {1132: 190} unique                single_candidate
+        Buyuksehyr     6890                  Basaksehir FK                 {6890: 256} unique                single_candidate
+             Cadiz     2687                       Cádiz CF                 {2687: 152} unique                single_candidate
+          Cagliari     1390                Cagliari Calcio                 {1390: 228} unique                single_candidate
+           Cambuur      133          SC Cambuur Leeuwarden                   {133: 68} unique                single_candidate
+          Casa Pia     3268                    Casa Pia AC                 {3268: 136} unique                single_candidate
+             Celta      940                  Celta de Vigo                  {940: 266} unique                single_candidate
+            Chaves     3325                      GD Chaves                  {3325: 68} unique                single_candidate
+           Chelsea      631                     Chelsea FC                  {631: 266} unique                single_candidate
+          Clermont     3524               Clermont Foot 63                 {3524: 110} unique                single_candidate
+              Como     1047                      Como 1907                  {1047: 76} unique                single_candidate
+         Cremonese     2239                   US Cremonese                  {2239: 76} unique                single_candidate
+           Crotone     4083                     FC Crotone                  {4083: 38} unique                single_candidate
+    Crystal Palace      873                 Crystal Palace                  {873: 266} unique                single_candidate
+         Darmstadt      105                SV Darmstadt 98                   {105: 34} unique                single_candidate
+          Den Haag     1268                   ADO Den Haag                  {1268: 60} unique                single_candidate
+       Denizlispor      833                    Denizlispor                   {833: 74} unique                single_candidate
+             Dijon     2969                      Dijon FCO                  {2969: 66} unique                single_candidate
+          Dortmund       16              Borussia Dortmund                   {16: 238} unique                single_candidate
+             Eibar     1533                       SD Eibar                  {1533: 76} unique                single_candidate
+     Ein Frankfurt       24            Eintracht Frankfurt                   {24: 238} unique                single_candidate
+             Elche     1531                       Elche CF                 {1531: 152} unique                single_candidate
+            Empoli      749                      FC Empoli                  {749: 152} unique                single_candidate
+        Erzurum BB    39722                 Erzurumspor FK                 {39722: 40} unique                single_candidate
+           Espanol      714         RCD Espanyol Barcelona                  {714: 190} unique                single_candidate
+           Estoril     1465               GD Estoril Praia                 {1465: 170} unique                single_candidate
+           Estrela     2431             CF Estrela Amadora                 {2431: 102} unique                single_candidate
+           Everton       29                     Everton FC                   {29: 266} unique                single_candidate
+         Excelsior      798            Excelsior Rotterdam                  {798: 102} unique                single_candidate
+          Eyupspor     7160                       Eyüpspor                  {7160: 70} unique                single_candidate
+          FC Emmen     1283                       FC Emmen                  {1283: 94} unique                single_candidate
+           FC Koln        3                      1.FC Köln                    {3: 204} unique                single_candidate
+         Famalicao     3329                   FC Famalicão                 {3329: 238} unique                single_candidate
+           Farense     4294                     SC Farense                 {4294: 102} unique                single_candidate
+        Fenerbahce       36                     Fenerbahce          {36: 255, 6646: 1} unique independently_verified_conflict
+         Feyenoord      234            Feyenoord Rotterdam                  {234: 229} unique                single_candidate
+        Fiorentina      430                 ACF Fiorentina                  {430: 266} unique                single_candidate
+       For Sittard      385   Fortuna Sittardia Combinatie                  {385: 230} unique                single_candidate
+Fortuna Dusseldorf       38             Fortuna Düsseldorf                    {38: 34} unique                single_candidate
+          Freiburg       60                    SC Freiburg                   {60: 238} unique                single_candidate
+         Frosinone     8970               Frosinone Calcio                  {8970: 38} unique                single_candidate
+            Fulham      931                      Fulham FC                  {931: 190} unique                single_candidate
+       Galatasaray      141                    Galatasaray                  {141: 255} unique                single_candidate
+         Gaziantep     2832                   Gaziantep FK       {2832: 254, 10484: 1} unique independently_verified_conflict
+    Genclerbirligi      820     Gençlerbirliği Spor Kulübü                  {820: 108} unique                single_candidate
+             Genoa      252                      Genoa CFC                  {252: 228} unique                single_candidate
+            Getafe     3709                      Getafe CF                 {3709: 266} unique                single_candidate
+       Gil Vicente     2424                 Gil Vicente FC                 {2424: 238} unique                single_candidate
+       Giresunspor    11688                    Giresunspor                 {11688: 74} unique                single_candidate
+            Girona    12321                      Girona FC                {12321: 152} unique                single_candidate
+   Go Ahead Eagles     1435                Go Ahead Eagles                 {1435: 170} unique                single_candidate
+            Goztep     1467                        Göztepe                 {1467: 182} unique                single_candidate
+           Granada    16795                     Granada CF                {16795: 152} unique                single_candidate
+    Greuther Furth       65           SpVgg Greuther Fürth                    {65: 34} unique                single_candidate
+         Groningen      202                   FC Groningen                  {202: 195} unique                single_candidate
+         Guimaraes     2420           Vitória Guimarães SC                 {2420: 238} unique                single_candidate
+           Hamburg       41                   Hamburger SV                    {41: 34} unique                single_candidate
+         Hatayspor     7775                      Hatayspor                 {7775: 187} unique                single_candidate
+        Heerenveen      306                  SC Heerenveen                  {306: 230} unique                single_candidate
+        Heidenheim     2036 1. Fußballclub Heidenheim 1846                 {2036: 102} unique                single_candidate
+          Heracles     1304                Heracles Almelo                 {1304: 196} unique                single_candidate
+            Hertha       44                     Hertha BSC                   {44: 136} unique                single_candidate
+        Hoffenheim      533            TSG 1899 Hoffenheim                  {533: 238} unique                single_candidate
+     Holstein Kiel      269                  Holstein Kiel                   {269: 34} unique                single_candidate
+            Huesca     5358                      SD Huesca                  {5358: 38} unique                single_candidate
+             Inter       46                    Inter Milan                   {46: 266} unique                single_candidate
+           Ipswich      677                   Ipswich Town                   {677: 38} unique                single_candidate
+      Istanbulspor      924                   Istanbulspor                   {924: 74} unique                single_candidate
+          Juventus      506                    Juventus FC                  {506: 266} unique                single_candidate
+        Karagumruk     6646               Fatih Karagümrük                 {6646: 186} unique                single_candidate
+         Kasimpasa    10484                      Kasimpasa                {10484: 256} unique                single_candidate
+       Kayserispor     3205                    Kayserispor                 {3205: 256} unique                single_candidate
+       Kocaelispor      120                    Kocaelispor                   {120: 34} unique                single_candidate
+         Konyaspor     2293                      Konyaspor                 {2293: 256} unique                single_candidate
+        Las Palmas      472                  UD Las Palmas                   {472: 76} unique                single_candidate
+             Lazio      398  Società Sportiva Lazio S.p.A.                  {398: 266} unique                single_candidate
+          Le Havre      738                    Le Havre AC                  {738: 102} unique                single_candidate
+             Lecce     1005                       US Lecce                 {1005: 190} unique                single_candidate
+             Leeds      399                   Leeds United                  {399: 152} unique                single_candidate
+           Leganes     1244                     CD Leganés                  {1244: 76} unique                single_candidate
+         Leicester     1003                 Leicester City                 {1003: 190} unique                single_candidate
+              Lens      826                        RC Lens                  {826: 216} unique                single_candidate
+           Levante     3368                     Levante UD                 {3368: 152} unique                single_candidate
+        Leverkusen       15            Bayer 04 Leverkusen                   {15: 238} unique                single_candidate
+             Lille     1082                     LOSC Lille                 {1082: 244} unique                single_candidate
+         Liverpool       31                   Liverpool FC                   {31: 266} unique                single_candidate
+           Lorient     1158                     FC Lorient                 {1158: 182} unique                single_candidate
+             Luton     1031                     Luton Town                  {1031: 38} unique                single_candidate
+              Lyon     1041                 Olympique Lyon                 {1041: 244} unique                single_candidate
+        M'gladbach       18       Borussia Mönchengladbach                   {18: 238} unique                single_candidate
+             Mainz       39                 1.FSV Mainz 05                   {39: 238} unique                single_candidate
+          Mallorca      237                   RCD Mallorca                  {237: 228} unique                single_candidate
+          Man City      281                Manchester City                  {281: 265} unique                single_candidate
+        Man United      985              Manchester United                  {985: 265} unique                single_candidate
+          Maritimo     1301                    CS Marítimo                 {1301: 136} unique                single_candidate
+         Marseille      244            Olympique Marseille                  {244: 244} unique                single_candidate
+              Metz      347                        FC Metz                  {347: 172} unique                single_candidate
+             Milan        5                       AC Milan                    {5: 266} unique                single_candidate
+            Monaco      162                      AS Monaco                  {162: 244} unique                single_candidate
+       Montpellier      969                Montpellier HSC                  {969: 210} unique                single_candidate
+             Monza     2919                       AC Monza                 {2919: 114} unique                single_candidate
+        Moreirense      979                  Moreirense FC                  {979: 204} unique                single_candidate
+         NAC Breda      132                      NAC Breda                   {132: 68} unique                single_candidate
+          Nacional      982                    CD Nacional                  {982: 102} unique                single_candidate
+            Nantes      995                      FC Nantes                  {995: 244} unique                single_candidate
+            Napoli     6195                     SSC Napoli                 {6195: 266} unique                single_candidate
+         Newcastle      762               Newcastle United                  {762: 266} unique                single_candidate
+              Nice      417                       OGC Nice                  {417: 244} unique                single_candidate
+          Nijmegen      467                   NEC Nijmegen                  {467: 169} unique                single_candidate
+             Nimes     1160                Nîmes Olympique                  {1160: 66} unique                single_candidate
+           Norwich     1123                   Norwich City                  {1123: 76} unique                single_candidate
+     Nott'm Forest      703              Nottingham Forest                  {703: 152} unique                single_candidate
+           Osasuna      331                     CA Osasuna                  {331: 266} unique                single_candidate
+            Oviedo     2497                    Real Oviedo                  {2497: 38} unique                single_candidate
+     PSV Eindhoven      383                  PSV Eindhoven                  {383: 230} unique                single_candidate
+    Pacos Ferreira     2995           FC Paços de Ferreira                 {2995: 136} unique                single_candidate
+         Paderborn      127                SC Paderborn 07                   {127: 34} unique                single_candidate
+          Paris FC    10004                       Paris FC                 {10004: 34} unique                single_candidate
+          Paris SG      583            Paris Saint-Germain                  {583: 243} unique                single_candidate
+             Parma      130              Parma Calcio 1913                  {130: 152} unique                single_candidate
+        Pendikspor     3209                     Pendikspor                  {3209: 38} unique                single_candidate
+              Pisa     4172             Pisa Sporting Club                  {4172: 38} unique                single_candidate
+      Portimonense     7378                Portimonense SC                 {7378: 170} unique                single_candidate
+             Porto      720                       FC Porto                  {720: 238} unique                single_candidate
+        RB Leipzig    23826                     RB Leipzig                {23826: 238} unique                single_candidate
+       Real Madrid      418                    Real Madrid                  {418: 266} unique                single_candidate
+             Reims     1421                    Stade Reims                 {1421: 210} unique                single_candidate
+            Rennes      273               Stade Rennais FC                  {273: 244} unique                single_candidate
+           Rio Ave     2425                     Rio Ave FC                 {2425: 204} unique                single_candidate
+          Rizespor      126                Caykur Rizespor                  {126: 220} unique                single_candidate
+              Roma       12     Associazione Sportiva Roma                   {12: 265} unique                single_candidate
+       Salernitana      380            US Salernitana 1919                  {380: 114} unique                single_candidate
+         Sampdoria     1038                   UC Sampdoria                 {1038: 152} unique                single_candidate
+        Samsunspor      152                     Samsunspor                  {152: 108} unique                single_candidate
+       Santa Clara     2423                 CD Santa Clara                 {2423: 204} unique                single_candidate
+          Sassuolo     6574                    US Sassuolo                 {6574: 228} unique                single_candidate
+        Schalke 04       33                  FC Schalke 04                   {33: 102} unique                single_candidate
+           Setubal     1085             Vitória Setúbal FC                  {1085: 34} unique                single_candidate
+           Sevilla      368                     Sevilla FC                  {368: 266} unique                single_candidate
+  Sheffield United      350               Sheffield United                  {350: 114} unique                single_candidate
+         Sivasspor     2381                      Sivasspor                 {2381: 222} unique                single_candidate
+          Sociedad      681                  Real Sociedad                  {681: 266} unique                single_candidate
+       Southampton      180                 Southampton FC                  {180: 190} unique                single_candidate
+          Sp Braga     1075                       SC Braga                 {1075: 238} unique                single_candidate
+         Sp Lisbon      336                    Sporting CP                  {336: 238} unique                single_candidate
+              Spal     2722                           SPAL                  {2722: 38} unique                single_candidate
+  Sparta Rotterdam      468               Sparta Rotterdam                  {468: 230} unique                single_candidate
+            Spezia     3522                  Spezia Calcio                 {3522: 114} unique                single_candidate
+        St Etienne      618               AS Saint-Étienne                  {618: 138} unique                single_candidate
+          St Pauli       35                   FC St. Pauli                    {35: 68} unique                single_candidate
+        Strasbourg      667           RC Strasbourg Alsace                  {667: 243} unique                single_candidate
+         Stuttgart       79                  VfB Stuttgart                   {79: 204} unique                single_candidate
+        Sunderland      289                 Sunderland AFC                   {289: 38} unique                single_candidate
+           Telstar     1434                     SC Telstar                  {1434: 34} unique                single_candidate
+           Tondela     7179                     CD Tondela                 {7179: 136} unique                single_candidate
+            Torino      416                      Torino FC                  {416: 266} unique                single_candidate
+         Tottenham      148              Tottenham Hotspur                  {148: 266} unique                single_candidate
+          Toulouse      415                    FC Toulouse                  {415: 168} unique                single_candidate
+       Trabzonspor      449                    Trabzonspor                  {449: 256} unique                single_candidate
+            Troyes     1095                   ESTAC Troyes                  {1095: 76} unique                single_candidate
+            Twente      317             FC Twente Enschede                  {317: 230} unique                single_candidate
+           Udinese      410                 Udinese Calcio                  {410: 266} unique                single_candidate
+      Umraniyespor    24245                   Ümraniyespor                 {24245: 35} unique                single_candidate
+      Union Berlin       89              1.FC Union Berlin                   {89: 238} unique                single_candidate
+           Utrecht      200                     FC Utrecht                  {200: 229} unique                single_candidate
+         VVV Venlo     1426                      VVV-Venlo                  {1426: 60} unique                single_candidate
+          Valencia     1049                    Valencia CF                 {1049: 266} unique                single_candidate
+        Valladolid      366             Real Valladolid CF                  {366: 152} unique                single_candidate
+         Vallecano      367                 Rayo Vallecano                  {367: 190} unique                single_candidate
+           Venezia      607                     Venezia FC                   {607: 76} unique                single_candidate
+            Verona      276                  Hellas Verona                  {276: 265} unique                single_candidate
+        Villarreal     1050                  Villarreal CF                 {1050: 266} unique                single_candidate
+           Vitesse      499                 Vitesse Arnhem                  {499: 162} unique                single_candidate
+            Vizela     6912                      FC Vizela                 {6912: 102} unique                single_candidate
+          Volendam      724                    FC Volendam                  {724: 102} unique                single_candidate
+          Waalwijk      235                   RKC Waalwijk                  {235: 196} unique                single_candidate
+           Watford     1010                     Watford FC                  {1010: 76} unique                single_candidate
+     Werder Bremen       86               SV Werder Bremen                   {86: 204} unique                single_candidate
+         West Brom      984           West Bromwich Albion                   {984: 38} unique                single_candidate
+          West Ham      379                West Ham United                  {379: 266} unique                single_candidate
+         Willem II      403              Willem II Tilburg                  {403: 128} unique                single_candidate
+         Wolfsburg       82                  VfL Wolfsburg                   {82: 238} unique                single_candidate
+            Wolves      543        Wolverhampton Wanderers                  {543: 266} unique                single_candidate
+  Yeni Malatyaspor    19789               Yeni Malatyaspor                {19789: 112} unique                single_candidate
+            Zwolle     1269                     PEC Zwolle                 {1269: 196} unique                single_candidate
+
+Every team has exactly one club_id: True
+
+STRICTLY MATCHED: 19,140 / 19,145
+
+Unmatched fixture counts by league and season:
+competition     season   
+ITA Serie A     2020-2021    1
+TUR Super Lig   2022-2023    3
+NLD Eredivisie  2022-2023    1
+
+FULL unmatched fixture list, grouped by league and season:
+
+ITA Serie A | 2020-2021 | 1 unmatched
+               date team_home team_away  goals_home  goals_away                   unmatched_reason
+2020-09-19 19:45:00    Verona      Roma           0           0 no strict club-ID/date/score match
+
+TUR Super Lig | 2022-2023 | 3 unmatched
+               date    team_home   team_away  goals_home  goals_away                   unmatched_reason
+2023-02-25 13:00:00 Umraniyespor   Gaziantep           3           0 no strict club-ID/date/score match
+2023-06-07 18:00:00    Hatayspor Galatasaray           0           3 no strict club-ID/date/score match
+2023-06-07 18:00:00   Fenerbahce   Gaziantep           3           0 no strict club-ID/date/score match
+
+NLD Eredivisie | 2022-2023 | 1 unmatched
+               date team_home team_away  goals_home  goals_away                   unmatched_reason
+2023-04-25 14:00:00 Groningen  Nijmegen           0           1 no strict club-ID/date/score match
+
+LEAGUE x SEASON AUDIT
+Both-XI means exactly 11 starting_lineup rows for EACH club.
+       competition    season  fixtures  matched  both_starting_XI  matched_pct_of_fixtures  both_XI_pct_of_matched  both_XI_pct_of_fixtures
+ENG Premier League 2019-2020       380      380               380                   100.00                  100.00                   100.00
+ENG Premier League 2020-2021       380      380               380                   100.00                  100.00                   100.00
+ENG Premier League 2021-2022       380      380               380                   100.00                  100.00                   100.00
+ENG Premier League 2022-2023       380      380               380                   100.00                  100.00                   100.00
+ENG Premier League 2023-2024       380      380               380                   100.00                  100.00                   100.00
+ENG Premier League 2024-2025       380      380               380                   100.00                  100.00                   100.00
+ENG Premier League 2025-2026       380      380               380                   100.00                  100.00                   100.00
+       ESP La Liga 2019-2020       380      380               380                   100.00                  100.00                   100.00
+       ESP La Liga 2020-2021       380      380               378                   100.00                   99.47                    99.47
+       ESP La Liga 2021-2022       380      380               379                   100.00                   99.74                    99.74
+       ESP La Liga 2022-2023       380      380               380                   100.00                  100.00                   100.00
+       ESP La Liga 2023-2024       380      380               380                   100.00                  100.00                   100.00
+       ESP La Liga 2024-2025       380      380               380                   100.00                  100.00                   100.00
+       ESP La Liga 2025-2026       380      380               380                   100.00                  100.00                   100.00
+  DEU Bundesliga 1 2019-2020       306      306               306                   100.00                  100.00                   100.00
+  DEU Bundesliga 1 2020-2021       306      306               306                   100.00                  100.00                   100.00
+  DEU Bundesliga 1 2021-2022       306      306               306                   100.00                  100.00                   100.00
+  DEU Bundesliga 1 2022-2023       306      306               306                   100.00                  100.00                   100.00
+  DEU Bundesliga 1 2023-2024       306      306               306                   100.00                  100.00                   100.00
+  DEU Bundesliga 1 2024-2025       306      306               306                   100.00                  100.00                   100.00
+  DEU Bundesliga 1 2025-2026       306      306               306                   100.00                  100.00                   100.00
+       ITA Serie A 2019-2020       380      380               380                   100.00                  100.00                   100.00
+       ITA Serie A 2020-2021       380      379               379                    99.74                  100.00                    99.74
+       ITA Serie A 2021-2022       380      380               380                   100.00                  100.00                   100.00
+       ITA Serie A 2022-2023       380      380               380                   100.00                  100.00                   100.00
+       ITA Serie A 2023-2024       380      380               380                   100.00                  100.00                   100.00
+       ITA Serie A 2024-2025       380      380               380                   100.00                  100.00                   100.00
+       ITA Serie A 2025-2026       380      380               379                   100.00                   99.74                    99.74
+       FRA Ligue 1 2019-2020       279      279               279                   100.00                  100.00                   100.00
+       FRA Ligue 1 2020-2021       380      380               380                   100.00                  100.00                   100.00
+       FRA Ligue 1 2021-2022       380      380               380                   100.00                  100.00                   100.00
+       FRA Ligue 1 2022-2023       380      380               378                   100.00                   99.47                    99.47
+       FRA Ligue 1 2023-2024       306      306               306                   100.00                  100.00                   100.00
+       FRA Ligue 1 2024-2025       306      306               306                   100.00                  100.00                   100.00
+       FRA Ligue 1 2025-2026       306      306               305                   100.00                   99.67                    99.67
+    NLD Eredivisie 2019-2020       232      232               232                   100.00                  100.00                   100.00
+    NLD Eredivisie 2020-2021       306      306               305                   100.00                   99.67                    99.67
+    NLD Eredivisie 2021-2022       306      306               306                   100.00                  100.00                   100.00
+    NLD Eredivisie 2022-2023       306      305               305                    99.67                  100.00                    99.67
+    NLD Eredivisie 2023-2024       306      306               306                   100.00                  100.00                   100.00
+    NLD Eredivisie 2024-2025       306      306               306                   100.00                  100.00                   100.00
+    NLD Eredivisie 2025-2026       306      306               306                   100.00                  100.00                   100.00
+        PRT Liga 1 2019-2020       306      306               303                   100.00                   99.02                    99.02
+        PRT Liga 1 2020-2021       306      306               304                   100.00                   99.35                    99.35
+        PRT Liga 1 2021-2022       306      306               305                   100.00                   99.67                    99.67
+        PRT Liga 1 2022-2023       306      306               304                   100.00                   99.35                    99.35
+        PRT Liga 1 2023-2024       306      306               306                   100.00                  100.00                   100.00
+        PRT Liga 1 2024-2025       306      306               306                   100.00                  100.00                   100.00
+        PRT Liga 1 2025-2026       306      306               306                   100.00                  100.00                   100.00
+     TUR Super Lig 2019-2020       306      306               306                   100.00                  100.00                   100.00
+     TUR Super Lig 2020-2021       420      420               420                   100.00                  100.00                   100.00
+     TUR Super Lig 2021-2022       380      380               380                   100.00                  100.00                   100.00
+     TUR Super Lig 2022-2023       342      339               313                    99.12                   92.33                    91.52
+     TUR Super Lig 2023-2024       380      380               380                   100.00                  100.00                   100.00
+     TUR Super Lig 2024-2025       342      342               342                   100.00                  100.00                   100.00
+     TUR Super Lig 2025-2026       306      306               305                   100.00                   99.67                    99.67
+
+Fixture-ingestion failures: None
+
+Audit complete. No lineup features were built.
+TEST PERIOD AUDIT
+Fixtures: 3829
+Matched: 3829 (100.00%)
+Both sides 11 starters: 3826 (99.92%)
+GATE A (TEST PERIOD): PASSED
+rows: 19145
+has rate columns: True
+NaNs in rates: 0
+lambda range: 0.1917135436922949 103.71751238559553
+mu range: 0.12990047116477185 12.231111876631017
+dates: 2019-08-02 19:00:00 -> 2026-05-24 20:00:00
+TEST_START: 2025-02-01 13:00:00
+csv saved: True
+any lineup rows (must be False): False
+TEST lambda range: 0.30000978673902134 6.096789240530479
+TEST mu range: 0.26973386591096704 4.807285164804187
+rows with a rate above 6: 45 of 19145
+  of which in the test period: 1
+                     date      team_home   team_away  goals_home  goals_away  lambda_home   mu_away
+11142 2023-08-20 19:45:00       Besiktas  Pendikspor           1           1   103.717512  0.403024
+59    2019-08-17 15:00:00       Brighton    West Ham           1           1    24.990299  0.330763
+11328 2023-09-16 18:00:00  Ad. Demirspor  Pendikspor           3           0    19.730881  1.014795
+285   2019-09-14 17:00:00         Napoli   Sampdoria           2           0    18.682017  1.765864
+11176 2023-08-26 17:15:00      Kasimpasa  Pendikspor           1           1    18.206818  0.864861
+37    2019-08-11 15:45:00        Utrecht      Zwolle           3           1    15.119724  1.280849
+253   2019-09-01 19:45:00          Genoa  Fiorentina           2           1    15.119724  4.959967
+11488 2023-09-30 14:00:00    Trabzonspor  Pendikspor           2           1    14.495902  0.923971
+                     date   team_home         team_away  goals_home  goals_away  lambda_home    mu_away
+145   2019-08-24 19:45:00  Buyuksehyr        Fenerbahce           1           2     0.448695  12.231112
+11252 2023-09-02 17:15:00  Pendikspor        Alanyaspor           1           1     1.094755  10.524883
+13837 2024-08-18 15:45:00   NAC Breda              Ajax           2           1     1.013121   8.752624
+68    2019-08-17 17:30:00    Den Haag  Sparta Rotterdam           1           2     1.515410   8.738109
+286   2019-09-14 17:30:00     Norwich          Man City           3           2     0.659603   8.676138

@@ -1,0 +1,321 @@
+Execution data: 56 SHA-256-verified cached upstream fixture snapshots; no fresh network fetch.
+============================================================
+PROJECT B12: EXTRACTING 2019-2026 DATASET METRICS
+============================================================
+
+[1/4] Scraping/Ingesting match data across 7 seasons...
+  ✓ Ingested ENG Premier League 2019-2020
+  ✓ Ingested ENG Premier League 2020-2021
+  ✓ Ingested ENG Premier League 2021-2022
+  ✓ Ingested ENG Premier League 2022-2023
+  ✓ Ingested ENG Premier League 2023-2024
+  ✓ Ingested ENG Premier League 2024-2025
+  ✓ Ingested ENG Premier League 2025-2026
+  ✓ Ingested ESP La Liga 2019-2020
+  ✓ Ingested ESP La Liga 2020-2021
+  ✓ Ingested ESP La Liga 2021-2022
+  ✓ Ingested ESP La Liga 2022-2023
+  ✓ Ingested ESP La Liga 2023-2024
+  ✓ Ingested ESP La Liga 2024-2025
+  ✓ Ingested ESP La Liga 2025-2026
+  ✓ Ingested DEU Bundesliga 1 2019-2020
+  ✓ Ingested DEU Bundesliga 1 2020-2021
+  ✓ Ingested DEU Bundesliga 1 2021-2022
+  ✓ Ingested DEU Bundesliga 1 2022-2023
+  ✓ Ingested DEU Bundesliga 1 2023-2024
+  ✓ Ingested DEU Bundesliga 1 2024-2025
+  ✓ Ingested DEU Bundesliga 1 2025-2026
+  ✓ Ingested ITA Serie A 2019-2020
+  ✓ Ingested ITA Serie A 2020-2021
+  ✓ Ingested ITA Serie A 2021-2022
+  ✓ Ingested ITA Serie A 2022-2023
+  ✓ Ingested ITA Serie A 2023-2024
+  ✓ Ingested ITA Serie A 2024-2025
+  ✓ Ingested ITA Serie A 2025-2026
+  ✓ Ingested FRA Ligue 1 2019-2020
+  ✓ Ingested FRA Ligue 1 2020-2021
+  ✓ Ingested FRA Ligue 1 2021-2022
+  ✓ Ingested FRA Ligue 1 2022-2023
+  ✓ Ingested FRA Ligue 1 2023-2024
+  ✓ Ingested FRA Ligue 1 2024-2025
+  ✓ Ingested FRA Ligue 1 2025-2026
+  ✓ Ingested NLD Eredivisie 2019-2020
+  ✓ Ingested NLD Eredivisie 2020-2021
+  ✓ Ingested NLD Eredivisie 2021-2022
+  ✓ Ingested NLD Eredivisie 2022-2023
+  ✓ Ingested NLD Eredivisie 2023-2024
+  ✓ Ingested NLD Eredivisie 2024-2025
+  ✓ Ingested NLD Eredivisie 2025-2026
+  ✓ Ingested PRT Liga 1 2019-2020
+  ✓ Ingested PRT Liga 1 2020-2021
+  ✓ Ingested PRT Liga 1 2021-2022
+  ✓ Ingested PRT Liga 1 2022-2023
+  ✓ Ingested PRT Liga 1 2023-2024
+  ✓ Ingested PRT Liga 1 2024-2025
+  ✓ Ingested PRT Liga 1 2025-2026
+  ✓ Ingested TUR Super Lig 2019-2020
+  ✓ Ingested TUR Super Lig 2020-2021
+  ✓ Ingested TUR Super Lig 2021-2022
+  ✓ Ingested TUR Super Lig 2022-2023
+  ✓ Ingested TUR Super Lig 2023-2024
+  ✓ Ingested TUR Super Lig 2024-2025
+  ✓ Ingested TUR Super Lig 2025-2026
+
+[2/4] Sanitizing and chronologically sorting dataset...
+
+============================================================
+EMPIRICAL DATASET SUMMARY (FOR SLIDES)
+============================================================
+Total Valid Matches: 19145
+Missing Values: 0
+Average Home Goals: 1.548
+Average Away Goals: 1.264
+Home Win Rate: 43.42% (8312 matches)
+Draw Rate:     25.13% (4811 matches)
+Away Win Rate: 31.45% (6022 matches)
+
+[3/4] Performing 80/20 Chronological Split...
+Training Set Cutoff: First 15316 matches (80%)
+Testing Set Size:    Final 3829 matches (20%)
+Training Date Range: 2019-08-02 to 2025-02-01
+Testing Date Range:  2025-02-01 to 2026-05-24
+
+[4/4] Fitting Dixon-Coles model with Time Decay (xi = 0.0065)...
+  ✓ Model fitting successful.
+
+============================================================
+OUT-OF-SAMPLE EVALUATION BENCHMARK
+============================================================
+Evaluated Test Matches: 3545
+Skipped (Promoted Teams): 284
+Calculated 2019-2026 Test RPS: 0.2057
+============================================================
+
+============================================================
+STAGE 2: SEQUENTIAL DYNAMIC BAYESIAN FILTER
+============================================================
+Fixed training-only home_adv: 0.20356233139056304
+Constant process noise per team appearance: 0.01
+
+============================================================
+IDENTICAL-MATCH COMPARISON (3545 matches)
+============================================================
+                 RPS     Brier   LogLoss
+Stage 1:      0.2057    0.1994    1.0023
+Stage 2:      0.2060    0.1998    1.0057
+Stage 2 RPS on ALL 3829 held-out matches: 0.2059
+Stage 1 skipped 284 of those matches.
+Stage 2 forecasts each match before updating, including during the test period.
+
+FINAL TEAM STATES (higher defence_mean means more concessions)
+Man City: attack_mean=np.float64(0.5073237500614157), defence_mean=np.float64(-0.4040416924863646), attack_var=np.float64(0.06351325542231448), defence_var=np.float64(0.09958267586181)
+Real Madrid: attack_mean=np.float64(0.4574848355363589), defence_mean=np.float64(-0.25506820662783813), attack_var=np.float64(0.0676742641755022), defence_var=np.float64(0.09650309401844567)
+Bayern Munich: attack_mean=np.float64(0.9332361427229969), defence_mean=np.float64(-0.006076922485448045), attack_var=np.float64(0.04444641288820529), defence_var=np.float64(0.08783149496428651)
+Paris SG: attack_mean=np.float64(0.6027649721928354), defence_mean=np.float64(-0.4997781609739985), attack_var=np.float64(0.06306808635931352), defence_var=np.float64(0.0985461888357867)
+Juventus: attack_mean=np.float64(0.25723667321876587), defence_mean=np.float64(-0.25271271138253915), attack_var=np.float64(0.07053552974727782), defence_var=np.float64(0.10830205580736432)
+============================================================
+STAGE 3 (RESEARCH MILESTONE): PERSISTENT CHANGE DETECTOR — CONSERVATIVE DESIGN, VALIDATED NULL RESULT
+
+======================================================================
+STAGE 3: PERSISTENT CHANGE DETECTOR; SINGLE POISSON UPDATE
+======================================================================
+  Change-detector validation fold 1/3 complete (2298 matches).
+  Change-detector validation fold 2/3 complete (2297 matches).
+  Change-detector validation fold 3/3 complete (2298 matches).
+    scale       RPS     Brier   LogLoss  Accuracy  eligible
+0.0000000 0.2023143 0.1969495 0.9979680 0.5238648      True
+0.2500000 0.2023124 0.1969482 0.9979532 0.5237197     False
+0.5000000 0.2023116 0.1969476 0.9979441 0.5235746     False
+1.0000000 0.2023121 0.1969482 0.9979366 0.5235746     False
+2.0000000 0.2023191 0.1969535 0.9979467 0.5232845     False
+Selected CHANGE_SCALE: 0
+Validation selected ordinary process noise; detector scores are still recorded.
+This conservative design is retained as a robustness milestone, not the active mechanism.
+Each match uses exactly one ordinary, unscaled observation update.
+Evaluation is retrospective: this test period has been examined previously.
+
+IDENTICAL-MATCH COMPARISON (3545 matches)
+  Model       RPS     Brier   LogLoss  Accuracy
+Stage 1 0.2057245 0.1994488 1.0022933 0.5097320
+Stage 2 0.2060203 0.1998337 1.0056991 0.5187588
+Stage 3 0.2060203 0.1998337 1.0056991 0.5187588
+Test matches with extra variance: 0/3829
+Raw surprise mean/max: 1.0667/5.0000
+Max extra variance per component: 0.000000
+
+FOUR-WAY ABLATION
+                       Model                                   Status       RPS     Brier   LogLoss  Accuracy
+            Stage 2 baseline                                evaluated 0.2060203 0.1998337 1.0056991 0.5187588
+  Baseline + change detector                                evaluated 0.2060203 0.1998337 1.0056991 0.5187588
+           Baseline + lineup NOT EVALUATED: no historical lineup data       NaN       NaN       NaN       NaN
+Baseline + lineup + detector NOT EVALUATED: no historical lineup data       NaN       NaN       NaN       NaN
+
+OUTCOME CLASSIFICATION AND CALIBRATION (Home / Draw / Away)
+Stage 1: draw probability=0.2442; actual draw rate=0.2505; draw Brier=0.1869; draw binary log-loss=0.5607
+  Class calibration ECE: {'Away': 0.02905170969383757, 'Draw': 0.01584174352172315, 'Home': 0.030943494437736096}
+  Recall H/D/A: [0.7464146  0.01013514 0.58147818] 
+  Confusion matrix (actual rows):
+ [[1145   27  362]
+ [ 531    9  348]
+ [ 449   21  653]]
+Stage 2: draw probability=0.2276; actual draw rate=0.2505; draw Brier=0.1875; draw binary log-loss=0.5627
+  Class calibration ECE: {'Away': 0.03184401470799813, 'Draw': 0.032584009200767095, 'Home': 0.03637429472707473}
+  Recall H/D/A: [0.76205997 0.01126126 0.58771149] 
+  Confusion matrix (actual rows):
+ [[1169   10  355]
+ [ 516   10  362]
+ [ 454    9  660]]
+Stage 3: draw probability=0.2276; actual draw rate=0.2505; draw Brier=0.1875; draw binary log-loss=0.5627
+  Class calibration ECE: {'Away': 0.03184401470799813, 'Draw': 0.032584009200767095, 'Home': 0.03637429472707473}
+  Recall H/D/A: [0.76205997 0.01126126 0.58771149] 
+  Confusion matrix (actual rows):
+ [[1169   10  355]
+ [ 516   10  362]
+ [ 454    9  660]]
+
+Stage 3 reliability bins:
+outcome  bin    n  forecast  observed
+   Home    0  100    0.0681    0.1300
+   Home    1  381    0.1525    0.1890
+   Home    2  521    0.2531    0.2553
+   Home    3  601    0.3496    0.3927
+   Home    4  581    0.4459    0.4492
+   Home    5  502    0.5477    0.5120
+   Home    6  392    0.6455    0.5816
+   Home    7  273    0.7441    0.6703
+   Home    8  149    0.8447    0.7651
+   Home    9   45    0.9311    0.8222
+   Draw    0  130    0.0703    0.1231
+   Draw    1  849    0.1639    0.2049
+   Draw    2 2219    0.2461    0.2713
+   Draw    3  346    0.3243    0.2746
+   Draw    4    1    0.4018    1.0000
+   Away    0  356    0.0622    0.0843
+   Away    1  695    0.1517    0.1842
+   Away    2  676    0.2502    0.2515
+   Away    3  641    0.3474    0.3167
+   Away    4  482    0.4480    0.4253
+   Away    5  317    0.5469    0.4385
+   Away    6  218    0.6460    0.6147
+   Away    7  113    0.7412    0.7080
+   Away    8   39    0.8385    0.6923
+   Away    9    8    0.9144    0.8750
+
+CLOSING-MARKET BENCHMARK: 3545 identical rows; later-information comparison
+                              Model       RPS     Brier   LogLoss  Accuracy
+Market closing average (normalized) 0.1926041 0.1898924 0.9598217 0.5478138
+   Stage 2 on identical market rows 0.2060203 0.1998337 1.0056991 0.5187588
+   Stage 3 on identical market rows 0.2060203 0.1998337 1.0056991 0.5187588
+
+Stage 3 minus Stage 2 RPS:  0.0
+95% paired week-block bootstrap interval:  [0. 0.]
+
+Top 10% most surprising matches (N=383); retrospective subgroup, not causal evidence:
+  Stage 2 RPS: 0.4530956
+  Stage 3 RPS: 0.4530956
+
+ACTUAL SUBSEQUENT MATCHES AFTER UPSETS (deduplicated):
+ next_team_appearances    n  Stage2_RPS  Stage3_RPS
+                     1  358   0.2041380   0.2041380
+                     5 1482   0.2027709   0.2027709
+                    10 2351   0.2053908   0.2053908
+======================================================================
+
+======================================================================
+STAGE 4 (SUPERSEDED — CONFIRMED SIGN-INVERTED, KEPT AS DIAGNOSTIC MILESTONE)
+Higher surprise multiplier => smaller current mean correction, at the same prior state.
+Exactly one observation update; forecast precedes this match result.
+Stage 4 validation fold 1: prefix=8423, held-out=2298 complete.
+Stage 4 validation fold 2: prefix=10721, held-out=2297 complete.
+Stage 4 validation fold 3: prefix=13018, held-out=2298 complete.
+
+TRAINING-ONLY EXPANDING VALIDATION (weighted by held-out fold size)
+ sensitivity       RPS     Brier   LogLoss  Accuracy
+   0.0000000 0.2023143 0.1969495 0.9979680 0.5238648
+   0.2500000 0.2022217 0.1969185 0.9969574 0.5247352
+   0.5000000 0.2022166 0.1969382 0.9972053 0.5244451
+   1.0000000 0.2024441 0.1971340 0.9985035 0.5241549
+Selected sensitivity (log-loss only): 0.25
+Validation log-loss difference (selected minus zero): -0.0010106
+95% paired week-block bootstrap CI: [-0.0025560, 0.0001155]
+Interval excludes zero: False; weeks=100; resamples=2000
+Selection-data interval: exploratory, not corrected for choosing the best sensitivity.
+The interval is reported honestly; it does not gate selection.
+
+IDENTICAL-MATCH COMPARISON (3545 matches)
+  Model       RPS     Brier   LogLoss  Accuracy
+Stage 1 0.2057245 0.1994488 1.0022933 0.5097320
+Stage 2 0.2060203 0.1998337 1.0056991 0.5187588
+Stage 3 0.2060203 0.1998337 1.0056991 0.5187588
+Stage 4 0.2058885 0.1997573 1.0054757 0.5193230
+Brier is mean squared error across all three classes; lower loss scores are better.
+This test period has been inspected previously; results are retrospective, not a fresh holdout.
+
+Top 10% most surprising matches (N=383):
+  Same existing Stage 2-ranked subset of all 3829 test matches.
+  Stage 2 RPS on these: 0.4530956
+  Stage 4 RPS on these: 0.4554677
+
+Matches with material surprise adjustment (N=2741):
+  Population: the same 3545 common test matches.
+  Stage 2 RPS/Brier/LogLoss on these matches: 0.1946313 / 0.1943005 / 0.9858836
+  Stage 4 RPS/Brier/LogLoss on these matches: 0.1944967 / 0.1942271 / 0.9857154
+Both subsets depend on realized outcomes; these are descriptive, not causal effect estimates.
+A match update cannot improve that same match forecast; only later forecasts can change.
+Stage 4 test multiplier mean/min/max: 1.0173333 / 0.8000000 / 2.0000000
+======================================================================
+
+======================================================================
+STAGE 5: CORRECTED DIRECTION — SURPRISE SCALES THE MEAN STEP
+Higher multiplier => larger signed mean step, at the same prior state and goal rates.
+Precision and variance use the ordinary unscaled Fisher information.
+Exactly one observation update; forecast precedes this match result.
+Stage 5 validation fold 1: prefix=8423, held-out=2298 complete.
+Stage 5 numerical fallback (not a rate cap): sensitivity=0.25, 2023-08-20 19:45:00, Besiktas vs Pendikspor, goal rates=2588.429/0.308895
+Stage 5 numerical fallback (not a rate cap): sensitivity=0.5, 2023-08-20 19:45:00, Besiktas vs Pendikspor, goal rates=1881.183/0.3411238
+Stage 5 numerical fallback (not a rate cap): sensitivity=1, 2023-08-20 19:45:00, Besiktas vs Pendikspor, goal rates=1119.609/0.3732666
+Stage 5 validation fold 2: prefix=10721, held-out=2297 complete.
+Stage 5 numerical fallback (not a rate cap): sensitivity=0.25, 2023-08-20 19:45:00, Besiktas vs Pendikspor, goal rates=2612.034/0.3071311
+Stage 5 numerical fallback (not a rate cap): sensitivity=0.5, 2023-08-20 19:45:00, Besiktas vs Pendikspor, goal rates=1898.55/0.3397556
+Stage 5 numerical fallback (not a rate cap): sensitivity=1, 2023-08-20 19:45:00, Besiktas vs Pendikspor, goal rates=1130.358/0.370083
+Stage 5 validation fold 3: prefix=13018, held-out=2298 complete.
+
+TRAINING-ONLY EXPANDING VALIDATION (weighted by held-out fold size)
+ sensitivity       RPS     Brier   LogLoss  Accuracy
+   0.0000000 0.2023143 0.1969495 0.9979680 0.5238648
+   0.2500000 0.2041165 0.1980405 1.0066392 0.5180618
+   0.5000000 0.2052037 0.1987613 1.0092615 0.5148702
+   1.0000000 0.2069544 0.1999853 1.0136471 0.5112433
+Stage 5 selected sensitivity (log-loss only): 0
+Validation log-loss difference (selected minus zero): 0.0000000
+95% paired week-block bootstrap CI: [0.0000000, 0.0000000]
+Interval excludes zero: False; weeks=100; resamples=2000
+Selection-data interval: exploratory, not corrected for choosing the best sensitivity.
+The interval is reported honestly; it does not gate selection.
+
+IDENTICAL-MATCH COMPARISON (3545 matches)
+  Model       RPS     Brier   LogLoss  Accuracy
+Stage 1 0.2057245 0.1994488 1.0022933 0.5097320
+Stage 2 0.2060203 0.1998337 1.0056991 0.5187588
+Stage 3 0.2060203 0.1998337 1.0056991 0.5187588
+Stage 4 0.2058885 0.1997573 1.0054757 0.5193230
+Stage 5 0.2060203 0.1998337 1.0056991 0.5187588
+Brier is mean squared error across all three classes; lower loss scores are better.
+This test period has been inspected previously; results are retrospective, not a fresh holdout.
+Zero selected: surprise scaling is inactive; all forecasts and final states exactly equal Stage 2.
+
+Top 10% most surprising matches (N=383):
+  Same existing Stage 2-ranked subset of all 3829 test matches.
+  Stage 2 RPS on these: 0.4530956
+  Stage 5 RPS on these: 0.4530956
+
+Matches with material surprise adjustment (N=0):
+  Population: the same 3545 common test matches.
+  Stage 2 RPS/Brier/LogLoss on these matches: N/A (empty subset)
+  Stage 5 RPS/Brier/LogLoss on these matches: N/A (empty subset)
+Both subsets depend on realized outcomes; these are descriptive, not causal effect estimates.
+Correct update direction does not guarantee better forecasts on this outcome-selected subset.
+A match update cannot improve that same match forecast; only later forecasts can change.
+Stage 5 test multiplier mean/min/max: 1.0000000 / 1.0000000 / 1.0000000
+Theoretical range at sensitivity 0: [1.0000000, 1.0000000]
+======================================================================

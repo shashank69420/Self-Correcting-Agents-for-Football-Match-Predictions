@@ -1,0 +1,76 @@
+# Reproduction run of the one-shot TEST scoring, 2026-10-26. Rerunning is a reproduction, not a new test.
+## python -X utf8 results/experiments/test_once.py primary
+## 2. Primary result
+
+- Rows: 3829 (selected by TEST_INDEX only)
+- Mean log-loss difference, P1 minus baseline: -0.012828 (baseline 1.008321, P1 0.995493)
+- 95% paired week-block CI: [-0.015519, -0.010091]
+- **Verdict: ACCEPTED as a TEST improvement.**
+
+Parameters confirmed: True
+## python -X utf8 results/experiments/test_once.py secondary
+## 3. Secondary metrics (descriptive only)
+
+TEST, one-shot, retrospective (this window was examined during Stages 1-5 and P1 selection).
+
+### All TEST rows
+
+| model | n | RPS | Brier | LogLoss | Accuracy |
+|---|---|---|---|---|---|
+| Baseline | 3829 | 0.205946 | 0.200442 | 1.008321 | 0.516584 |
+| P1 | 3829 | 0.202357 | 0.197737 | 0.995493 | 0.521285 |
+
+### Common rows (teams seen in training; main.py comparison set)
+
+| model | n | RPS | Brier | LogLoss | Accuracy |
+|---|---|---|---|---|---|
+| Baseline | 3545 | 0.206020 | 0.199834 | 1.005699 | 0.518759 |
+| P1 | 3545 | 0.202578 | 0.197250 | 0.993635 | 0.524118 |
+
+- All TEST rows (n=3829): log-loss P1 minus baseline -0.012828, 95% week-block CI [-0.015519, -0.010091] (descriptive)
+- Common rows (n=3545): log-loss P1 minus baseline -0.012065, 95% week-block CI [-0.014553, -0.009332] (descriptive)
+
+### Closing-odds TEST rows (3829 of 3829)
+
+| model | n | RPS | Brier | LogLoss | Accuracy |
+|---|---|---|---|---|---|
+| Closing market | 3829 | 0.192423 | 0.190366 | 0.961623 | 0.544790 |
+| Baseline | 3829 | 0.205946 | 0.200442 | 1.008321 | 0.516584 |
+| P1 | 3829 | 0.202357 | 0.197737 | 0.995493 | 0.521285 |
+
+Gap closed by P1 = (baseline - P1) / (baseline - market):
+
+| metric | baseline | P1 | market | gap closed |
+|---|---|---|---|---|
+| RPS | 0.205946 | 0.202357 | 0.192423 | 26.54% |
+| Brier | 0.200442 | 0.197737 | 0.190366 | 26.85% |
+| LogLoss | 1.008321 | 0.995493 | 0.961623 | 27.47% |
+
+## python -X utf8 results/experiments/split_test.py
+C:\dev\b12\results\experiments\split_test.py:1: SyntaxWarning: invalid escape sequence '\d'
+  """Descriptive outside/other split of already-scored TEST rows. Run from C:\dev\b12."""
+
+## DESCRIPTIVE SPLIT, post-scoring, not a test
+
+TEST, one-shot, retrospective. A split of the already-scored rows above; no new comparison, no CI, no decision. Outside = baseline lambda_home or mu_away outside [0.15, 6.0] (same rows for both models); other = the rest.
+
+### All 3829 TEST rows
+
+| group | n | baseline log-loss | P1 log-loss | summed gain (baseline - P1) |
+|---|---|---|---|---|
+| outside | 1 | 0.027037 | 0.035196 | -0.008159 |
+| other | 3828 | 1.008578 | 0.995744 | 49.128279 |
+| total | 3829 | 1.008321 | 0.995493 | 49.120120 |
+
+Share of the total log-loss gain from outside rows: -0.02% (1 of 3829 rows).
+
+### 3545 common rows
+
+| group | n | baseline log-loss | P1 log-loss | summed gain (baseline - P1) |
+|---|---|---|---|---|
+| outside | 1 | 0.027037 | 0.035196 | -0.008159 |
+| other | 3544 | 1.005975 | 0.993905 | 42.777146 |
+| total | 3545 | 1.005699 | 0.993635 | 42.768987 |
+
+Share of the total log-loss gain from outside rows: -0.02% (1 of 3545 rows).
+
