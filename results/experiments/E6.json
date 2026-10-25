@@ -1,0 +1,65 @@
+{
+  "experiment": "E6",
+  "title": "Recalibration",
+  "verdict": "REJECTED",
+  "grid": [
+    {
+      "calibration": "temperature + class bias, fitted on DEV"
+    }
+  ],
+  "chosen": {
+    "temperature": 1.2551125450691194,
+    "bias": [
+      0.0464618750007404,
+      -0.03708219747085956,
+      -0.009379677529880844
+    ]
+  },
+  "incumbent_params": {
+    "process_noise": 0.005,
+    "initial_var": 0.3,
+    "drift_per_day": 0.0,
+    "drift_cap_days": 30.0,
+    "season_gap_days": 45.0,
+    "season_var": 0.0,
+    "cold_attack": 0.0,
+    "cold_defence": 0.3,
+    "clip_rates": true,
+    "rate_bounds": [
+      0.15,
+      6.0
+    ],
+    "league_k": null,
+    "rho": -0.04
+  },
+  "incumbent_dev_logloss": 0.9970853396170339,
+  "incumbent_val_logloss": 0.9811715165663357,
+  "chosen_dev_logloss": 0.9928602923464438,
+  "chosen_val_logloss": 0.9783879932535325,
+  "ci_rows": "VAL",
+  "n_dev": 8769,
+  "n_val": 4291,
+  "n_ci": 4291,
+  "mean_delta_logloss": -0.002783523312803268,
+  "ci99": [
+    -0.006639164153707733,
+    0.001068246793851187
+  ],
+  "p_one_sided": 0.02498750624687656,
+  "checks": {
+    "(i) DEV log-loss improves": true,
+    "(ii) VAL log-loss improves": true,
+    "(iii) 99% CI upper bound < 0": false
+  },
+  "seconds": 0.0,
+  "candidates": [
+    {
+      "temperature": 1.2551125450691194,
+      "bias": "[0.0464618750007404, -0.03708219747085956, -0.009379677529880844]",
+      "dev_logloss": 0.9928602923464438,
+      "val_logloss": 0.9783879932535325,
+      "dev_rps": 0.20355252059141815,
+      "val_rps": 0.19624107104720226
+    }
+  ]
+}
