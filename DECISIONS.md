@@ -40,3 +40,4 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   clip_rates on, rho -0.04). Not evaluated on TEST in this session. Odds audit: non-closing odds timing not
   established (source blocked). Approved: n/a, pre-registered rule.
 - 2026-10-25 Odds timing ESTABLISHED (stated schedule, not per-row timestamps); football-data notes.txt, read 2026-10-25: "Betting odds for weekend games are collected Friday afternoons, and on Tuesday afternoons for midweek games." Approved: n/a, verification.
+- 2026-10-25 One-shot TEST scoring of frozen P1 (only TEST scoring of P1; retrospective): log-loss P1 minus baseline -0.012828 on 3829 rows, 95% week-block CI [-0.015519, -0.010091], upper bound < 0 => ACCEPTED as a TEST improvement. Approved: user, pre-registered rule.
