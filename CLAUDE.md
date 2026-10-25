@@ -99,3 +99,11 @@ contradicts the written expectation.
    date, what was decided, and who approved it.
 7. Post-hoc results are labelled EXPLORATORY in every printout, report and
    commit message. A gate verdict is never overwritten.
+
+## Definition of done
+- Before any report or commit that says finished, run `python -X utf8 tools/gate.py` and paste its final block
+  (the check lines and the GATE verdict). `--fast` skips the anchor run and is for commits only.
+- Never report done on a FAIL. On a FAIL, run /diagnose on the failing lines.
+- The gate checks facts, not interpretations: it cannot tell whether a conclusion is right.
+- Never edit the anchors in tools/gate.py, tools/ownership.txt or results/claims.json to make the gate pass
+  without the user's explicit approval.
