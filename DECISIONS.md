@@ -39,3 +39,4 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
 - 2026-10-25 Frozen candidate P1 = E1 + E3 + E5 (process_noise 0.005, initial_var 0.3, cold_defence 0.3,
   clip_rates on, rho -0.04). Not evaluated on TEST in this session. Odds audit: non-closing odds timing not
   established (source blocked). Approved: n/a, pre-registered rule.
+- 2026-10-25 Odds timing ESTABLISHED (stated schedule, not per-row timestamps); football-data notes.txt, read 2026-10-25: "Betting odds for weekend games are collected Friday afternoons, and on Tuesday afternoons for midweek games." Approved: n/a, verification.
