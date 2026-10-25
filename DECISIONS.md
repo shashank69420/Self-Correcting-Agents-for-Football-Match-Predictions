@@ -30,3 +30,6 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
 - 2026-10-25 E4 REJECTED: best DEV candidate is league effects off (= incumbent). All k were worse on DEV
   though slightly better on VAL (0.98184-0.98195 vs 0.98244); VAL is not a selection criterion on its own.
   Approved: n/a, pre-registered rule.
+- 2026-10-25 E5 ACCEPTED: rho -0.04 (Dixon-Coles sign; inflates 0-0/1-1). DEV log-loss 0.997289 ->
+  0.997085, VAL 0.982435 -> 0.981172, DEV+VAL diff -0.000552, 99% CI [-0.000999, -0.000116].
+  Approved: n/a, pre-registered rule.

@@ -1,0 +1,99 @@
+{
+  "experiment": "E5",
+  "title": "Draw correction (Dixon-Coles rho)",
+  "verdict": "ACCEPTED",
+  "grid": [
+    {
+      "rho": 0.0
+    },
+    {
+      "rho": -0.04
+    },
+    {
+      "rho": -0.08
+    },
+    {
+      "rho": -0.12
+    },
+    {
+      "rho": -0.16
+    }
+  ],
+  "chosen": {
+    "rho": -0.04
+  },
+  "incumbent_params": {
+    "process_noise": 0.005,
+    "initial_var": 0.3,
+    "drift_per_day": 0.0,
+    "drift_cap_days": 30.0,
+    "season_gap_days": 45.0,
+    "season_var": 0.0,
+    "cold_attack": 0.0,
+    "cold_defence": 0.3,
+    "clip_rates": true,
+    "rate_bounds": [
+      0.15,
+      6.0
+    ],
+    "league_k": null,
+    "rho": 0.0
+  },
+  "incumbent_dev_logloss": 0.9972885515501735,
+  "incumbent_val_logloss": 0.9824347745055446,
+  "chosen_dev_logloss": 0.9970853396170339,
+  "chosen_val_logloss": 0.9811715165663357,
+  "ci_rows": "DEV+VAL",
+  "n_dev": 8769,
+  "n_val": 4291,
+  "n_ci": 13060,
+  "mean_delta_logloss": -0.00055150116836489,
+  "ci99": [
+    -0.0009986712084102422,
+    -0.0001162748484945934
+  ],
+  "p_one_sided": 0.0004997501249375312,
+  "checks": {
+    "(i) DEV log-loss improves": true,
+    "(ii) VAL log-loss improves": true,
+    "(iii) 99% CI upper bound < 0": true
+  },
+  "seconds": 11.1,
+  "candidates": [
+    {
+      "rho": 0.0,
+      "dev_logloss": 0.9972885515501735,
+      "val_logloss": 0.9824347745055446,
+      "dev_rps": 0.2043702974478748,
+      "val_rps": 0.1967672695772656
+    },
+    {
+      "rho": -0.04,
+      "dev_logloss": 0.9970853396170339,
+      "val_logloss": 0.9811715165663357,
+      "dev_rps": 0.20433236121255247,
+      "val_rps": 0.1966521792274135
+    },
+    {
+      "rho": -0.08,
+      "dev_logloss": 0.9973211027487217,
+      "val_logloss": 0.9803415718584542,
+      "dev_rps": 0.2043305109835065,
+      "val_rps": 0.19657138237298796
+    },
+    {
+      "rho": -0.12,
+      "dev_logloss": 0.9979822912235725,
+      "val_logloss": 0.9799295877489773,
+      "dev_rps": 0.20436474676073701,
+      "val_rps": 0.19652487901398905
+    },
+    {
+      "rho": -0.16,
+      "dev_logloss": 0.9990578625673172,
+      "val_logloss": 0.9799226531258485,
+      "dev_rps": 0.20443506854424398,
+      "val_rps": 0.19651266915041665
+    }
+  ]
+}
