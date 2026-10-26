@@ -164,3 +164,5 @@ stage had examined. TEST was not used for any choice.
 - Descriptive look at TEST (`results/p2/test_descriptive.md`). DESCRIPTIVE: TEST is not fresh; no claim from this.
   Log-loss on the 3,829 TEST rows: Stage 2 baseline 1.008321, P1 0.995493, goals-only candidate 0.980044, stack
   0.961080, market-only (snapshot) 0.961423, closing average 0.961623.
+
+After the P2 decisions were frozen, TEST_INDEX was scored a second time with the same helpers, descriptively. That look is not a test. The fresh 2015-16 to 2018-19 result is the P2 confirmation, and the TEST figures carry no claim beyond the one-shot result already reported.
