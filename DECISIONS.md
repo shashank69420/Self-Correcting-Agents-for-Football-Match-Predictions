@@ -104,3 +104,12 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   conflicts with adding test_forward.py while tools/gate.py may not be edited. Not fixed; anchor not edited.
   Options: A [post-hoc] EXPECTED_TESTS 46 -> 61 (recommended); B [post-hoc] 46 existing plus the test_forward
   count; C leave failing. Approved: pending user decision.
+- 2026-10-26 Post-hoc approved exception: tools/gate.py EXPECTED_TESTS 46 -> 61 (one line; no other gate, anchor,
+  ownership.txt or claims.json change). tests/test_forward.py added 15 tests, all passing; the 46 existing tests are
+  unchanged. Resolves the tests-count failure logged above (option A). Approved: user, 2026-10-26.
+- 2026-10-26 Pre-commit read-only checks for that exception: (1) the bootstrap seed reaching numpy's default_rng
+  inside forward_logger --score is 20261027, and the CI equals an independent recomputation with that seed; the
+  unpatched metrics helper would use its hardcoded 20260922 (metrics.py not touched). (2) The fresh 2026-2027
+  results source holds 0 completed matches dated 2026-10-22 to 2026-10-25 for each of the 8 leagues (latest result
+  per league 2026-10-18 to 2026-10-21), so the first log's history is as current as the source allows; history and log
+  unchanged. Approved: n/a, verification requested by user.
