@@ -18,9 +18,13 @@ def claim(**fields):
 
 
 class VerifyClaimsTest(unittest.TestCase):
-    def verify(self, claims, findings=FINDINGS_TEXT, source=SOURCE_TEXT):
+    def verify(self, claims, findings=FINDINGS_TEXT, source=SOURCE_TEXT, extra=None):
         with tempfile.TemporaryDirectory() as root:
             os.makedirs(os.path.join(root, 'results'))
+            for path, text in (extra or {}).items():
+                os.makedirs(os.path.dirname(os.path.join(root, path)), exist_ok=True)
+                with open(os.path.join(root, path), 'w', encoding='utf-8') as handle:
+                    handle.write(text)
             with open(os.path.join(root, 'results', 'FINDINGS.md'), 'w', encoding='utf-8') as handle:
                 handle.write(findings)
             with open(os.path.join(root, 'results', 'claims.json'), 'w', encoding='utf-8') as handle:
@@ -67,6 +71,18 @@ class VerifyClaimsTest(unittest.TestCase):
     def test_uncovered_number_fails(self):
         failures = self.verify(self.good(), findings=self.findings_with_all() + 'A new figure: 0.4321.\n')
         self.assertIn('uncovered number in results/FINDINGS.md: 0.4321', failures)
+        # presentation scope: an outline number absent from FINDINGS fails, a backed one and a source tag do not
+        findings = self.findings_with_all()
+        outline = '## 1. Slide\n- RPS 0.2057 on 3,545 rows, gap 0.0131 [2].\n'
+        self.assertEqual(self.verify(self.good(), findings=findings, extra={'presentation/outline.md': outline}), [])
+        failures = self.verify(self.good(), findings=findings,
+                               extra={'presentation/outline.md': outline + '- Also 0.9999.\n'})
+        self.assertIn('number in presentation/outline.md not in results/FINDINGS.md or claims: 0.9999', failures)
+        figures = 'PLOTTED = {"a": ("0.2057", "3,545")}\n'
+        self.assertEqual(self.verify(self.good(), findings=findings, extra={'presentation/make_figures.py': figures}), [])
+        failures = self.verify(self.good(), findings=findings,
+                               extra={'presentation/make_figures.py': figures.replace('3,545', '0.7777')})
+        self.assertIn('plotted value in presentation/make_figures.py not backed by a claim: 0.7777', failures)
 
     def test_ignored_text_is_not_a_number(self):
         extra = '## 2. Heading\nDates 2026-10-19 and 2019-20, Stage 3, Stages 1-5, 1X2, a1b2 and T-60.\n'

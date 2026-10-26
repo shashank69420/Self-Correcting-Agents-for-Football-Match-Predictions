@@ -42,3 +42,5 @@ tests/test_live2627.py
 live2627/PREREGISTRATION.md
 results/live2627/*.md
 results/live2627/*.json
+# Approved exception (2026-10-26): presentation session
+presentation/*

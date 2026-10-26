@@ -272,3 +272,11 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   stricter reading above). T1 M1 minus M0 -0.014830, 97.5% CI [-0.027430, -0.003056]: ACCEPTED. T2 M2 minus M1
   -0.014795, 97.5% CI [-0.030241, -0.000024]: ACCEPTED (upper bound 2.4e-5 below 0). Retrospective forecasts, not
   timestamped before kickoff. live2627.py --verify: PASS. Approved: n/a, pre-registered rule.
+- 2026-10-26 Post-hoc approved exception: presentation session gate scope, two changes. (1) tools/ownership.txt gains
+  presentation/*. (2) tools/verify_claims.py also scans presentation/outline.md (every number must appear in
+  results/FINDINGS.md or equal a claims.json value; source tags like [2, 6] and 16:9 are ignored) and the PLOTTED dict
+  of presentation/make_figures.py (each value must equal a claim value); both are skipped when the file is absent.
+  No other check, constant, anchor or claim changed; claims.json and FINDINGS.md untouched. The outline no longer
+  states a forward-log count, because no claim backs one. Comparison of every plotted value with FINDINGS: no
+  mismatch. The new test is an extra case inside test_uncovered_number_fails, so EXPECTED_TESTS stays 64. Approved:
+  user, 2026-10-26.
