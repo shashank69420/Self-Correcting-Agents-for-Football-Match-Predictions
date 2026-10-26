@@ -12,13 +12,13 @@ with Arial for labels, blue accent (#4F81BD), black text. Figures in `presentati
 ## 1. The question
 - Can a Bayesian sequential model forecast football match outcomes, and how far is it from the closing market?
 - Scored with RPS, Brier and log-loss on a chronological holdout, never on training data.
-- Forecasts are made 60 minutes before kickoff (T-60) [2].
+- Forecasts are made at T-60, before kickoff, so no post-match information is used [2].
 
-Caveat: the written research question is not stated in FINDINGS; this slide is framed from its sections 1 and 2.
+Caveat: the written research question is not stated in FINDINGS; this slide is framed from its data and baseline sections.
 
 ## 2. Data and pipeline
 - 8 leagues x 7 seasons (2019-20 to 2025-26): 56 league-seasons, 19,145 valid matches [1].
-- 80/20 chronological split: training 15,316 matches (to 2025-02-01), test 3,829 (2025-02-01 to 2026-05-24) [1].
+- 80% / 20% chronological split: training 15,316 matches (to 2025-02-01), test 3,829 (2025-02-01 to 2026-05-24) [1].
 - Transfermarkt lineups: 19,140 of 19,145 fixtures strictly matched; Gate A passed on test, 3,829 of 3,829 matched (100.00%) [1].
 
 Caveat: Transfermarkt is a frozen upstream snapshot (current to 6 July 2026); the date our local files were downloaded is not recorded [7].
@@ -60,9 +60,9 @@ Caveat: this split was run after scoring and is descriptive, not a test; DEV and
 ## 7. The forward test
 - Started 2026-10-26 and pre-registered in `forward/PREREGISTRATION.md`, committed before the first forecast [8].
 - Before each match the frozen Stage 2 and P1 forecasts are appended to an append-only, hash-chained log; fixtures are logged only when kickoff is more than three hours away [8].
-- Six forecasts logged, none scored.
+- The first forecasts are logged; none is scored yet.
 
-Caveat: "six" is the count the user supplied; FINDINGS records the start but no count. The pre-registered minimum of scored matches is not recorded as a number in FINDINGS, and below it the report is descriptive only, with no inference [8].
+Caveat: FINDINGS records the start but not how many forecasts are logged, so no count is shown. It names a pre-registered minimum of scored matches without stating it; below that minimum the report is descriptive only, with no inference [8].
 
 ## 8. Limitations
 - Market odds are a benchmark only, and snapshot-odds timing is known at schedule level only (weekend games Friday afternoon, midweek Tuesday afternoon) [7].
@@ -86,5 +86,6 @@ Caveat: the forward test has no scored matches yet, so the takeaway is a hypothe
 ---
 
 ## Open items for the author
-- Slide 1 question wording and slide 7 count ("six") are not in FINDINGS; confirm or add them there so `tools/verify_claims.py` can check them.
-- Per-section numbers above were not run through `tools/verify_claims.py` or `tools/gate.py` in this session (docs-only, outside the gate's scope).
+- The slide 1 question wording is framed by the outline, not stated in FINDINGS.
+- The forward-log count is left out: the log file has rows, but no claim ties a row count to FINDINGS. Add one to claims.json (approval needed) before putting a count on slide 7.
+- `tools/verify_claims.py` now checks every number in this file against FINDINGS or a claim, and every value in `make_figures.py` PLOTTED against a claim.

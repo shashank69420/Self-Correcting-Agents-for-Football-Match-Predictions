@@ -27,3 +27,5 @@ tests/test_forward.py
 forward/PREREGISTRATION.md
 forward/score_report.md
 forward/predictions.jsonl  append-only
+# Approved exception (2026-10-26): presentation session
+presentation/*

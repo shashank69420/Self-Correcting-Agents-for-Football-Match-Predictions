@@ -133,3 +133,11 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
 - 2026-10-26 Deviation: while writing the diagnosis file I included an rm of a scratch counts file
   (outputs/diagnose/.tmp_counts.txt) in a command; the permission system denied it and nothing was deleted. The
   scratch file remains in the gitignored outputs/ folder. Approved: n/a, disclosure.
+- 2026-10-26 Post-hoc approved exception: presentation session gate scope, two changes. (1) tools/ownership.txt gains
+  presentation/*. (2) tools/verify_claims.py also scans presentation/outline.md (every number must appear in
+  results/FINDINGS.md or equal a claims.json value; source tags like [2, 6] and 16:9 are ignored) and the PLOTTED dict
+  of presentation/make_figures.py (each value must equal a claim value); both are skipped when the file is absent.
+  No other check, constant, anchor or claim changed; claims.json and FINDINGS.md untouched. The outline no longer
+  states a forward-log count, because no claim backs one. Comparison of every plotted value with FINDINGS: no
+  mismatch. The new test is an extra case inside test_uncovered_number_fails, so EXPECTED_TESTS stays 64. Approved:
+  user, 2026-10-26.

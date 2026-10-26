@@ -5,6 +5,12 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+# Every plotted value, as written in results/FINDINGS.md. tools/verify_claims.py checks each string against a claim.
+PLOTTED = {
+    "baselines_rps": {"Stage 1": "0.2057245", "Stage 2": "0.2060203", "Market": "0.1926041"},
+    "gate_b": {"c_att": ("+0.0950", "0.0487", "0.1413"), "c_def": ("-0.0022", "-0.0413", "0.0368")},
+    "p1_test": ("-0.012828", "-0.015519", "-0.010091"),
+}
 OUT = Path(__file__).parent / "figures"
 ACCENT = "#4F81BD"
 GREY = "#7F7F7F"
@@ -16,7 +22,7 @@ plt.rcParams.update({"font.family": "serif", "font.serif": ["Times New Roman", "
 def fig_baselines(path):
     # FINDINGS section 2, 3,545 common test rows, RPS
     names = ["Stage 1\nstatic Dixon-Coles", "Stage 2\nsequential filter", "Closing market\naverage"]
-    rps = [0.2057245, 0.2060203, 0.1926041]
+    rps = [float(v) for v in PLOTTED["baselines_rps"].values()]
     fig, ax = plt.subplots(figsize=(7, 4.2))
     bars = ax.bar(names, rps, color=[GREY, ACCENT, RED], width=0.55)
     for b, v in zip(bars, rps):
@@ -32,7 +38,7 @@ def fig_baselines(path):
 
 def fig_gate_b(path):
     # FINDINGS section 4
-    rows = [("c_att", 0.0950, 0.0487, 0.1413), ("c_def", -0.0022, -0.0413, 0.0368)]
+    rows = [(name, *(float(v) for v in vals)) for name, vals in PLOTTED["gate_b"].items()]
     fig, ax = plt.subplots(figsize=(7, 3.2))
     for i, (n, est, lo, hi) in enumerate(rows):
         ax.errorbar(est, i, xerr=[[est - lo], [hi - est]], fmt="o", color=ACCENT, capsize=5, lw=2)
@@ -49,7 +55,7 @@ def fig_gate_b(path):
 
 def fig_p1_test(path):
     # FINDINGS section 6, primary: log-loss difference P1 minus Stage 2, all 3,829 TEST rows
-    est, lo, hi = -0.012828, -0.015519, -0.010091
+    est, lo, hi = (float(v) for v in PLOTTED["p1_test"])
     fig, ax = plt.subplots(figsize=(7, 2.8))
     ax.errorbar(est, 0, xerr=[[est - lo], [hi - est]], fmt="o", color=ACCENT, capsize=6, lw=2.5, ms=9)
     ax.axvline(0, color=RED, ls="--", lw=1.2)
