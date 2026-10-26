@@ -93,3 +93,8 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
 - 2026-10-26 Forward tests: 15 in tests/test_forward.py, all pass; full suite 61 passed. T1 replay: 12 cached rows
   (4 each in 2023-2024, 2024-2025, 2025-2026) x 2 models, max abs difference 0.0 (tolerance 1e-12). tools/gate.py
   expects exactly 46 tests, so its tests check will report 61; the anchor is not edited. Approved: n/a, recorded.
+- 2026-10-26 Forward first real run (code 785b7f39, code_dirty false), 03:58 UTC: history 19,716 played rows through
+  2026-10-21T18:00:00Z (the 2026-2027 results file lags the fixtures file); 11 newcomers seen only in 2026-2027.
+  fixtures.csv: 194 rows, 75 in the 8 leagues, 6 logged (TUR 3, FRA 1, PRT 1, ESP 1; kickoffs 2026-10-26T16:00:00Z
+  to 20:00:00Z), 69 refused as kickoff passed, 0 unknown teams. --verify PASS; second run logged 0 (6 already
+  logged), file bytes unchanged. --score: 6 logged, 0 scored, 6 pending. Approved: n/a, pre-registered rule.
