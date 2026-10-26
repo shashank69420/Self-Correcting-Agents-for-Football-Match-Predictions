@@ -18,6 +18,7 @@ import json
 import os
 import subprocess
 import sys
+import unicodedata
 import warnings
 
 import numpy as np
@@ -57,6 +58,10 @@ FETCH_ATTEMPTS = 3
 MIN_ROWS = 200
 MAX_NEWCOMERS = 4
 NAME_THRESHOLD = 88
+# Post-hoc stricter reading (DECISIONS.md, 2026-10-27), decided before any score: a newcomer whose Transfermarkt
+# club_id appears in H under another name is an alias, flagged and excluded like a WRatio flag; names are never merged.
+# Evidence: python -X utf8 live2627.py --alias-check.
+CLUB_ID_ALIASES = {'Erzurumspor': dict(club_id=39722, h_name='Erzurum BB')}
 TOLERANCE = 1e-12
 SOT = list(p2_model.SOT_COLUMNS)
 CLOSING = list(harness.MARKET_COLUMNS)  # avg_ch, avg_cd, avg_ca
@@ -288,8 +293,9 @@ def team_days(frame):
     return int(teams.assign(day=teams['date'].dt.normalize()).duplicated(['day', 'team']).sum())
 
 
-def name_audit(history, live):
-    """Newcomers (L teams in no H row) with their best WRatio against H names of the same league, raw and processed."""
+def name_audit(history, live, aliases=CLUB_ID_ALIASES):
+    """Newcomers (L teams in no H row) with their best WRatio against H names of the same league, raw and processed.
+    flagged: WRatio flag (88 or more) or a club_id alias in aliases."""
     h_teams = set(history['team_home']) | set(history['team_away'])
     records = []
     for league in LEAGUES:
@@ -300,16 +306,99 @@ def name_audit(history, live):
             raw_match, raw_score, _ = process.extractOne(team, h_names, scorer=fuzz.WRatio)
             proc_match, proc_score, _ = process.extractOne(team, h_names, scorer=fuzz.WRatio,
                                                            processor=utils.default_process)
+            wratio = bool(max(raw_score, proc_score) >= NAME_THRESHOLD)
+            alias = aliases.get(team)
             records.append(dict(league=league, team=team, best_raw=raw_match, wratio_raw=float(raw_score),
-                                best_processed=proc_match, wratio_processed=float(proc_score),
-                                flagged=bool(max(raw_score, proc_score) >= NAME_THRESHOLD)))
+                                best_processed=proc_match, wratio_processed=float(proc_score), flagged_wratio=wratio,
+                                alias_of=f'{alias["h_name"]} (club_id {alias["club_id"]})' if alias else '',
+                                flagged=wratio or alias is not None))
     return pd.DataFrame(records, columns=['league', 'team', 'best_raw', 'wratio_raw', 'best_processed',
-                                          'wratio_processed', 'flagged'])
+                                          'wratio_processed', 'flagged_wratio', 'alias_of', 'flagged'])
 
 
-def data_checks(history, live):
+def ascii_name(name):
+    """default_process, hyphens as spaces, accents removed: for the club-name lookup in the alias check."""
+    folded = unicodedata.normalize('NFKD', utils.default_process(str(name).replace('-', ' ')))
+    return ' '.join(folded.encode('ascii', 'ignore').decode().split())
+
+
+def alias_check(history, live):
+    """Club_id alias check (post-hoc stricter reading): for each newcomer, the top 3 H names across all leagues by
+    WRatio (raw and processed) with their club_ids; the newcomer's own club_id(s) are the Transfermarkt clubs whose
+    name or code (clubs.csv.gz) or game name (games.csv.gz) contains its folded name. H names get their club_id from the
+    fixture link of the lineup audit (lineup.link_fixtures, unchanged). An alias is a newcomer club_id that appears in
+    H under another name. Returns (records, H name -> club_id)."""
+    from lineup import link_fixtures, load_local_tables
+    tables = load_local_tables()
+    with contextlib.redirect_stdout(io.StringIO()):
+        links = link_fixtures(history.drop(columns=['frame', 'is_test']), tables)
+    h_ids = {}
+    for side in ('home', 'away'):
+        for team, club_id in zip(history[f'team_{side}'], links[f'{side}_club_id']):
+            if pd.notna(club_id):
+                h_ids.setdefault(team, set()).add(int(club_id))
+    if any(len(ids) != 1 for ids in h_ids.values()) or set(h_ids) != set(history['team_home']) | set(
+            history['team_away']):
+        raise RuntimeError('An H name has no club_id or more than one; the alias check cannot decide.')
+    h_ids = {team: ids.pop() for team, ids in h_ids.items()}
+    names_by_id = {}
+    for team, club_id in h_ids.items():
+        names_by_id.setdefault(club_id, []).append(team)
+    clubs, games = tables['clubs'], tables['games']
+    tm_names = pd.concat([clubs[['club_id', 'name']], clubs[['club_id', 'club_code']].set_axis(['club_id', 'name'],
+                                                                                               axis=1)]
+                         + [games[[f'{s}_club_id', f'{s}_club_name']].set_axis(['club_id', 'name'], axis=1)
+                            for s in ('home', 'away')]).dropna().drop_duplicates()
+    tm_names = tm_names.assign(club_id=tm_names['club_id'].astype('int64'), folded=tm_names['name'].map(ascii_name))
+    club_name = dict(zip(clubs['club_id'].astype('int64'), clubs['name']))
+    all_h = sorted(h_ids)
+    records = []
+    for row in name_audit(history, live, aliases={}).itertuples():
+        top = {kind: [(name, round(float(score), 1), h_ids[name]) for name, score, _ in
+                      process.extract(row.team, all_h, scorer=fuzz.WRatio, processor=processor, limit=3)]
+               for kind, processor in (('raw', None), ('processed', utils.default_process))}
+        hits = tm_names.loc[tm_names['folded'].str.contains(ascii_name(row.team), regex=False)]
+        own = {int(club_id): sorted(set(hits.loc[hits['club_id'] == club_id, 'name']))
+               for club_id in sorted(set(hits['club_id']))}
+        nearest = [(name, round(float(score), 1), int(club_id)) for name, score, club_id in process.extract(
+            row.team, club_name, scorer=fuzz.WRatio, processor=utils.default_process, limit=2)]
+        in_h = {club_id: names_by_id[club_id] for club_id in own if club_id in names_by_id}
+        records.append(dict(league=row.league, team=row.team, top3_raw=top['raw'], top3_processed=top['processed'],
+                            top_club_ids=sorted({c for kind in top.values() for _, _, c in kind}),
+                            own_club_ids=own, nearest_clubs=nearest, club_ids_in_h=in_h,
+                            alias=bool(in_h), wratio_flagged=bool(row.flagged_wratio)))
+    return records, h_ids
+
+
+def run_alias_check():
+    """Prints the alias-check evidence (read only) and whether it matches CLUB_ID_ALIASES; 1 if it does not."""
+    history = load_history()
+    live = live_frame(read_json(snapshot_name(snapshot_dates()[0]))['rows'])
+    records, _ = alias_check(history, live)
+    for r in records:
+        print(f'\n{r["team"]} ({r["league"]}); WRatio rule flag: {r["wratio_flagged"]}')
+        for kind in ('raw', 'processed'):
+            print(f'  top 3 H names, all leagues, {kind}: ' +
+                  ', '.join(f'{name} {score} (club_id {club_id})' for name, score, club_id in r[f'top3_{kind}']))
+        print(f'  own club_id(s) by name in clubs/games: {r["own_club_ids"] or "none found"}')
+        print('  nearest clubs.name by WRatio (context only): ' +
+              ', '.join(f'{name} {score} ({club_id})' for name, score, club_id in r['nearest_clubs']))
+        print(f'  own club_id(s) in H under another name: {r["club_ids_in_h"] or "none"} -> '
+              f'{"ALIAS" if r["alias"] else "no alias"}')
+    found = {r['team']: r['club_ids_in_h'] for r in records if r['alias']}
+    expected = {team: {alias['club_id']: [alias['h_name']]} for team, alias in CLUB_ID_ALIASES.items()}
+    flagged = {r['team'] for r in records if r['alias']}
+    excluded = live.loc[live['team_home'].isin(flagged) | live['team_away'].isin(flagged)]
+    print(f'\nWRatio rule: flagged {sum(r["wratio_flagged"] for r in records)} at WRatio >= {NAME_THRESHOLD}.')
+    print(f'Alias check: {len(found)} flagged: {found}. Matches CLUB_ID_ALIASES: {found == expected}.')
+    print(f'L rows involving a club_id alias: {len(excluded)}; per league: '
+          f'{excluded["competition"].value_counts().to_dict()}')
+    return 0 if found == expected else 1
+
+
+def data_checks(history, live, aliases=CLUB_ID_ALIASES):
     """Counts and stop conditions only (no outcome is read)."""
-    names = name_audit(history, live)
+    names = name_audit(history, live, aliases)
     per_league = {league: int((live['competition'] == league).sum()) for league in LEAGUES}
     counts = names.groupby('league').size()
     newcomers = {league: int(counts.get(league, 0)) for league in LEAGUES}
@@ -573,7 +662,7 @@ def score(date, kind, root=PROJECT_DIR):
                     m3_rows=int(m3_mask.sum()), m3_renormalized=renormalized, m4_rows=int(m4_mask.sum()),
                     per_league_test={league: int((scored['competition'] == league).sum()) for league in LEAGUES}),
         forward_log=forward_info, data_checks=checks, name_audit=names.to_dict(orient='records'),
-        flagged_teams=flagged, newcomers=sorted(names['team']), market_columns=CLOSING,
+        flagged_teams=flagged, club_id_aliases=CLUB_ID_ALIASES, newcomers=sorted(names['team']), market_columns=CLOSING,
         rule=dict(level=LEVEL, seed=SEED, n_resamples=N_RESAMPLES, bootstrap='paired, resampling matches',
                   accept='upper bound below 0'),
         tests=tests, overall=overall.to_dict(orient='records'), per_league=per_league.to_dict(orient='records'),
@@ -609,8 +698,11 @@ def report_lines(payload, logged, named):
               f'- Snapshot rows: {counts["snapshot_rows"]}; completed L rows: {counts["completed"]}.',
               f'- Excluded, in the forward log (matched on league, season, home, away): {counts["excluded_forward_log"]}.',
               *[f'  - {r.competition}: {r.team_home} v {r.team_away}, {r.date:%Y-%m-%d %H:%M}' for r in logged.itertuples()],
-              f'- Excluded, flagged name (WRatio 88 or more): {counts["excluded_flagged_names"]} rows; flagged teams: '
-              f'{", ".join(payload["flagged_teams"]) or "none"}.',
+              f'- Excluded, flagged name (WRatio 88 or more, or a club_id alias: post-hoc stricter reading, '
+              f'DECISIONS.md 2026-10-27): {counts["excluded_flagged_names"]} rows; flagged teams: '
+              f'{", ".join(payload["flagged_teams"]) or "none"}; WRatio flags: '
+              f'{", ".join(r["team"] for r in payload["name_audit"] if r["flagged_wratio"]) or "none"}; club_id '
+              f'aliases: {", ".join(r["team"] + " = " + r["alias_of"] for r in payload["name_audit"] if r["alias_of"]) or "none"}.',
               *[f'  - {r.competition}: {r.team_home} v {r.team_away}, {r.date:%Y-%m-%d %H:%M}' for r in named.itertuples()],
               f'- Test set: {counts["test_set"]} matches; newcomer matches {counts["newcomer_matches"]}, established '
               f'{counts["established_matches"]}.',
@@ -827,9 +919,12 @@ def main(argv=None):
     mode.add_argument('--snapshot', action='store_true', help='first fetch: snapshot, manifest and data audit')
     mode.add_argument('--refresh', action='store_true', help='new dated snapshot, or score a committed newer one')
     mode.add_argument('--verify', action='store_true', help='pre-registration, snapshot hashes, no TEST row scored')
+    mode.add_argument('--alias-check', action='store_true', help='club_id alias evidence for the newcomers (read only)')
     args = parser.parse_args(argv)
     if args.verify:
         return run_verify()
+    if args.alias_check:
+        return run_alias_check()
     if args.snapshot:
         if snapshot_dates():
             raise SystemExit('A snapshot exists; later fetches use --refresh.')

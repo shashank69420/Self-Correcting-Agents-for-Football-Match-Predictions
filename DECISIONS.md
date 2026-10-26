@@ -246,3 +246,23 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   `attribution.commit` set to an empty string hides commit attribution; `includeCoAuthoredBy` is deprecated since
   v2.0.62; `attribution: false` needs v2.1.281 or later. Merged `"attribution": {"commit": ""}` at the end of
   .claude/settings.json; nothing else in the file changed. Approved: user, 2026-10-27 (session prompt).
+- 2026-10-27 Live Phase 2 snapshot: results/live2627/snapshot_20261026.json and manifest_20261026.json were present,
+  uncommitted, at the start of this session (fetched_at_utc 2026-10-26T19:38:02Z, code commit ee9f64d, code_dirty
+  false; 571 rows fetched, 571 completed; rows sha256 57df218f...6294). Not re-fetched; --snapshot not run again.
+  These two files are the only 2026-27 data used. Approved: user, 2026-10-27 (session prompt).
+- 2026-10-27 Live POST-HOC STRICTER READING of the name audit (club_id alias check), decided after the snapshot and
+  before any score. The pre-registered rule (best same-league WRatio, raw or default_process, >= 88) flagged 0 of 11
+  newcomers and missed a known alias. Check: for each newcomer, top 3 H names across all leagues by WRatio (raw and
+  processed); H names get their Transfermarkt club_id from lineup.link_fixtures (unchanged; one club_id per H name);
+  the newcomer's own club_id(s) are the clubs in data/clubs.csv.gz (name, club_code) or data/games.csv.gz (club names)
+  whose name contains the newcomer's folded name; an alias is a newcomer club_id that appears in H under another name.
+  Result: 1 alias. Erzurumspor (L, TUR Super Lig) = club 39722 "Erzurumspor FK", club_code
+  buyuksehir-belediye-erzurumspor, which is H's "Erzurum BB" (TUR 2020-2021, all 40 H rows link to 39722); its best
+  same-league WRatio was 66.7 (Bodrumspor), so the WRatio rule did not catch it. No other alias: Coventry 990, Hull
+  3008 (also 12335 Solihull Moors), La Coruna 897, Malaga 1084, Santander 630 (also 103271), Elversberg 64, Academico
+  Viseu 7788 do not appear in H; Le Mans, Amedspor and Corum have no club_id in the tables (not decidable by club_id,
+  not flagged). Action: Erzurumspor is flagged (live2627.CLUB_ID_ALIASES) and its 8 L rows (all TUR Super Lig) are
+  excluded from the primary test set; no names are merged in any data; T1/T2, the rule and the other exclusions are
+  unchanged. Evidence table in results/live2627/data_audit.md; reproduce with live2627.py --alias-check. New test:
+  a club_id-flagged team is excluded with WRatio below 88; tools/gate.py EXPECTED_TESTS 91 -> 92 (pytest total).
+  Approved: user, 2026-10-27 (session prompt).

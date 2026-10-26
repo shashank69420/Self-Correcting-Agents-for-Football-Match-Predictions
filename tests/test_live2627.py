@@ -176,6 +176,24 @@ class ScoredFrameTest(unittest.TestCase):
         self.assertFalse((scored['team_home'] == 'Nottm Forest').any() or (scored['team_away'] == 'Nottm Forest').any())
         self.assertTrue((scored['team_home'] == 'Brand New FC').any() or (scored['team_away'] == 'Brand New FC').any())
 
+    def test_club_id_alias_is_excluded_below_the_wratio_threshold(self):
+        h = history()
+        rows = live_rows(h)
+        aliases = {'Brand New FC': dict(club_id=1, h_name='ENG 9')}
+        names, _, _ = live.data_checks(h, live.live_frame(rows), aliases)
+        row = names.set_index('team').loc['Brand New FC']
+        self.assertLess(max(row['wratio_raw'], row['wratio_processed']), live.NAME_THRESHOLD)
+        self.assertFalse(row['flagged_wratio'])
+        self.assertEqual(row['alias_of'], 'ENG 9 (club_id 1)')
+        self.assertTrue(row['flagged'])
+        flagged = sorted(names.loc[names['flagged'], 'team'])
+        both, _ = live.concatenate(h, live.live_frame(rows))
+        scored, _, named = live.select_scored(both, h, set(), flagged)
+        self.assertGreater(len(named), 0)
+        self.assertFalse(scored['team_home'].eq('Brand New FC').any() or scored['team_away'].eq('Brand New FC').any())
+        self.assertEqual(len(scored) + len(named), int((both['frame'] == 'L').sum()))
+        self.assertEqual(live.CLUB_ID_ALIASES, {'Erzurumspor': dict(club_id=39722, h_name='Erzurum BB')})
+
     def test_more_than_four_newcomers_in_a_league_stops(self):
         h = history()
         rows = live_rows(h)
