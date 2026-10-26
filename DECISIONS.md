@@ -156,3 +156,10 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   exp_model.run_filter, and raises on drift, season variance or league effects, which P2 does not use;
   (9) EXPECTED_TESTS is set once all P2 tests exist (before the Phase 4 gate, which may only fail on the branch);
   it is the final collected total and is checked again at Phase 7. Approved: n/a, prompt rule.
+- 2026-10-26 P2 Phase 2 (fresh data, counts only; results/p2/data_audit.md): 40 of 40 league-seasons fetched
+  (penaltyblog FootballData, 2014-2015 to 2018-2019), 13,720 rows, 0 dropped by cleaning; 2,744 burn-in rows
+  (2014-2015) and 10,976 scored rows. All 40 files lack a Time column, so the pre-registered datetime = Date fallback
+  applies to every F row. Snapshot triple on F: bb_av_h/d/a (no avg_* in any F file), 0 rows missing it; closing
+  benchmark on F: Pinnacle closing (psch/pscd/psca; no avg_ch). SoT (hst, ast) absent in NLD, PRT and TUR 2014-2015
+  to 2016-2017 (w = 0 for those rows by the pre-registered rule). No team in two leagues, no team with two matches on
+  one day. Raw cache data/fixtures_pre2019.pkl (not committed). Approved: n/a, pre-registered rule.
