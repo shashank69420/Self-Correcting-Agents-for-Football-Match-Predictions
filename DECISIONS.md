@@ -163,3 +163,9 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   benchmark on F: Pinnacle closing (psch/pscd/psca; no avg_ch). SoT (hst, ast) absent in NLD, PRT and TUR 2014-2015
   to 2016-2017 (w = 0 for those rows by the pre-registered rule). No team in two leagues, no team with two matches on
   one day. Raw cache data/fixtures_pre2019.pkl (not committed). Approved: n/a, pre-registered rule.
+- 2026-10-26 P2 code: p2_model.py (filter with the S1 shots term), p2_stack.py (S2), run_p2.py (all phases),
+  tests/test_p2.py (14 tests, synthetic, no network). run_p2.py --check: p2_model with shots_w = 0 and P1 parameters
+  reproduces exp_model.run_filter P1 on all 19,145 rows, max abs difference 0.0 (results/p2/check.md). pytest
+  collects 78 (64 existing + 14), all pass; tools/gate.py EXPECTED_TESTS 64 -> 78 (the only gate change, made now
+  because every P2 test exists and the Phase 4 gate may fail only on the branch). Approved: user, 2026-10-26
+  (session prompt exception).

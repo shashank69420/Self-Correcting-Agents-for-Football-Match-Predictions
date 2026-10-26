@@ -83,9 +83,9 @@ def load_fresh(path=FRESH_PATH):
     return clean_fresh(pd.read_pickle(path))
 
 
-def snapshot_columns(frame):
-    """The snapshot triple present in a frame: avg_* if present, else the Betbrain average; None if neither."""
-    for triple in (SNAPSHOT_TRIPLE, SNAPSHOT_FALLBACK):
+def snapshot_columns(frame, fallback=True):
+    """The snapshot triple present in a frame: avg_* if present, else (fallback) the Betbrain average; or None."""
+    for triple in (SNAPSHOT_TRIPLE, SNAPSHOT_FALLBACK) if fallback else (SNAPSHOT_TRIPLE,):
         if set(triple) <= set(frame.columns) and frame[list(triple)].notna().any().any():
             return triple
     return None
@@ -99,13 +99,14 @@ def valid_triple(frame, triple):
     return (numeric > 1.0).all(axis=1)
 
 
-def snapshot_odds(frame):
-    """Snapshot odds (n, 3) per row, from avg_* or, per league-season without avg_*, the Betbrain average."""
+def snapshot_odds(frame, fallback=True):
+    """Snapshot odds (n, 3) per row (NaN without a valid triple), from avg_* or, per league-season without avg_*
+    and with fallback, the Betbrain average; and the column label per row."""
     odds = np.full((len(frame), 3), np.nan)
     columns = pd.Series('', index=frame.index, dtype=object)
     for _, ids in frame.groupby(['competition', 'season']).groups.items():
         group = frame.loc[ids]
-        triple = snapshot_columns(group)
+        triple = snapshot_columns(group, fallback)
         if triple is None:
             continue
         mask = valid_triple(group, triple).to_numpy()
