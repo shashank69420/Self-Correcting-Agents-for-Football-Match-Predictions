@@ -191,3 +191,8 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   rows; 98.3% paired week-block CI, seed 20261030; results/p2/fresh_once.md). T-A P1 minus Stage 2 baseline
   -0.013985, CI [-0.016001, -0.012097]: PASS. T-B goals-only candidate minus P1 -0.013857, CI [-0.017536,
   -0.010341]: PASS. T-C not run (S2 rejected). Ran once, no error, no rerun. Approved: n/a, pre-registered rule.
+- 2026-10-26 P2 Phase 6, DESCRIPTIVE look at TEST_INDEX (TEST is not fresh; no claim from this; written after
+  results/p2/fresh_once.md; results/p2/test_descriptive.md). Log-loss on 3,829 rows: baseline 1.008321, P1 0.995493
+  (P1 minus baseline -0.012828, as the earlier P1 TEST result), goals-only candidate 0.980044, stack 0.961080,
+  market-only (snapshot) 0.961423, closing average 0.961623. No parameter or rule changed. Approved: n/a,
+  pre-registered rule.
