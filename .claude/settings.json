@@ -50,5 +50,8 @@
       "PowerShell(rmdir *)",
       "PowerShell(del *)"
     ]
+  },
+  "attribution": {
+    "commit": ""
   }
 }

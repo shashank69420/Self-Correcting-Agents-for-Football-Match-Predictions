@@ -15,7 +15,7 @@ sys.path.insert(0, os.path.join(ROOT, 'tools'))
 import verify_claims  # noqa: E402
 
 EXPECTED_BRANCH = 'main'
-EXPECTED_TESTS = 78
+EXPECTED_TESTS = 91
 ANCHORS = dict(stage1_rps='0.2057', stage2_rps='0.2060', all_3829_rps='0.2059', change_scale='0')
 FORBIDDEN_PREFIXES = ('data/', 'outputs/', 'venv/')
 FORBIDDEN_SUFFIXES = ('.csv', '.pkl')

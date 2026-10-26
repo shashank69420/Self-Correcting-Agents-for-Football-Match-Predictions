@@ -230,3 +230,19 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   code and tests" precedes the primary scoring so that primary.md is produced by committed code (not in the prompt's
   commit list); (12) primary.json lists the scored rows with their forecasts so --verify can check that no TEST row
   was scored. Approved: n/a, prompt rule.
+- 2026-10-27 Live Phase 2 BLOCKED (environment, not data). `python -X utf8 live2627.py --snapshot` stopped before any
+  row was received: every request to www.football-data.co.uk is reset during the TLS handshake (WinError 10054) from
+  both the Bash and the PowerShell tools of this session, while github.com is reachable, so the session's network
+  sandbox does not allow the source. 3 attempts for ENG Premier League, then the pre-registered fetch STOP; nothing
+  written (no results/live2627/ files). One rerun with the sandbox lifted was denied by the permission system and was
+  not worked around. No 2026-27 row has been seen by this session. Approved: n/a, disclosure.
+- 2026-10-27 Live order change caused by the block: Phase 3 (live2627.py complete, tests/test_live2627.py with 13
+  tests, all passing; tools/gate.py EXPECTED_TESTS 78 -> 91, the pytest collected total) is committed as "live:
+  scoring code and tests" before the Phase 2 snapshot, so the snapshot and scoring code are fixed before any 2026-27
+  data is seen. Synthetic dry run in a temporary repository (no real L data): both equality checks 0.0, the guard
+  refused uncommitted snapshot files, --verify passed. Phases 2, 4 and 5 (snapshot commit, primary scoring, FINDINGS
+  section 10 and claims) are not done. Approved: n/a, prompt rule (stricter reading: code before data).
+- 2026-10-27 Trailer: Claude Code settings reference (code.claude.com/docs/en/settings-reference, read 2026-10-27):
+  `attribution.commit` set to an empty string hides commit attribution; `includeCoAuthoredBy` is deprecated since
+  v2.0.62; `attribution: false` needs v2.1.281 or later. Merged `"attribution": {"commit": ""}` at the end of
+  .claude/settings.json; nothing else in the file changed. Approved: user, 2026-10-27 (session prompt).

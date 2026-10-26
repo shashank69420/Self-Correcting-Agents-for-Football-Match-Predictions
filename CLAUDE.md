@@ -126,3 +126,11 @@ contradicts the written expectation.
   `--fresh` and `--test-look` refuse to run twice, and F rows are scored only through p2_data.fresh_scoring_rows.
 - Results: S0 and S1 accepted, S2 rejected; fresh T-A and T-B passed, T-C not run (FINDINGS section 9).
   The TEST look in results/p2/test_descriptive.md is descriptive only.
+
+## Live 2026-27 (2026-10-27)
+- Protocol: live2627/PREREGISTRATION.md (committed before any 2026-27 fetch; never edit it).
+  `python -X utf8 live2627.py --snapshot | (default) | --refresh | --verify`. Snapshots and manifests in
+  results/live2627/ are JSON, never overwritten; scoring needs the pre-registration and the snapshot committed.
+- The default run scores snapshot 1 once; its T1/T2 verdicts are final. `--refresh` is two-step (fetch and write,
+  commit, then `--refresh` again scores) and its cumulative reports are descriptive.
+- Status: Phase 2 blocked by the session network sandbox (football-data.co.uk unreachable); see DECISIONS.md.
