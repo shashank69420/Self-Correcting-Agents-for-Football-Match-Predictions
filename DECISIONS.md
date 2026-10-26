@@ -82,3 +82,14 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   >= 600 scored rows; (6) --verify also checks that the committed log is a byte prefix of the working file (detects
   tail truncation, which a hash chain alone cannot); (7) odds_snapshot keeps the raw CSV strings; (8) code_dirty =
   any git status entry other than forward/predictions.jsonl and forward/score_report.md. Approved: n/a, prompt rule.
+- 2026-10-26 Forward commit order: logger and tests are committed before the first real run ("forward: logger and
+  tests"), then the first log is committed separately ("forward: first log"), instead of the single commit "forward:
+  logger, tests and first log" named in the session prompt, so that every logged row's code_commit contains the code
+  that produced it and code_dirty is false. Choice (4) is implemented by running metrics.paired_week_block_ci itself
+  with numpy's default_rng patched to seed 20261027 for that call (it checks the helper draws exactly once), so no
+  bootstrap code is copied. candidate_p1.json is CRLF in this working copy: params_sha256 is of the on-disk bytes
+  (74d14ea8...); the git blob (LF) hashes to a04d1755...; the logger's freeze check compares the parsed params with
+  the frozen values, which does not depend on line endings. Approved: n/a, prompt rule (decide and log).
+- 2026-10-26 Forward tests: 15 in tests/test_forward.py, all pass; full suite 61 passed. T1 replay: 12 cached rows
+  (4 each in 2023-2024, 2024-2025, 2025-2026) x 2 models, max abs difference 0.0 (tolerance 1e-12). tools/gate.py
+  expects exactly 46 tests, so its tests check will report 61; the anchor is not edited. Approved: n/a, recorded.
