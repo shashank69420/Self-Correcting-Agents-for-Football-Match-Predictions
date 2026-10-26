@@ -118,3 +118,11 @@ contradicts the written expectation.
 - Never change the P1 params (results/experiments/candidate_p1.json), the baseline params, home_adv or the forecast
   code after the first log (2026-10-26). A changed model gets a new model id and is logged separately.
 - `--score` never modifies predictions.jsonl. Below 600 scored matches the report is descriptive only.
+
+## P2 (fresh seasons and pre-registered improvements, 2026-10-26)
+- Protocol: p2/PREREGISTRATION.md. `python -X utf8 run_p2.py --check | --select S0|S1|S2 | --freeze | --fresh | --test-look`;
+  `--fetch` downloads 2014-2015 to 2018-2019 into data/fixtures_pre2019.pkl (not committed).
+- results/p2/candidate_p2.json is frozen (self-hash). Never change it, the S0-S2 results or the fresh scoring;
+  `--fresh` and `--test-look` refuse to run twice, and F rows are scored only through p2_data.fresh_scoring_rows.
+- Results: S0 and S1 accepted, S2 rejected; fresh T-A and T-B passed, T-C not run (FINDINGS section 9).
+  The TEST look in results/p2/test_descriptive.md is descriptive only.

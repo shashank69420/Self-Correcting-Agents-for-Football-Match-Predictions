@@ -196,3 +196,8 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   (P1 minus baseline -0.012828, as the earlier P1 TEST result), goals-only candidate 0.980044, stack 0.961080,
   market-only (snapshot) 0.961423, closing average 0.961623. No parameter or rule changed. Approved: n/a,
   pre-registered rule.
+- 2026-10-26 P2 Phase 7: results/FINDINGS.md section 9 added (45 numbers, each registered in results/claims.json as
+  p2_001 to p2_045, appended); CLAUDE.md gains an appended P2 section. Disclosures: (1) results/p2/fresh_once.md also
+  shows the frozen stack and market-only on F as descriptive rows (not pre-registered as Phase 5 output, no test,
+  no verdict; T-C was not run); (2) its per-season and per-league differences carry 98.3% CIs, descriptive only, with
+  no per-group verdict. EXPECTED_TESTS stays 78 (pytest collects 78). Approved: n/a, recorded.

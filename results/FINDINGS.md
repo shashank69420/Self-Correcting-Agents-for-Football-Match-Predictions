@@ -125,3 +125,42 @@ if kickoff is more than three hours away. The fixture list and the current-seaso
 run. `--verify` checks the log; `--score` matches results and writes `forward/score_report.md`. No forward result is
 reported here yet: below the pre-registered minimum of scored matches the report is descriptive only, with no
 inference. Kickoff times are read as UK local time; the source does not state its time zone.
+
+## 9. P2: fresh seasons 2015-16 to 2018-19 and three pre-registered improvements
+Pre-registered in `p2/PREREGISTRATION.md`, committed before any 2014-2019 data was fetched. Selection used DEV and VAL
+only; the frozen candidates (`results/p2/candidate_p2.json`) were then scored once on four seasons that no earlier
+stage had examined. TEST was not used for any choice.
+
+- Fresh data (`results/p2/data_audit.md`): 40 of 40 league-seasons fetched, 13,720 matches; 2014-15 is burn-in and
+  10,976 matches are scored. The files before 2019-20 carry no kickoff times, so their dates are used at midnight
+  (pre-registered). On these seasons the market snapshot is the Betbrain average and the closing benchmark is Pinnacle.
+- Selection, selection-period and retrospective (99% paired week-block CIs on DEV+VAL; `results/p2/S0.md`, `S1.md`,
+  `S2.md`):
+
+| Step | Choice | DEV log-loss | VAL log-loss | 99% CI, candidate minus incumbent | Verdict |
+|---|---|---|---|---|---|
+| S0 widened grid on P1 | process_noise 0.0025, initial_var 0.15, cold_defence 0.45 | 0.997085 to 0.989816 | 0.981172 to 0.973652 | [-0.009042, -0.005788] | ACCEPTED |
+| S1 shots on target in the update | w 0.5 | 0.989816 to 0.981546 | 0.973652 to 0.968042 | [-0.009959, -0.004874] | ACCEPTED |
+| S2 stack vs market-only | stack fitted on DEV | 0.969143 to 0.969109 | 0.945214 to 0.944966 | [-0.000296, +0.000072] | REJECTED |
+
+- The frozen goals-only candidate is P1 plus S0 plus S1. S0 chose the lowest process_noise and initial_var in its
+  grid, so a better value may lie outside it; that was not explored (no re-runs with other grids).
+- Fresh scoring, FRESH out-of-time (2015-16 to 2018-19), first scoring (`results/p2/fresh_once.md`); 98.3% CIs
+  (Bonferroni for three tests), a test passes only if the upper bound is below 0:
+
+| Test | Mean log-loss difference | 98.3% CI | Verdict |
+|---|---|---|---|
+| T-A: P1 minus Stage 2 baseline (replication) | -0.013985 | [-0.016001, -0.012097] | PASS |
+| T-B: goals-only candidate minus P1 | -0.013857 | [-0.017536, -0.010341] | PASS |
+| T-C: stack minus market-only | not run: S2 was rejected | | |
+
+- Fresh mean log-loss: Stage 2 baseline 0.997499, P1 0.983514, goals-only candidate 0.969656. The Pinnacle closing
+  market scores 0.948996 on the 10,965 fresh matches that have it; it uses later information and is a benchmark only,
+  not comparable with the TEST-era closing-average figures. Both differences are negative in each of the four
+  seasons. Per league (descriptive, no per-league verdict) the T-B interval crosses 0 only for Turkey (upper bound
+  0.000335).
+- S2 uses market odds, so it is a separate Model+Market track; the goals-only result stands on its own. On DEV the
+  stack gave the model a negative weight (a -0.062544) and did not beat market-only under the pre-registered rule.
+- Descriptive look at TEST (`results/p2/test_descriptive.md`). DESCRIPTIVE: TEST is not fresh; no claim from this.
+  Log-loss on the 3,829 TEST rows: Stage 2 baseline 1.008321, P1 0.995493, goals-only candidate 0.980044, stack
+  0.961080, market-only (snapshot) 0.961423, closing average 0.961623.
