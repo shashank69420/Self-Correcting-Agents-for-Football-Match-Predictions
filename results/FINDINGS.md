@@ -118,4 +118,10 @@ upper bound on the mean log-loss difference (P1 minus Stage 2) over all 3,829 TE
   DECISIONS.md.
 
 ## 8. Forward test
-Not started. `outputs/forward/` does not exist, and the `forward-logger` branch has no `forward_logger.py`.
+Started on 2026-10-26 and pre-registered in `forward/PREREGISTRATION.md`, which was committed before the first
+forecast was logged. Before each match in the eight leagues, `forward_logger.py` appends the frozen baseline (Stage 2)
+and P1 forecasts to `forward/predictions.jsonl`. The log is append-only and hash-chained, and a fixture is logged only
+if kickoff is more than three hours away. The fixture list and the current-season results are fetched fresh at every
+run. `--verify` checks the log; `--score` matches results and writes `forward/score_report.md`. No forward result is
+reported here yet: below the pre-registered minimum of scored matches the report is descriptive only, with no
+inference. Kickoff times are read as UK local time; the source does not state its time zone.

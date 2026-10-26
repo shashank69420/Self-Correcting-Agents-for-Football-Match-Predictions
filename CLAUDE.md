@@ -107,3 +107,14 @@ contradicts the written expectation.
 - The gate checks facts, not interpretations: it cannot tell whether a conclusion is right.
 - Never edit the anchors in tools/gate.py, tools/ownership.txt or results/claims.json to make the gate pass
   without the user's explicit approval.
+
+## Forward logger
+- `python -X utf8 forward_logger.py` logs upcoming fixtures; `--verify` checks the log; `--score` scores it and
+  regenerates forward/score_report.md. The rules are in forward/PREREGISTRATION.md (committed before the first log).
+- Cache exception (approved 2026-10-26): the forward logger may read the completed seasons 2019-2020 to 2025-2026
+  from data/fixtures_raw.pkl. The 2026-2027 results and the fixture list are always fetched fresh.
+- forward/predictions.jsonl is append-only and hash-chained, and only forward_logger.py writes it. Never hand-edit,
+  reorder, truncate or rewrite it. Run `--verify` before committing it.
+- Never change the P1 params (results/experiments/candidate_p1.json), the baseline params, home_adv or the forecast
+  code after the first log (2026-10-26). A changed model gets a new model id and is logged separately.
+- `--score` never modifies predictions.jsonl. Below 600 scored matches the report is descriptive only.

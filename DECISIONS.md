@@ -98,3 +98,9 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   fixtures.csv: 194 rows, 75 in the 8 leagues, 6 logged (TUR 3, FRA 1, PRT 1, ESP 1; kickoffs 2026-10-26T16:00:00Z
   to 20:00:00Z), 69 refused as kickoff passed, 0 unknown teams. --verify PASS; second run logged 0 (6 already
   logged), file bytes unchanged. --score: 6 logged, 0 scored, 6 pending. Approved: n/a, pre-registered rule.
+- 2026-10-26 Gate run after forward Step 6: FAIL (2). Branch check (expects main) as anticipated; tests check
+  "actual 61, expected 46": 46 existing tests unchanged and passing plus 15 in tests/test_forward.py, 61 passed.
+  /diagnose (outputs/diagnose/forward_gate_tests.txt): class (d) spec problem, the fixed EXPECTED_TESTS anchor
+  conflicts with adding test_forward.py while tools/gate.py may not be edited. Not fixed; anchor not edited.
+  Options: A [post-hoc] EXPECTED_TESTS 46 -> 61 (recommended); B [post-hoc] 46 existing plus the test_forward
+  count; C leave failing. Approved: pending user decision.
