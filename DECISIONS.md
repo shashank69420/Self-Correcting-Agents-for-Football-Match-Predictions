@@ -201,3 +201,32 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   shows the frozen stack and market-only on F as descriptive rows (not pre-registered as Phase 5 output, no test,
   no verdict; T-C was not run); (2) its per-season and per-league differences carry 98.3% CIs, descriptive only, with
   no per-group verdict. EXPECTED_TESTS stays 78 (pytest collects 78). Approved: n/a, recorded.
+- 2026-10-27 Live 2026-27 session (branch live2627). Exceptions granted by the session prompt: create live2627.py,
+  tests/test_live2627.py, live2627/PREREGISTRATION.md, results/live2627/*.md and *.json; DECISIONS.md and CLAUDE.md
+  append-only; results/claims.json entries appended only; results/FINDINGS.md gains a new section 10 only;
+  tools/ownership.txt gains exactly those new paths; tools/gate.py changes only EXPECTED_TESTS; .claude/settings.json
+  gains only the commit-trailer setting at the end. exp_model.py, p2_model.py, p2_stack.py, stage*.py, metrics.py,
+  exp_harness.py, forward_logger.py, run_p2.py, forward/, p2/ and every frozen JSON are not edited. Commit messages
+  carry no Co-Authored-By or Claude trailer (user instruction). Approved: user, 2026-10-27 (session prompt).
+- 2026-10-27 Live preflight: branch live2627, clean tree, HEAD 4233f37 (descends from 4233f37); pandas 3.0.6, numpy
+  2.5.4, scipy 1.18.1, statsmodels 0.15.0, penaltyblog 1.12.3 (rapidfuzz 3.14.6, pytest 9.1.1); python -X utf8
+  main.py: 0.2057 / 0.2060 / 0.2059 / CHANGE_SCALE 0; the frozen JSONs load (P1 params check and P2 self-hash pass),
+  sha256 recorded in live2627/PREREGISTRATION.md; home_adv from the first 15,316 rows of cleaned, stably sorted H
+  equals 0.20356233139056304 (difference 0.0); full gate: only the branch check fails (expects main), 78 tests pass.
+  Approved: n/a, recorded.
+- 2026-10-27 Live readings taken before any 2026-27 fetch (prompt: take the stricter reading, log it), all written
+  into live2627/PREREGISTRATION.md: (1) "the three frozen JSONs": M0 has no file, so candidate_p1.json,
+  candidate_p2.json and the two incumbent.json files that pin the same parameters are hashed, as git blobs and as
+  CRLF working copies (core.autocrlf is true); (2) data_pipeline's sort_values('date') is not stable: 7,748 H
+  positions differ from a stable sort, all within equal timestamps, and the two 2025-02-01 13:00 matches swap sides of
+  the 15,316 boundary; the TEST flag therefore follows data_pipeline's actual split (H is data_pipeline's frame) and
+  home_adv is asserted on both orders; (3) the name audit flags a newcomer if the raw or the default_process WRatio is
+  88 or more; (4) a duplicate row or pair, or a team twice on one day, is a STOP (no de-duplication rule exists);
+  (5) the match bootstrap draws one index matrix used for both tests, quantiles 1.25% and 98.75%; SE = sd (ddof 1)
+  over sqrt(n); (6) M3 probabilities are renormalized only if they miss 1 by more than 1e-10; (7) the forward log must
+  pass forward_logger.verify_log, else STOP; (8) the scoring guard also requires the snapshot file to be committed, so
+  --refresh is two-step (fetch and write; commit; the next --refresh scores); (9) a --snapshot mode runs Phase 2;
+  (10) every scoring run also checks M0 against stage2_dynamic.run_sequential_filter; (11) a commit "live: scoring
+  code and tests" precedes the primary scoring so that primary.md is produced by committed code (not in the prompt's
+  commit list); (12) primary.json lists the scored rows with their forecasts so --verify can check that no TEST row
+  was scored. Approved: n/a, prompt rule.
