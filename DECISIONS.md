@@ -266,3 +266,9 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   unchanged. Evidence table in results/live2627/data_audit.md; reproduce with live2627.py --alias-check. New test:
   a club_id-flagged team is excluded with WRatio below 88; tools/gate.py EXPECTED_TESTS 91 -> 92 (pytest total).
   Approved: user, 2026-10-27 (session prompt).
+- 2026-10-27 Live Phase 4 PRIMARY scoring of snapshot 1 (results/live2627/primary.md and primary.json; code commit
+  a360eef, clean), run once, no error, no rerun. Equality checks 0.0 and 0.0 over 19,716 concatenated rows; no string
+  cast. Test set 563 (571 completed; 0 forward-log rows; 8 Erzurumspor rows excluded as a club_id alias, post-hoc
+  stricter reading above). T1 M1 minus M0 -0.014830, 97.5% CI [-0.027430, -0.003056]: ACCEPTED. T2 M2 minus M1
+  -0.014795, 97.5% CI [-0.030241, -0.000024]: ACCEPTED (upper bound 2.4e-5 below 0). Retrospective forecasts, not
+  timestamped before kickoff. live2627.py --verify: PASS. Approved: n/a, pre-registered rule.
