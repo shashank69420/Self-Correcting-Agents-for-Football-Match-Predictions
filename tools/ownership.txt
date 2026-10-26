@@ -27,3 +27,12 @@ tests/test_forward.py
 forward/PREREGISTRATION.md
 forward/score_report.md
 forward/predictions.jsonl  append-only
+# Approved exception (2026-10-26): P2 session
+p2_data.py
+p2_model.py
+p2_stack.py
+run_p2.py
+tests/test_p2.py
+p2/PREREGISTRATION.md
+results/p2/*.md
+results/p2/*.json

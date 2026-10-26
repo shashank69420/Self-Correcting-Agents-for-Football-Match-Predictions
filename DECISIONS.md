@@ -133,3 +133,26 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
 - 2026-10-26 Deviation: while writing the diagnosis file I included an rm of a scratch counts file
   (outputs/diagnose/.tmp_counts.txt) in a command; the permission system denied it and nothing was deleted. The
   scratch file remains in the gitignored outputs/ folder. Approved: n/a, disclosure.
+- 2026-10-26 P2 session (branch p2). Exceptions granted by the session prompt: create p2_data.py, p2_model.py,
+  p2_stack.py, run_p2.py, tests/test_p2.py, p2/PREREGISTRATION.md, results/p2/*.md and *.json; DECISIONS.md and
+  CLAUDE.md append-only; claims.json entries appended only; results/FINDINGS.md gains a new section 9 only;
+  tools/ownership.txt gains exactly those new paths; tools/gate.py changes only EXPECTED_TESTS, to the collected
+  total. exp_model.py, stage*.py, metrics.py, exp_harness.py, forward_logger.py and forward/ are not edited.
+  Approved: user, 2026-10-26 (session prompt).
+- 2026-10-26 P2 preflight: branch p2, clean tree; pandas 3.0.6, numpy 2.5.4, scipy 1.18.1, statsmodels 0.15.0,
+  penaltyblog 1.12.3; gate: anchors 0.2057 / 0.2060 / 0.2059 / CHANGE_SCALE 0, 64 tests, claims, hygiene, ownership
+  and test-once PASS, only the branch check FAILS (expects main). candidate_p1.json params equal both the
+  incumbent.json overrides and the accepted E1/E3/E5 choices; calibration null. Approved: n/a, recorded.
+- 2026-10-26 P2 readings taken before any fresh fetch (prompt: take the stricter reading, log it), all written into
+  p2/PREREGISTRATION.md: (1) home_adv is the fixed main-data value on F too, never re-estimated on fresh rows;
+  (2) pre-2019 football-data files have no Time column, so data_pipeline's cleaning would drop every F row; a
+  league-season without a Time column gets datetime = Date at 00:00, everything else is cleaned exactly as
+  data_pipeline; (3) the snapshot triple is avg_h/d/a (DEV missing share 0.34% from coverage counts only); on F
+  files without avg_* the same concept, the Betbrain average bb_av_h/d/a, is used, else STOP; (4) c is a ratio of
+  sums (goals over SoT, both sides) over matches dated strictly before the row's date; (5) the Bonferroni level is
+  1 - 0.05/3 (98.33%, the wider reading of "98.3%"); (6) market-only is refitted on DEV+VAL with the stack at the
+  freeze, and both are frozen even if S2 is rejected (descriptive Phase 6 only); (7) the closing benchmark on F is
+  avg_ch if present, else Pinnacle closing, labelled; (8) run_filter takes home_adv as a third argument, like
+  exp_model.run_filter, and raises on drift, season variance or league effects, which P2 does not use;
+  (9) EXPECTED_TESTS is set once all P2 tests exist (before the Phase 4 gate, which may only fail on the branch);
+  it is the final collected total and is checked again at Phase 7. Approved: n/a, prompt rule.
