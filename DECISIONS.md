@@ -187,3 +187,7 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   clip_rates on, rho -0.04, shots_w 0.5); stack (a -0.125738, b 1.276749) and market-only (b 1.164921) refitted on
   13,030 DEV+VAL snapshot rows, frozen for the descriptive Phase 6 only because S2 was rejected. Fresh tests to run:
   T-A and T-B (T-C not run, S2 rejected). Approved: n/a, pre-registered rule.
+- 2026-10-26 P2 Phase 5, FRESH out-of-time (2015-16 to 2018-19), first scoring of the frozen candidates (10,976 F
+  rows; 98.3% paired week-block CI, seed 20261030; results/p2/fresh_once.md). T-A P1 minus Stage 2 baseline
+  -0.013985, CI [-0.016001, -0.012097]: PASS. T-B goals-only candidate minus P1 -0.013857, CI [-0.017536,
+  -0.010341]: PASS. T-C not run (S2 rejected). Ran once, no error, no rerun. Approved: n/a, pre-registered rule.
