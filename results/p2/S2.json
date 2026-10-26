@@ -1,0 +1,259 @@
+{
+  "experiment": "S2",
+  "title": "Stack with the snapshot market (Model+Market track)",
+  "verdict": "REJECTED",
+  "incumbent_params": {
+    "process_noise": 0.0025,
+    "initial_var": 0.15,
+    "cold_defence": 0.45,
+    "clip_rates": true,
+    "rho": -0.04,
+    "shots_w": 0.5
+  },
+  "snapshot_columns": [
+    "avg_h",
+    "avg_d",
+    "avg_a"
+  ],
+  "stack_dev_fit": {
+    "a": -0.06254382240868908,
+    "b": 1.1692690892232507,
+    "c": [
+      -0.028827722882171516,
+      0.031209703299292686,
+      -0.0023819804171211698
+    ],
+    "log_loss": 0.9691090257844678,
+    "n": 8739
+  },
+  "market_only_dev_fit": {
+    "a": 0.0,
+    "b": 1.1142312506641907,
+    "c": [
+      -0.03181235122611189,
+      0.03421986714048688,
+      -0.0024075159143749914
+    ],
+    "log_loss": 0.9691431948420818,
+    "n": 8739
+  },
+  "n_rows": {
+    "dev": 8739,
+    "val": 4291,
+    "both": 13030
+  },
+  "n_without_snapshot": {
+    "dev": 30,
+    "val": 0
+  },
+  "scores": {
+    "dev": {
+      "stack": {
+        "logloss": 0.9691090257844678,
+        "rps": 0.19624237690895371,
+        "brier": 0.1917814883990533
+      },
+      "market": {
+        "logloss": 0.9691431948420818,
+        "rps": 0.19624925533802634,
+        "brier": 0.19179271018645108
+      },
+      "model": {
+        "logloss": 0.9832667976412771,
+        "rps": 0.20043790833793884,
+        "brier": 0.195031772902747
+      }
+    },
+    "val": {
+      "stack": {
+        "logloss": 0.9449661538965229,
+        "rps": 0.1862022666561286,
+        "brier": 0.1869503915953188
+      },
+      "market": {
+        "logloss": 0.9452138417850932,
+        "rps": 0.18628400665519915,
+        "brier": 0.1870039823825289
+      },
+      "model": {
+        "logloss": 0.9680423527953276,
+        "rps": 0.19294366764674978,
+        "brier": 0.19174206350282755
+      }
+    },
+    "both": {
+      "stack": {
+        "logloss": 0.9611583685879082,
+        "rps": 0.19293599831379848,
+        "brier": 0.19019052628202912
+      },
+      "market": {
+        "logloss": 0.9612628530180188,
+        "rps": 0.19296752992758803,
+        "brier": 0.1902157008996798
+      },
+      "model": {
+        "logloss": 0.9782531297338352,
+        "rps": 0.19796992776956646,
+        "brier": 0.1939484158010544
+      }
+    }
+  },
+  "mean_delta_logloss": -0.00010448443011066364,
+  "ci99": [
+    -0.00029552658524488294,
+    7.240197788477501e-05
+  ],
+  "seed": 20261030,
+  "checks": {
+    "(i) DEV log-loss improves": true,
+    "(ii) VAL log-loss improves": true,
+    "(iii) 99% CI upper bound < 0": false
+  },
+  "val_per_league": [
+    {
+      "competition": "DEU Bundesliga 1",
+      "model": "market",
+      "n": 478,
+      "RPS": 0.18593059517637484,
+      "Brier": 0.18482782758155308,
+      "LogLoss": 0.9377924489671781,
+      "Accuracy": 0.5648535564853556
+    },
+    {
+      "competition": "DEU Bundesliga 1",
+      "model": "stack",
+      "n": 478,
+      "RPS": 0.18577224069370504,
+      "Brier": 0.18468899973713707,
+      "LogLoss": 0.9371830310570846,
+      "Accuracy": 0.5627615062761506
+    },
+    {
+      "competition": "ENG Premier League",
+      "model": "market",
+      "n": 610,
+      "RPS": 0.18802766853500807,
+      "Brier": 0.18410879628401738,
+      "LogLoss": 0.9341055673300348,
+      "Accuracy": 0.5540983606557377
+    },
+    {
+      "competition": "ENG Premier League",
+      "model": "stack",
+      "n": 610,
+      "RPS": 0.18801760660202277,
+      "Brier": 0.18410399145691397,
+      "LogLoss": 0.9340608120694857,
+      "Accuracy": 0.5524590163934426
+    },
+    {
+      "competition": "ESP La Liga",
+      "model": "market",
+      "n": 591,
+      "RPS": 0.1864292202012618,
+      "Brier": 0.18990606959335393,
+      "LogLoss": 0.9576294319891346,
+      "Accuracy": 0.5465313028764806
+    },
+    {
+      "competition": "ESP La Liga",
+      "model": "stack",
+      "n": 591,
+      "RPS": 0.18635878919155946,
+      "Brier": 0.18985765912471553,
+      "LogLoss": 0.957308269715028,
+      "Accuracy": 0.5465313028764806
+    },
+    {
+      "competition": "FRA Ligue 1",
+      "model": "market",
+      "n": 478,
+      "RPS": 0.20272867175673914,
+      "Brier": 0.19968104402483575,
+      "LogLoss": 0.9988465332833331,
+      "Accuracy": 0.5125523012552301
+    },
+    {
+      "competition": "FRA Ligue 1",
+      "model": "stack",
+      "n": 478,
+      "RPS": 0.2025553129837217,
+      "Brier": 0.19957218463722057,
+      "LogLoss": 0.9983228922237837,
+      "Accuracy": 0.5125523012552301
+    },
+    {
+      "competition": "ITA Serie A",
+      "model": "market",
+      "n": 599,
+      "RPS": 0.18419705568364514,
+      "Brier": 0.1912104547461575,
+      "LogLoss": 0.9611599608450302,
+      "Accuracy": 0.5342237061769616
+    },
+    {
+      "competition": "ITA Serie A",
+      "model": "stack",
+      "n": 599,
+      "RPS": 0.18415136020808137,
+      "Brier": 0.19120544954514768,
+      "LogLoss": 0.9611737549503027,
+      "Accuracy": 0.5342237061769616
+    },
+    {
+      "competition": "NLD Eredivisie",
+      "model": "market",
+      "n": 484,
+      "RPS": 0.17987124010236297,
+      "Brier": 0.17974879770972726,
+      "LogLoss": 0.911686060766536,
+      "Accuracy": 0.5702479338842975
+    },
+    {
+      "competition": "NLD Eredivisie",
+      "model": "stack",
+      "n": 484,
+      "RPS": 0.1798127674922908,
+      "Brier": 0.17972570183276218,
+      "LogLoss": 0.9115638815820915,
+      "Accuracy": 0.5702479338842975
+    },
+    {
+      "competition": "PRT Liga 1",
+      "model": "market",
+      "n": 478,
+      "RPS": 0.18170455947252992,
+      "Brier": 0.18140347551645727,
+      "LogLoss": 0.9220239278082651,
+      "Accuracy": 0.5648535564853556
+    },
+    {
+      "competition": "PRT Liga 1",
+      "model": "stack",
+      "n": 478,
+      "RPS": 0.18167660394888013,
+      "Brier": 0.1813944838416916,
+      "LogLoss": 0.9219364253184834,
+      "Accuracy": 0.5648535564853556
+    },
+    {
+      "competition": "TUR Super Lig",
+      "model": "market",
+      "n": 573,
+      "RPS": 0.18227312395499803,
+      "Brier": 0.18473586933914832,
+      "LogLoss": 0.9366796924217508,
+      "Accuracy": 0.568935427574171
+    },
+    {
+      "competition": "TUR Super Lig",
+      "model": "stack",
+      "n": 573,
+      "RPS": 0.18214155358764064,
+      "Brier": 0.18462845660072716,
+      "LogLoss": 0.9363107208980077,
+      "Accuracy": 0.5671902268760908
+    }
+  ]
+}

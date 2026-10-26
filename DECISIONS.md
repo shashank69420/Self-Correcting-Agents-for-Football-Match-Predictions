@@ -177,3 +177,8 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   log-loss 0.989816 -> 0.981546, VAL 0.973652 -> 0.968042, DEV+VAL diff -0.007396, 99% CI [-0.009959, -0.004874]
   (seed 20261030). Rows updated with shots (coverage, not a score): 99.67% of DEV, 99.95% of VAL. Selection-period,
   retrospective. Not re-run. Approved: n/a, pre-registered rule.
+- 2026-10-26 P2 S2 REJECTED (stack of the S0+S1 goals-only model with the avg_h/d/a snapshot market, fitted on
+  8,739 DEV rows with snapshot odds; 30 DEV rows lack them). DEV fit: stack a -0.062544, b 1.169269; market-only
+  b 1.114231. Stack vs market-only log-loss DEV 0.969109 vs 0.969143, VAL 0.944966 vs 0.945214; DEV+VAL diff
+  -0.000104 (n=13,030), 99% CI [-0.000296, +0.000072]: upper bound not below 0. T-C will not run. Selection-period,
+  retrospective. Not re-run. Approved: n/a, pre-registered rule.
