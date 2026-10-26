@@ -1,0 +1,431 @@
+{
+  "experiment": "S0",
+  "title": "Widened grid on P1",
+  "verdict": "ACCEPTED",
+  "grid": [
+    {
+      "process_noise": 0.0025,
+      "initial_var": 0.15,
+      "cold_defence": 0.3,
+      "clip_rates": true,
+      "rho": -0.04,
+      "cold_attack": 0.0
+    },
+    {
+      "process_noise": 0.0025,
+      "initial_var": 0.15,
+      "cold_defence": 0.45,
+      "clip_rates": true,
+      "rho": -0.04,
+      "cold_attack": 0.0
+    },
+    {
+      "process_noise": 0.0025,
+      "initial_var": 0.15,
+      "cold_defence": 0.6,
+      "clip_rates": true,
+      "rho": -0.04,
+      "cold_attack": 0.0
+    },
+    {
+      "process_noise": 0.0025,
+      "initial_var": 0.3,
+      "cold_defence": 0.3,
+      "clip_rates": true,
+      "rho": -0.04,
+      "cold_attack": 0.0
+    },
+    {
+      "process_noise": 0.0025,
+      "initial_var": 0.3,
+      "cold_defence": 0.45,
+      "clip_rates": true,
+      "rho": -0.04,
+      "cold_attack": 0.0
+    },
+    {
+      "process_noise": 0.0025,
+      "initial_var": 0.3,
+      "cold_defence": 0.6,
+      "clip_rates": true,
+      "rho": -0.04,
+      "cold_attack": 0.0
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.15,
+      "cold_defence": 0.3,
+      "clip_rates": true,
+      "rho": -0.04,
+      "cold_attack": 0.0
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.15,
+      "cold_defence": 0.45,
+      "clip_rates": true,
+      "rho": -0.04,
+      "cold_attack": 0.0
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.15,
+      "cold_defence": 0.6,
+      "clip_rates": true,
+      "rho": -0.04,
+      "cold_attack": 0.0
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.3,
+      "cold_defence": 0.3,
+      "clip_rates": true,
+      "rho": -0.04,
+      "cold_attack": 0.0
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.3,
+      "cold_defence": 0.45,
+      "clip_rates": true,
+      "rho": -0.04,
+      "cold_attack": 0.0
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.3,
+      "cold_defence": 0.6,
+      "clip_rates": true,
+      "rho": -0.04,
+      "cold_attack": 0.0
+    }
+  ],
+  "chosen": {
+    "process_noise": 0.0025,
+    "initial_var": 0.15,
+    "cold_defence": 0.45
+  },
+  "incumbent_params": {
+    "process_noise": 0.005,
+    "initial_var": 0.3,
+    "cold_defence": 0.3,
+    "clip_rates": true,
+    "rho": -0.04,
+    "shots_w": 0.0
+  },
+  "incumbent_dev": {
+    "logloss": 0.9970853396170339,
+    "rps": 0.20433236121255247,
+    "brier": 0.19785422830766952
+  },
+  "incumbent_val": {
+    "logloss": 0.9811715165663357,
+    "rps": 0.1966521792274135,
+    "brier": 0.1945848491933562
+  },
+  "chosen_dev": {
+    "logloss": 0.9898157693033458,
+    "rps": 0.2023850199142091,
+    "brier": 0.19637937027726723
+  },
+  "chosen_val": {
+    "logloss": 0.9736520895899854,
+    "rps": 0.1944908009472314,
+    "brier": 0.19300097267885932
+  },
+  "n_dev": 8769,
+  "n_val": 4291,
+  "n_ci": 13060,
+  "mean_delta_logloss": -0.007351663341213694,
+  "ci99": [
+    -0.009041596292616604,
+    -0.005788466645537041
+  ],
+  "seed": 20261030,
+  "checks": {
+    "(i) DEV log-loss improves": true,
+    "(ii) VAL log-loss improves": true,
+    "(iii) 99% CI upper bound < 0": true
+  },
+  "seconds": 10.8,
+  "candidates": [
+    {
+      "process_noise": 0.0025,
+      "initial_var": 0.15,
+      "cold_defence": 0.3,
+      "dev_logloss": 0.9898322402272267,
+      "dev_rps": 0.20239377084535826,
+      "dev_brier": 0.19639086026722344,
+      "val_logloss": 0.9737388993140357,
+      "val_rps": 0.19453878512208256,
+      "val_brier": 0.19302697638444255
+    },
+    {
+      "process_noise": 0.0025,
+      "initial_var": 0.15,
+      "cold_defence": 0.45,
+      "dev_logloss": 0.9898157693033458,
+      "dev_rps": 0.2023850199142091,
+      "dev_brier": 0.19637937027726723,
+      "val_logloss": 0.9736520895899854,
+      "val_rps": 0.1944908009472314,
+      "val_brier": 0.19300097267885932
+    },
+    {
+      "process_noise": 0.0025,
+      "initial_var": 0.15,
+      "cold_defence": 0.6,
+      "dev_logloss": 0.9900794829414166,
+      "dev_rps": 0.20245633731137508,
+      "dev_brier": 0.19642869417959719,
+      "val_logloss": 0.9737191202312825,
+      "val_rps": 0.1944826920886159,
+      "val_brier": 0.19300631574049448
+    },
+    {
+      "process_noise": 0.0025,
+      "initial_var": 0.3,
+      "cold_defence": 0.3,
+      "dev_logloss": 0.9908168821560523,
+      "dev_rps": 0.20268787798189591,
+      "dev_brier": 0.19660500594818064,
+      "val_logloss": 0.9747021332658341,
+      "val_rps": 0.19477986384401597,
+      "val_brier": 0.19321669474886494
+    },
+    {
+      "process_noise": 0.0025,
+      "initial_var": 0.3,
+      "cold_defence": 0.45,
+      "dev_logloss": 0.9907016405138672,
+      "dev_rps": 0.2026496056680403,
+      "dev_brier": 0.1965694280975361,
+      "val_logloss": 0.9745777980248241,
+      "val_rps": 0.194713898382986,
+      "val_brier": 0.19317547313000358
+    },
+    {
+      "process_noise": 0.0025,
+      "initial_var": 0.3,
+      "cold_defence": 0.6,
+      "dev_logloss": 0.9907822145070557,
+      "dev_rps": 0.20266682802289632,
+      "dev_brier": 0.19657579457675398,
+      "val_logloss": 0.9745665973044205,
+      "val_rps": 0.19467590444610422,
+      "val_brier": 0.19315624529006883
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.15,
+      "cold_defence": 0.3,
+      "dev_logloss": 0.9961774570958851,
+      "dev_rps": 0.20407052512509724,
+      "dev_brier": 0.19766081562306692,
+      "val_logloss": 0.9801993640290646,
+      "val_rps": 0.19640835558302924,
+      "val_brier": 0.19439084473626253
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.15,
+      "cold_defence": 0.45,
+      "dev_logloss": 0.9961535480920042,
+      "dev_rps": 0.2040634523121221,
+      "dev_brier": 0.19764882102645975,
+      "val_logloss": 0.980119832333146,
+      "val_rps": 0.19636399369628404,
+      "val_brier": 0.1943665754749333
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.15,
+      "cold_defence": 0.6,
+      "dev_logloss": 0.9963840997301524,
+      "dev_rps": 0.20412696858416365,
+      "dev_brier": 0.1976904654044632,
+      "val_logloss": 0.9801773894876358,
+      "val_rps": 0.19635280221503593,
+      "val_brier": 0.1943685385483036
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.3,
+      "cold_defence": 0.3,
+      "dev_logloss": 0.9970853396170339,
+      "dev_rps": 0.20433236121255247,
+      "dev_brier": 0.19785422830766952,
+      "val_logloss": 0.9811715165663357,
+      "val_rps": 0.1966521792274135,
+      "val_brier": 0.1945848491933562
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.3,
+      "cold_defence": 0.45,
+      "dev_logloss": 0.9969758109565393,
+      "dev_rps": 0.20429782083916687,
+      "dev_brier": 0.1978203599162313,
+      "val_logloss": 0.9810593450455326,
+      "val_rps": 0.1965890315871447,
+      "val_brier": 0.19454537201908653
+    },
+    {
+      "process_noise": 0.005,
+      "initial_var": 0.3,
+      "cold_defence": 0.6,
+      "dev_logloss": 0.9970528802244721,
+      "dev_rps": 0.20431441817961551,
+      "dev_brier": 0.19782508520054393,
+      "val_logloss": 0.9810516743637412,
+      "val_rps": 0.19654978380457444,
+      "val_brier": 0.1945246512167261
+    }
+  ],
+  "val_per_league": [
+    {
+      "competition": "DEU Bundesliga 1",
+      "model": "incumbent",
+      "n": 478,
+      "RPS": 0.19645282519040297,
+      "Brier": 0.19324171000191515,
+      "LogLoss": 0.9752785472812244,
+      "Accuracy": 0.5376569037656904
+    },
+    {
+      "competition": "DEU Bundesliga 1",
+      "model": "chosen",
+      "n": 478,
+      "RPS": 0.1942196137970387,
+      "Brier": 0.1914601420767827,
+      "LogLoss": 0.9673738149366786,
+      "Accuracy": 0.5376569037656904
+    },
+    {
+      "competition": "ENG Premier League",
+      "model": "incumbent",
+      "n": 610,
+      "RPS": 0.19651542836441088,
+      "Brier": 0.19046316475600175,
+      "LogLoss": 0.9651195140082451,
+      "Accuracy": 0.5459016393442623
+    },
+    {
+      "competition": "ENG Premier League",
+      "model": "chosen",
+      "n": 610,
+      "RPS": 0.19463692294168175,
+      "Brier": 0.18913036362659372,
+      "LogLoss": 0.9583012701972011,
+      "Accuracy": 0.5508196721311476
+    },
+    {
+      "competition": "ESP La Liga",
+      "model": "incumbent",
+      "n": 591,
+      "RPS": 0.1957872915302099,
+      "Brier": 0.1973909533825967,
+      "LogLoss": 0.9919141661559576,
+      "Accuracy": 0.5042301184433164
+    },
+    {
+      "competition": "ESP La Liga",
+      "model": "chosen",
+      "n": 591,
+      "RPS": 0.19355957238509308,
+      "Brier": 0.19549954839989742,
+      "LogLoss": 0.9834783198926492,
+      "Accuracy": 0.5160744500846024
+    },
+    {
+      "competition": "FRA Ligue 1",
+      "model": "incumbent",
+      "n": 478,
+      "RPS": 0.21445679026982384,
+      "Brier": 0.2077971647643765,
+      "LogLoss": 1.0352316563995125,
+      "Accuracy": 0.48535564853556484
+    },
+    {
+      "competition": "FRA Ligue 1",
+      "model": "chosen",
+      "n": 478,
+      "RPS": 0.21186275018944623,
+      "Brier": 0.20591500830337492,
+      "LogLoss": 1.0271542029131526,
+      "Accuracy": 0.4895397489539749
+    },
+    {
+      "competition": "ITA Serie A",
+      "model": "incumbent",
+      "n": 599,
+      "RPS": 0.19215061496377583,
+      "Brier": 0.1967309506084936,
+      "LogLoss": 0.989158076117333,
+      "Accuracy": 0.5342237061769616
+    },
+    {
+      "competition": "ITA Serie A",
+      "model": "chosen",
+      "n": 599,
+      "RPS": 0.19027776594534213,
+      "Brier": 0.19547273413545646,
+      "LogLoss": 0.9825433472356822,
+      "Accuracy": 0.5292153589315526
+    },
+    {
+      "competition": "NLD Eredivisie",
+      "model": "incumbent",
+      "n": 484,
+      "RPS": 0.19120562451331602,
+      "Brier": 0.18731001871431346,
+      "LogLoss": 0.9508415442874442,
+      "Accuracy": 0.5640495867768595
+    },
+    {
+      "competition": "NLD Eredivisie",
+      "model": "chosen",
+      "n": 484,
+      "RPS": 0.1886896720327979,
+      "Brier": 0.1855857269939249,
+      "LogLoss": 0.9411349150309364,
+      "Accuracy": 0.5640495867768595
+    },
+    {
+      "competition": "PRT Liga 1",
+      "model": "incumbent",
+      "n": 478,
+      "RPS": 0.1906870805190926,
+      "Brier": 0.18751349089538996,
+      "LogLoss": 0.9511363524911559,
+      "Accuracy": 0.5230125523012552
+    },
+    {
+      "competition": "PRT Liga 1",
+      "model": "chosen",
+      "n": 478,
+      "RPS": 0.18844020286365953,
+      "Brier": 0.18612681464444417,
+      "LogLoss": 0.9452907935653907,
+      "Accuracy": 0.5188284518828452
+    },
+    {
+      "competition": "TUR Super Lig",
+      "model": "incumbent",
+      "n": 573,
+      "RPS": 0.19728593222046295,
+      "Brier": 0.19597746017437426,
+      "LogLoss": 0.9893241762013535,
+      "Accuracy": 0.5130890052356021
+    },
+    {
+      "competition": "TUR Super Lig",
+      "model": "chosen",
+      "n": 573,
+      "RPS": 0.19538189628455638,
+      "Brier": 0.19447088997289025,
+      "LogLoss": 0.9822958094732228,
+      "Accuracy": 0.525305410122164
+    }
+  ]
+}

@@ -169,3 +169,7 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   collects 78 (64 existing + 14), all pass; tools/gate.py EXPECTED_TESTS 64 -> 78 (the only gate change, made now
   because every P2 test exists and the Phase 4 gate may fail only on the branch). Approved: user, 2026-10-26
   (session prompt exception).
+- 2026-10-26 P2 S0 ACCEPTED (widened grid on P1, 12 candidates): process_noise 0.0025, initial_var 0.15,
+  cold_defence 0.45 (process_noise and initial_var at the grid corner). DEV log-loss 0.997085 -> 0.989816, VAL
+  0.981172 -> 0.973652, DEV+VAL diff -0.007352, 99% CI [-0.009042, -0.005788] (seed 20261030). Incumbent DEV/VAL
+  equal E5's chosen values. Selection-period, retrospective. Not re-run. Approved: n/a, pre-registered rule.

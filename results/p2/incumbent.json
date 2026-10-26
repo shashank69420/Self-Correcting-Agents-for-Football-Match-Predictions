@@ -1,0 +1,13 @@
+{
+  "params": {
+    "process_noise": 0.0025,
+    "initial_var": 0.15,
+    "cold_defence": 0.45,
+    "clip_rates": true,
+    "rho": -0.04,
+    "shots_w": 0.0
+  },
+  "accepted": [
+    "S0"
+  ]
+}
