@@ -182,3 +182,8 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   b 1.114231. Stack vs market-only log-loss DEV 0.969109 vs 0.969143, VAL 0.944966 vs 0.945214; DEV+VAL diff
   -0.000104 (n=13,030), 99% CI [-0.000296, +0.000072]: upper bound not below 0. T-C will not run. Selection-period,
   retrospective. Not re-run. Approved: n/a, pre-registered rule.
+- 2026-10-26 P2 Phase 4 freeze (results/p2/candidate_p2.json, sha256 bf7d5226...e3f of the canonical JSON with the
+  hash field blank): goals-only candidate = P1 + S0 + S1 (process_noise 0.0025, initial_var 0.15, cold_defence 0.45,
+  clip_rates on, rho -0.04, shots_w 0.5); stack (a -0.125738, b 1.276749) and market-only (b 1.164921) refitted on
+  13,030 DEV+VAL snapshot rows, frozen for the descriptive Phase 6 only because S2 was rejected. Fresh tests to run:
+  T-A and T-B (T-C not run, S2 rejected). Approved: n/a, pre-registered rule.

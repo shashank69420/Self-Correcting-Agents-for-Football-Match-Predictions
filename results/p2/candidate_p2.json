@@ -1,0 +1,98 @@
+{
+  "candidate": "P2",
+  "frozen_on": "2026-10-26",
+  "protocol": "p2/PREREGISTRATION.md",
+  "home_adv": 0.20356233139056304,
+  "p1_params": {
+    "process_noise": 0.005,
+    "initial_var": 0.3,
+    "cold_defence": 0.3,
+    "clip_rates": true,
+    "rho": -0.04
+  },
+  "goals_only": {
+    "params": {
+      "process_noise": 0.0025,
+      "initial_var": 0.15,
+      "cold_defence": 0.45,
+      "clip_rates": true,
+      "rho": -0.04,
+      "shots_w": 0.5
+    },
+    "shots_w": 0.5,
+    "accepted": [
+      "S0",
+      "S1"
+    ],
+    "note": "Overrides of exp_model.DEFAULT_PARAMS plus shots_w, for p2_model.run_filter."
+  },
+  "verdicts": {
+    "S0": "ACCEPTED",
+    "S1": "ACCEPTED",
+    "S2": "REJECTED"
+  },
+  "stack": {
+    "accepted": false,
+    "coefficients": {
+      "a": -0.12573750981883242,
+      "b": 1.2767488507646778,
+      "c": [
+        -0.04924567368291883,
+        0.0669071878994941,
+        -0.017661514216575268
+      ],
+      "log_loss": 0.9608562274686118,
+      "n": 13030
+    },
+    "market_only": {
+      "a": 0.0,
+      "b": 1.1649212061369387,
+      "c": [
+        -0.05403092691292655,
+        0.07270585479628965,
+        -0.0186749278833631
+      ],
+      "log_loss": 0.9609989107473702,
+      "n": 13030
+    },
+    "fitted_on": "DEV+VAL rows with snapshot odds",
+    "use": "descriptive Phase 6 only"
+  },
+  "snapshot": {
+    "main": [
+      "avg_h",
+      "avg_d",
+      "avg_a"
+    ],
+    "fresh_without_avg": [
+      "bb_av_h",
+      "bb_av_d",
+      "bb_av_a"
+    ],
+    "rule": "non-closing average triple (DEV missing share 0.34% < 5%); proportional overround removal"
+  },
+  "shots": {
+    "columns": [
+      "hst",
+      "ast"
+    ],
+    "min_matches": 300
+  },
+  "fresh_tests": {
+    "run": [
+      "T-A",
+      "T-B"
+    ],
+    "level": 0.9833333333333333,
+    "seed": 20261030,
+    "n_resamples": 2000,
+    "metric": "mean per-match log-loss",
+    "seasons": [
+      "2015-2016",
+      "2016-2017",
+      "2017-2018",
+      "2018-2019"
+    ]
+  },
+  "sha256": "bf7d5226316fe2cb4473e7120c624802f7dcdbd651b603200747f179728b0e3f"
+}
