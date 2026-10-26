@@ -113,3 +113,23 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   results source holds 0 completed matches dated 2026-10-22 to 2026-10-25 for each of the 8 leagues (latest result
   per league 2026-10-18 to 2026-10-21), so the first log's history is as current as the source allows; history and log
   unchanged. Approved: n/a, verification requested by user.
+- 2026-10-26 Post-hoc approved exception: the forward logger's CI seed is now explicit and self-contained. Finding:
+  metrics.paired_week_block_ci has a hardcoded seed (20260922) and the logger previously reached seed 20261027 by
+  monkeypatching numpy.random.default_rng around a call to that helper (forward_logger.week_block_ci,
+  mock.patch.object on metrics.np.random). It is replaced by paired_week_block_ci_seeded(delta, weeks, seed,
+  n_resamples=2000) in forward_logger.py, which implements the same algorithm (group deltas by calendar week,
+  resample weeks with replacement, 2.5% and 97.5% quantiles of the resampled mean deltas) and is called from --score
+  with seed 20261027. The metrics helper is not used by the forward logger any more and metrics.py is unchanged.
+  forward/PREREGISTRATION.md is unchanged: its rule (2000 resamples, seed 20261027, same algorithm as the metrics
+  helper) is implemented as written. No outcome has been scored (6 pending), so no result depends on the change.
+  Three tests added to tests/test_forward.py: equivalence with the metrics helper at seed 20260922 (1e-12), seed is
+  used, pinned interval [-0.008326419307179747, 0.14718068232151577] at seed 20261027 on a fixed input; the earlier
+  test of the monkeypatched helper was replaced by test_ci_from_600_scored. Approved: user, 2026-10-26.
+- 2026-10-26 Post-hoc approved exception: tools/gate.py EXPECTED_TESTS 61 -> 64 (one line; pytest --collect-only -q
+  collects 64: 61 plus the 3 seed tests); nothing else in the gate changed. Diagnosis of the earlier 46 vs 61 failure
+  (class d, spec conflict; pytest collect 61, unittest 39 because test_lineup's pytest-style functions are not run
+  by unittest, no test failed) is in outputs/diagnose/test_count_diagnosis.txt, local because outputs/ is
+  gitignored. Approved: user, 2026-10-26.
+- 2026-10-26 Deviation: while writing the diagnosis file I included an rm of a scratch counts file
+  (outputs/diagnose/.tmp_counts.txt) in a command; the permission system denied it and nothing was deleted. The
+  scratch file remains in the gitignored outputs/ folder. Approved: n/a, disclosure.

@@ -268,7 +268,7 @@ class ScoreTest(unittest.TestCase):
         self.assertIsNone(summary['ci'])
         self.assertIn('DESCRIPTIVE ONLY', text)
 
-    def test_ci_from_600_scored_and_seeded_helper(self):
+    def test_ci_from_600_scored(self):
         rng = np.random.default_rng(3)
         kickoffs = pd.date_range('2026-08-15 15:00', periods=600, freq='8h')
         rows, played = [], []
@@ -281,10 +281,31 @@ class ScoreTest(unittest.TestCase):
         summary = fl.score_summary(rows, results(*played), NOW)
         self.assertEqual(summary['scored'], 600)
         self.assertEqual(len(summary['ci']), 2)
-        delta, dates = rng.normal(size=600), pd.Series(kickoffs)
-        np.testing.assert_array_equal(fl.week_block_ci(delta, dates, seed=20260922),
-                                      metrics.paired_week_block_ci(delta, dates))
-        self.assertFalse(np.array_equal(fl.week_block_ci(delta, dates), metrics.paired_week_block_ci(delta, dates)))
+
+
+# Fixed input for the three CI tests: 600 deltas over 200 days (about 29 calendar weeks).
+CI_DELTA = np.random.default_rng(3).normal(size=600)
+CI_DATES = pd.Series(pd.date_range('2026-08-15 15:00', periods=600, freq='8h'))
+CI_WEEKS = CI_DATES.dt.to_period('W').astype(str).to_numpy()
+
+
+class SeededCiTest(unittest.TestCase):
+    def test_same_algorithm_as_metrics_helper(self):
+        """(i) With the helper's own seed the two functions agree, so the algorithm is the same."""
+        ours = fl.paired_week_block_ci_seeded(CI_DELTA, CI_WEEKS, 20260922)
+        np.testing.assert_allclose(ours, metrics.paired_week_block_ci(CI_DELTA, CI_DATES), rtol=0, atol=1e-12)
+
+    def test_seed_is_used(self):
+        """(ii) Different seeds give different intervals on the same input."""
+        a = fl.paired_week_block_ci_seeded(CI_DELTA, CI_WEEKS, 20261027)
+        b = fl.paired_week_block_ci_seeded(CI_DELTA, CI_WEEKS, 20260922)
+        self.assertFalse(np.allclose(a, b, rtol=0, atol=1e-6))
+
+    def test_pinned_value_for_preregistered_seed(self):
+        """(iii) The interval for seed 20261027 (the score report's seed) is pinned."""
+        np.testing.assert_allclose(fl.paired_week_block_ci_seeded(CI_DELTA, CI_WEEKS, fl.CI_SEED),
+                                   [-0.008326419307179747, 0.14718068232151577], rtol=0, atol=1e-12)
+        self.assertEqual(fl.CI_SEED, 20261027)
 
 
 class CliTest(unittest.TestCase):

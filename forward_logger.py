@@ -388,19 +388,20 @@ def log_fixtures(fixtures, history, models, home_adv, provenance, log_path, now=
 
 # ---------------------------------------------------------------- score
 
-def week_block_ci(delta, dates, seed=CI_SEED):
-    """metrics.paired_week_block_ci with the seed as an argument (the helper fixes 20260922)."""
-    calls, default_rng = [], np.random.default_rng
+def paired_week_block_ci_seeded(delta, weeks, seed, n_resamples=2000):
+    """95% week-block bootstrap CI of the mean of delta, same algorithm as metrics.paired_week_block_ci.
 
-    def seeded(_fixed_seed):
-        calls.append(_fixed_seed)
-        return default_rng(seed)
-
-    with mock.patch.object(metrics.np.random, 'default_rng', seeded):
-        interval = metrics.paired_week_block_ci(delta, dates)
-    if len(calls) != 1:
-        raise RuntimeError('metrics.paired_week_block_ci no longer draws from one default_rng')
-    return interval
+    weeks: one calendar-week label per match (metrics uses dates.dt.to_period('W')). Per-match deltas are grouped by
+    week, whole weeks are resampled with replacement, and the 2.5% and 97.5% quantiles of the resampled mean deltas
+    are returned. Unlike the metrics helper, which fixes seed 20260922, the seed is an argument.
+    """
+    weekly = pd.DataFrame(dict(week=np.asarray(weeks), delta=np.asarray(delta))).groupby('week').delta.agg(
+        ['sum', 'count'])
+    rng = np.random.default_rng(seed)
+    resamples = rng.integers(len(weekly), size=(n_resamples, len(weekly)))
+    bootstrap_delta = (weekly['sum'].to_numpy()[resamples].sum(axis=1)
+                       / weekly['count'].to_numpy()[resamples].sum(axis=1))
+    return np.quantile(bootstrap_delta, [.025, .975])
 
 
 def outcome(goals_home, goals_away):
@@ -444,7 +445,8 @@ def score_summary(rows, results, now=None):
     summary['delta'] = float(delta.mean())
     if len(scored) >= CI_MIN_SCORED:
         dates = pd.Series(pd.to_datetime([row['kickoff_utc'] for row in scored], utc=True)).dt.tz_localize(None)
-        summary['ci'] = [float(bound) for bound in week_block_ci(delta, dates)]
+        weeks = dates.dt.to_period('W').astype(str).to_numpy()
+        summary['ci'] = [float(bound) for bound in paired_week_block_ci_seeded(delta, weeks, CI_SEED)]
     return summary
 
 
