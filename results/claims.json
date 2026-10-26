@@ -1250,6 +1250,277 @@
    "value": "0.961623",
    "source": "results/p2/test_descriptive.md",
    "locator": "\\|\\ Closing\\ market\\ \\(average\\)\\ \\|\\ 3829\\ \\|\\ 0\\.192423\\ \\|\\ 0\\.190366\\ \\|\\ 0\\.961623\\ \\|"
+  },
+  {
+   "id": "l10_001",
+   "value": "571",
+   "source": "results/live2627/primary.md",
+   "locator": "Snapshot rows: 571"
+  },
+  {
+   "id": "l10_002",
+   "value": "563",
+   "source": "results/live2627/primary.md",
+   "locator": "Test set: 563 matches"
+  },
+  {
+   "id": "l10_003",
+   "value": "8",
+   "source": "results/live2627/primary.md",
+   "locator": ": 8 rows; flagged teams: Erzurumspor"
+  },
+  {
+   "id": "l10_004",
+   "value": "75",
+   "source": "results/live2627/primary.md",
+   "locator": "newcomer matches 75, established 488"
+  },
+  {
+   "id": "l10_005",
+   "value": "488",
+   "source": "results/live2627/primary.md",
+   "locator": "newcomer matches 75, established 488"
+  },
+  {
+   "id": "l10_006",
+   "value": "97.5%",
+   "source": "results/live2627/primary.md",
+   "locator": "97\\.5% paired bootstrap CI"
+  },
+  {
+   "id": "l10_007",
+   "value": "0.997184",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| T1 \\| M1 P1 minus M0 baseline \\| 563 \\| 0\\.997184 \\| 1\\.012014 \\| -0\\.014830 \\| 0\\.005463 \\| \\[-0\\.027430, -0\\.003056\\]"
+  },
+  {
+   "id": "l10_008",
+   "value": "1.012014",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| T1 \\| M1 P1 minus M0 baseline \\| 563 \\| 0\\.997184 \\| 1\\.012014 \\| -0\\.014830 \\| 0\\.005463 \\| \\[-0\\.027430, -0\\.003056\\]"
+  },
+  {
+   "id": "l10_009",
+   "value": "-0.014830",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| T1 \\| M1 P1 minus M0 baseline \\| 563 \\| 0\\.997184 \\| 1\\.012014 \\| -0\\.014830 \\| 0\\.005463 \\| \\[-0\\.027430, -0\\.003056\\]"
+  },
+  {
+   "id": "l10_010",
+   "value": "-0.027430",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| T1 \\| M1 P1 minus M0 baseline \\| 563 \\| 0\\.997184 \\| 1\\.012014 \\| -0\\.014830 \\| 0\\.005463 \\| \\[-0\\.027430, -0\\.003056\\]"
+  },
+  {
+   "id": "l10_011",
+   "value": "-0.003056",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| T1 \\| M1 P1 minus M0 baseline \\| 563 \\| 0\\.997184 \\| 1\\.012014 \\| -0\\.014830 \\| 0\\.005463 \\| \\[-0\\.027430, -0\\.003056\\]"
+  },
+  {
+   "id": "l10_012",
+   "value": "0.982389",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| T2 \\| M2 P2 goals-only minus M1 P1 \\| 563 \\| 0\\.982389 \\| 0\\.997184 \\| -0\\.014795 \\| 0\\.006735 \\| \\[-0\\.030241, -0\\.000024\\]"
+  },
+  {
+   "id": "l10_013",
+   "value": "-0.014795",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| T2 \\| M2 P2 goals-only minus M1 P1 \\| 563 \\| 0\\.982389 \\| 0\\.997184 \\| -0\\.014795 \\| 0\\.006735 \\| \\[-0\\.030241, -0\\.000024\\]"
+  },
+  {
+   "id": "l10_014",
+   "value": "-0.030241",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| T2 \\| M2 P2 goals-only minus M1 P1 \\| 563 \\| 0\\.982389 \\| 0\\.997184 \\| -0\\.014795 \\| 0\\.006735 \\| \\[-0\\.030241, -0\\.000024\\]"
+  },
+  {
+   "id": "l10_015",
+   "value": "-0.000024",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| T2 \\| M2 P2 goals-only minus M1 P1 \\| 563 \\| 0\\.982389 \\| 0\\.997184 \\| -0\\.014795 \\| 0\\.006735 \\| \\[-0\\.030241, -0\\.000024\\]"
+  },
+  {
+   "id": "l10_016",
+   "value": "-0.026156",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| T1 \\| -0\\.014830 \\| \\[-0\\.026156, -0\\.001631\\]"
+  },
+  {
+   "id": "l10_017",
+   "value": "-0.001631",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| T1 \\| -0\\.014830 \\| \\[-0\\.026156, -0\\.001631\\]"
+  },
+  {
+   "id": "l10_018",
+   "value": "-0.027079",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| T2 \\| -0\\.014795 \\| \\[-0\\.027079, -0\\.002906\\]"
+  },
+  {
+   "id": "l10_019",
+   "value": "-0.002906",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| T2 \\| -0\\.014795 \\| \\[-0\\.027079, -0\\.002906\\]"
+  },
+  {
+   "id": "l10_020",
+   "value": "-0.044649",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| newcomer \\| 75 \\| -0\\.044649 \\| -0\\.039201 \\|"
+  },
+  {
+   "id": "l10_021",
+   "value": "-0.039201",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| newcomer \\| 75 \\| -0\\.044649 \\| -0\\.039201 \\|"
+  },
+  {
+   "id": "l10_022",
+   "value": "-0.010247",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| established \\| 488 \\| -0\\.010247 \\| -0\\.011044 \\|"
+  },
+  {
+   "id": "l10_023",
+   "value": "-0.011044",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| established \\| 488 \\| -0\\.010247 \\| -0\\.011044 \\|"
+  },
+  {
+   "id": "l10_024",
+   "value": "0.963072",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| M4 closing average \\| 563 \\| 0\\.195862 \\| 0\\.190903 \\| 0\\.963072 \\|"
+  },
+  {
+   "id": "l10_025",
+   "value": "0.019317",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| M2 P2 goals-only \\| 563 \\| 0\\.019317 \\|"
+  },
+  {
+   "id": "l10_026",
+   "value": "11",
+   "source": "results/live2627/data_audit.md",
+   "locator": "Newcomers: 11\\."
+  },
+  {
+   "id": "l10_027",
+   "value": "0",
+   "source": "results/live2627/data_audit.md",
+   "locator": "flagged 0 at WRatio"
+  },
+  {
+   "id": "l10_028",
+   "value": "88",
+   "source": "results/live2627/data_audit.md",
+   "locator": "flagged 0 at WRatio >= 88"
+  },
+  {
+   "id": "l10_029",
+   "value": "66.7",
+   "source": "results/live2627/data_audit.md",
+   "locator": "best same-league WRatio was 66\\.7"
+  },
+  {
+   "id": "l10_030",
+   "value": "39722",
+   "source": "results/live2627/data_audit.md",
+   "locator": "club 39722 in all 40"
+  },
+  {
+   "id": "l10_031",
+   "value": "40",
+   "source": "results/live2627/data_audit.md",
+   "locator": "club 39722 in all 40"
+  },
+  {
+   "id": "l10_032",
+   "value": "72.7",
+   "source": "results/live2627/data_audit.md",
+   "locator": "\\| Le Mans \\| Lens \\| 72\\.7 \\|"
+  },
+  {
+   "id": "l10_033",
+   "value": "69.2",
+   "source": "results/live2627/data_audit.md",
+   "locator": "\\| Amedspor \\| Umraniyespor \\| 69\\.2 \\|"
+  },
+  {
+   "id": "l10_034",
+   "value": "72.0",
+   "source": "results/live2627/data_audit.md",
+   "locator": "\\| Corum \\| Bodrumspor \\| 72\\.0 \\|"
+  },
+  {
+   "id": "l10_035",
+   "value": "-0.014830",
+   "derived": {
+    "inputs": [
+     "l10_007",
+     "l10_008"
+    ],
+    "formula": "a - b"
+   }
+  },
+  {
+   "id": "l10_036",
+   "value": "-0.014795",
+   "derived": {
+    "inputs": [
+     "l10_012",
+     "l10_007"
+    ],
+    "formula": "a - b"
+   }
+  },
+  {
+   "id": "l10_037",
+   "value": "0.019317",
+   "derived": {
+    "inputs": [
+     "l10_012",
+     "l10_024"
+    ],
+    "formula": "a - b"
+   }
+  },
+  {
+   "id": "l10_038",
+   "value": "563",
+   "derived": {
+    "inputs": [
+     "l10_001",
+     "l10_003"
+    ],
+    "formula": "a - b"
+   }
+  },
+  {
+   "id": "l10_039",
+   "value": "563",
+   "derived": {
+    "inputs": [
+     "l10_004",
+     "l10_005"
+    ],
+    "formula": "a + b"
+   }
+  },
+  {
+   "id": "l10_040",
+   "value": "54",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| DEU Bundesliga 1 \\| 54 \\|$"
+  },
+  {
+   "id": "l10_041",
+   "value": "89",
+   "source": "results/live2627/primary.md",
+   "locator": "\\| ESP La Liga \\| 89 \\|$"
   }
  ]
 }

@@ -166,3 +166,52 @@ stage had examined. TEST was not used for any choice.
   0.961080, market-only (snapshot) 0.961423, closing average 0.961623.
 
 After the P2 decisions were frozen, TEST_INDEX was scored a second time with the same helpers, descriptively. That look is not a test. The fresh 2015-16 to 2018-19 result is the P2 confirmation, and the TEST figures carry no claim beyond the one-shot result already reported.
+
+## 10. Live 2026-27: frozen models on completed 2026-27 matches (retrospective)
+Pre-registered in `live2627/PREREGISTRATION.md`, committed before any 2026-27 data was fetched. Numbers: `results/live2627/primary.md`
+and `results/live2627/data_audit.md`. Parameters were fixed before 2026-27 data was fetched. Forecasts were recomputed after the
+matches were played and are not timestamped before kickoff. Team ratings update with each result as it arrives. The three models
+(M0 Stage 2 baseline, M1 P1, M2 P2 goals-only) were not changed, and no 2026-27 result was used to set any parameter. The scored
+matches are the first weeks of the season only. This is not a forward test: that is the separate stream in section 8.
+
+- Data: one snapshot, fetched 2026-10-26, 571 completed matches in the eight leagues. The test set is 563 matches, after
+  excluding 8 matches of one club (below). No match was excluded for being in the forward log. The equality checks on the
+  forecasts passed before any score, and `python live2627.py --verify` passed.
+- Primary tests (pre-registered): mean per-match log-loss difference, paired bootstrap resampling matches, 97.5% CI
+  (Bonferroni for two tests). An improvement is accepted only if the upper bound is below 0.
+
+| Test | n | Mean log-loss, first | Mean log-loss, second | Mean difference | 97.5% CI | Verdict |
+|---|---|---|---|---|---|---|
+| T1: M1 P1 minus M0 baseline | 563 | 0.997184 | 1.012014 | -0.014830 | [-0.027430, -0.003056] | ACCEPTED |
+| T2: M2 P2 goals-only minus M1 P1 | 563 | 0.982389 | 0.997184 | -0.014795 | [-0.030241, -0.000024] | ACCEPTED, marginal |
+
+- T2 is accepted under the rule, but its upper bound is -0.000024, which is only just below 0. The point estimate is as
+  large as T1's, so the interval is wide for the evidence it summarises (563 matches, a few weeks). Read it as consistent with
+  an improvement, not as a precise size. T1's upper bound is -0.003056.
+- Week-block bootstrap (calendar weeks, 97.5%), descriptive, no verdict: T1 [-0.026156, -0.001631]; T2 [-0.027079, -0.002906].
+- Per league (descriptive, no verdict, 54 to 89 matches each): the mean T1 difference is positive in Serie A and in the
+  Portuguese league, and the mean T2 difference is positive in the Portuguese league. Every other league and test pair is
+  negative. The league table is in `results/live2627/primary.md`.
+- Newcomer and established matches (descriptive, no verdict). Newcomers are teams in 2026-27 that appear in no earlier match
+  in the data: 75 matches with at least one newcomer, 488 with both teams known. Mean log-loss difference:
+
+| Matches | n | T1 mean difference | T2 mean difference |
+|---|---|---|---|
+| Newcomer | 75 | -0.044649 | -0.039201 |
+| Established | 488 | -0.010247 | -0.011044 |
+
+  The gains are larger on newcomer matches, but that group is small and was not tested. The same-sign gain on established
+  matches is smaller than the headline figure in both tests.
+- Closing-odds benchmark (descriptive; closing odds are later information than any pre-match forecast): mean log-loss 0.963072
+  on the same 563 matches. M2 is 0.019317 worse than the market.
+- Name audit. There are 11 newcomers in the eight leagues. The pre-registered WRatio rule (flag a newcomer whose best
+  same-league WRatio against the earlier names is 88 or more) flagged 0 at WRatio >= 88.
+  The alias check, a post-hoc stricter reading logged in `DECISIONS.md` on 2026-10-27 before any score, flagged 1,
+  including Erzurumspor, which the WRatio rule missed. Its best same-league WRatio was 66.7. In the Transfermarkt tables
+  Erzurumspor is club_id 39722 ("Erzurumspor FK"), and the earlier name "Erzurum BB" (Turkish league 2020-21, 40 earlier
+  matches) links to the same club_id 39722 in all 40. Its 8 matches, all in the Turkish league, were excluded from the test
+  set. No names were merged. The run without this exclusion was not made.
+- Three newcomers could not be checked by club_id: Le Mans, Amedspor and Corum are not in the Transfermarkt club or game
+  tables, so they have no club_id. They were kept in the test set. Their best same-league WRatio scores are 72.7, 69.2 and
+  72.0, all below 88. If any of them is an alias of an earlier name, its matches are still in the test set; this was not
+  checked further.
