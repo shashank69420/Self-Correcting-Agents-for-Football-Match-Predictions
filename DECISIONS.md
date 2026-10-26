@@ -55,3 +55,30 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
 - 2026-10-26 Approved exception: ownership check lists changed files with git diff --cached --name-only <base> (committed plus staged) instead of the written <base> HEAD, so the pre-commit gate also sees staged files; on a clean tree the two lists are identical. The check is a new function ownership_failures; tests/test_gate.py gains one test (main.py fails, allowed paths pass, a removed line in an append-only file fails); expected pytest total in tools/gate.py moves from 45 to 46. Approved: user, 2026-10-26.
 - 2026-10-26 Approved exception: new pytest.ini (testpaths = tests; norecursedirs results data outputs venv .git; addopts --ignore=results) so a plain pytest run cannot collect results/experiments/split_test.py or test_once.py, the only pattern-matching files outside tests/ (checked before any pytest run). pytest.ini added to tools/ownership.txt as one line, approved by the user as post-hoc. Plain python -m pytest -q from the root: 46 passed, results/experiments/test_once.md unchanged.
 - 2026-10-26 Approved exception: results/FINDINGS.md section 7 gains one sentence (no numbers) disclosing the earlier accidental rerun of the already-scored TEST comparison. Approved: user, 2026-10-26.
+- 2026-10-26 Forward-logger session (branch forward-logger). Exceptions granted by the session prompt: create
+  forward_logger.py, tests/test_forward.py, forward/PREREGISTRATION.md, forward/predictions.jsonl,
+  forward/score_report.md; append-only sections in DECISIONS.md and CLAUDE.md; tools/ownership.txt gains exactly
+  those four files plus forward/predictions.jsonl as append-only; results/FINDINGS.md section 8 text replaced, no
+  numbers; the forward logger may read completed seasons 2019-2020 to 2025-2026 from data/fixtures_raw.pkl, while
+  2026-2027 and the fixture list are always fetched fresh. This supersedes PLAN.md session B's outputs/forward/
+  predictions.csv and "must not edit any existing file". Approved: user, 2026-10-26 (session prompt).
+- 2026-10-26 Preflight: duckdb is unpinned in requirements.txt; this worktree's venv has duckdb 2.0.0 while the
+  main checkout (C:\dev\b12) and b12-lineup venvs have 1.5.6. duckdb is used only by lineup_audit.py (--audit
+  fallback), not by main.py, Stages 1-3 or the forward logger; anchors unchanged (0.2057 / 0.2060 / 0.2059 /
+  CHANGE_SCALE 0, 46 passed). Not changed. Approved: n/a, recorded as instructed.
+- 2026-10-26 Forward source discovery (read-only). A: penaltyblog FootballData(league, '2026-2027') for the 8
+  leagues returned 54 to 89 rows each, all played (0 unplayed), latest 2026-10-21. B: fixtures.csv (HTTP 200,
+  Last-Modified Fri, 23 Oct 2026 13:46:58 GMT) had 194 rows, 21 Div codes including all 8 expected, Date dd/mm/yyyy,
+  Time HH:MM (0 missing), kickoffs 2026-10-23 17:30 to 2026-10-26 20:00, pre-closing and closing odds columns.
+  Chosen: B (upcoming fixtures). notes.txt: time zone not stated; fixtures-file update frequency not stated.
+  UK-local reading supported by kickoff slots (Bundesliga 15:30 CET shown as 14:30). Approved: n/a, prompt rule.
+- 2026-10-26 Forward design choices (session prompt says decide and log): (1) a kickoff exactly 3h away is refused
+  (strict > 3h), matching --verify; (2) ambiguous or nonexistent UK local times are refused; (3) exp_model.run_filter
+  keeps states internal, so the logger records the TeamState objects run_filter passes to its own update_step
+  (unittest.mock.patch.object, wrapping the original) and forecasts with predict_step and dixon_coles_probs; models
+  with drift, season variance or league effects are rejected by that wrapper (neither model uses them); (4)
+  metrics.paired_week_block_ci fixes seed 20260922, so the CI uses a same-algorithm function with a seed argument
+  (20261027), tested equal to the helper at 20260922; (5) the claim is evaluated once, at the first --score run with
+  >= 600 scored rows; (6) --verify also checks that the committed log is a byte prefix of the working file (detects
+  tail truncation, which a hash chain alone cannot); (7) odds_snapshot keeps the raw CSV strings; (8) code_dirty =
+  any git status entry other than forward/predictions.jsonl and forward/score_report.md. Approved: n/a, prompt rule.

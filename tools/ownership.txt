@@ -21,3 +21,9 @@ results/claims.json
 CLAUDE.md  append-only
 # Approved exception (2026-10-26): pytest config that scopes collection to tests/
 pytest.ini
+# Approved exception (2026-10-26): forward-logger session
+forward_logger.py
+tests/test_forward.py
+forward/PREREGISTRATION.md
+forward/score_report.md
+forward/predictions.jsonl  append-only
