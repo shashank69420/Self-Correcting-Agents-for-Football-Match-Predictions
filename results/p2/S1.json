@@ -1,0 +1,237 @@
+{
+  "experiment": "S1",
+  "title": "Shots on target in the update",
+  "verdict": "ACCEPTED",
+  "grid": [
+    {
+      "shots_w": 0.25
+    },
+    {
+      "shots_w": 0.5
+    },
+    {
+      "shots_w": 0.75
+    }
+  ],
+  "chosen": {
+    "shots_w": 0.5
+  },
+  "incumbent_params": {
+    "process_noise": 0.0025,
+    "initial_var": 0.15,
+    "cold_defence": 0.45,
+    "clip_rates": true,
+    "rho": -0.04,
+    "shots_w": 0.0
+  },
+  "incumbent_dev": {
+    "logloss": 0.9898157693033458,
+    "rps": 0.2023850199142091,
+    "brier": 0.19637937027726723
+  },
+  "incumbent_val": {
+    "logloss": 0.9736520895899854,
+    "rps": 0.1944908009472314,
+    "brier": 0.19300097267885932
+  },
+  "chosen_dev": {
+    "logloss": 0.9815456294205566,
+    "rps": 0.20008182727044183,
+    "brier": 0.19463244240688052
+  },
+  "chosen_val": {
+    "logloss": 0.9680423527953276,
+    "rps": 0.19294366764674978,
+    "brier": 0.19174206350282755
+  },
+  "n_dev": 8769,
+  "n_val": 4291,
+  "n_ci": 13060,
+  "mean_delta_logloss": -0.007396036540432991,
+  "ci99": [
+    -0.009959007760962316,
+    -0.004873515352588827
+  ],
+  "seed": 20261030,
+  "checks": {
+    "(i) DEV log-loss improves": true,
+    "(ii) VAL log-loss improves": true,
+    "(iii) 99% CI upper bound < 0": true
+  },
+  "seconds": 5.4,
+  "candidates": [
+    {
+      "shots_w": 0.25,
+      "dev_logloss": 0.9841553703635101,
+      "dev_rps": 0.20082316318399387,
+      "dev_brier": 0.19520381659310898,
+      "val_logloss": 0.9691924507661863,
+      "val_rps": 0.19325178232393972,
+      "val_brier": 0.19202468049527818
+    },
+    {
+      "shots_w": 0.5,
+      "dev_logloss": 0.9815456294205566,
+      "dev_rps": 0.20008182727044183,
+      "dev_brier": 0.19463244240688052,
+      "val_logloss": 0.9680423527953276,
+      "val_rps": 0.19294366764674978,
+      "val_brier": 0.19174206350282755
+    },
+    {
+      "shots_w": 0.75,
+      "dev_logloss": 0.9820580200827436,
+      "dev_rps": 0.20027362506140053,
+      "dev_brier": 0.1947384718143142,
+      "val_logloss": 0.9703720989525576,
+      "val_rps": 0.1936858467869789,
+      "val_brier": 0.19223425673254002
+    }
+  ],
+  "val_per_league": [
+    {
+      "competition": "DEU Bundesliga 1",
+      "model": "incumbent",
+      "n": 478,
+      "RPS": 0.1942196137970387,
+      "Brier": 0.1914601420767827,
+      "LogLoss": 0.9673738149366786,
+      "Accuracy": 0.5376569037656904
+    },
+    {
+      "competition": "DEU Bundesliga 1",
+      "model": "chosen",
+      "n": 478,
+      "RPS": 0.1931636153360231,
+      "Brier": 0.19034673345232875,
+      "LogLoss": 0.9633763428432138,
+      "Accuracy": 0.5502092050209205
+    },
+    {
+      "competition": "ENG Premier League",
+      "model": "incumbent",
+      "n": 610,
+      "RPS": 0.19463692294168175,
+      "Brier": 0.18913036362659372,
+      "LogLoss": 0.9583012701972011,
+      "Accuracy": 0.5508196721311476
+    },
+    {
+      "competition": "ENG Premier League",
+      "model": "chosen",
+      "n": 610,
+      "RPS": 0.19301296921138542,
+      "Brier": 0.18773479873112595,
+      "LogLoss": 0.9518960100417316,
+      "Accuracy": 0.5508196721311476
+    },
+    {
+      "competition": "ESP La Liga",
+      "model": "incumbent",
+      "n": 591,
+      "RPS": 0.19355957238509308,
+      "Brier": 0.19549954839989742,
+      "LogLoss": 0.9834783198926492,
+      "Accuracy": 0.5160744500846024
+    },
+    {
+      "competition": "ESP La Liga",
+      "model": "chosen",
+      "n": 591,
+      "RPS": 0.1930411722127765,
+      "Brier": 0.19473209613603223,
+      "LogLoss": 0.9818749594879921,
+      "Accuracy": 0.5313028764805414
+    },
+    {
+      "competition": "FRA Ligue 1",
+      "model": "incumbent",
+      "n": 478,
+      "RPS": 0.21186275018944623,
+      "Brier": 0.20591500830337492,
+      "LogLoss": 1.0271542029131526,
+      "Accuracy": 0.4895397489539749
+    },
+    {
+      "competition": "FRA Ligue 1",
+      "model": "chosen",
+      "n": 478,
+      "RPS": 0.210037254073763,
+      "Brier": 0.20427234143734593,
+      "LogLoss": 1.0203257335340383,
+      "Accuracy": 0.5104602510460251
+    },
+    {
+      "competition": "ITA Serie A",
+      "model": "incumbent",
+      "n": 599,
+      "RPS": 0.19027776594534213,
+      "Brier": 0.19547273413545646,
+      "LogLoss": 0.9825433472356822,
+      "Accuracy": 0.5292153589315526
+    },
+    {
+      "competition": "ITA Serie A",
+      "model": "chosen",
+      "n": 599,
+      "RPS": 0.1900102454100839,
+      "Brier": 0.19514944961451267,
+      "LogLoss": 0.9804417238812226,
+      "Accuracy": 0.5275459098497496
+    },
+    {
+      "competition": "NLD Eredivisie",
+      "model": "incumbent",
+      "n": 484,
+      "RPS": 0.1886896720327979,
+      "Brier": 0.1855857269939249,
+      "LogLoss": 0.9411349150309364,
+      "Accuracy": 0.5640495867768595
+    },
+    {
+      "competition": "NLD Eredivisie",
+      "model": "chosen",
+      "n": 484,
+      "RPS": 0.1855773408894811,
+      "Brier": 0.18336865785941947,
+      "LogLoss": 0.9302940798937349,
+      "Accuracy": 0.5599173553719008
+    },
+    {
+      "competition": "PRT Liga 1",
+      "model": "incumbent",
+      "n": 478,
+      "RPS": 0.18844020286365953,
+      "Brier": 0.18612681464444417,
+      "LogLoss": 0.9452907935653907,
+      "Accuracy": 0.5188284518828452
+    },
+    {
+      "competition": "PRT Liga 1",
+      "model": "chosen",
+      "n": 478,
+      "RPS": 0.18547726558232,
+      "Brier": 0.1843759125619589,
+      "LogLoss": 0.9368734531305447,
+      "Accuracy": 0.5355648535564853
+    },
+    {
+      "competition": "TUR Super Lig",
+      "model": "incumbent",
+      "n": 573,
+      "RPS": 0.19538189628455638,
+      "Brier": 0.19447088997289025,
+      "LogLoss": 0.9822958094732228,
+      "Accuracy": 0.525305410122164
+    },
+    {
+      "competition": "TUR Super Lig",
+      "model": "chosen",
+      "n": 573,
+      "RPS": 0.19384348230040405,
+      "Brier": 0.19329100126233542,
+      "LogLoss": 0.976165860879135,
+      "Accuracy": 0.5357766143106457
+    }
+  ]
+}

@@ -5,9 +5,10 @@
     "cold_defence": 0.45,
     "clip_rates": true,
     "rho": -0.04,
-    "shots_w": 0.0
+    "shots_w": 0.5
   },
   "accepted": [
-    "S0"
+    "S0",
+    "S1"
   ]
 }

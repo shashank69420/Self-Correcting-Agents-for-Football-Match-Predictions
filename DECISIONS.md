@@ -173,3 +173,7 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   cold_defence 0.45 (process_noise and initial_var at the grid corner). DEV log-loss 0.997085 -> 0.989816, VAL
   0.981172 -> 0.973652, DEV+VAL diff -0.007352, 99% CI [-0.009042, -0.005788] (seed 20261030). Incumbent DEV/VAL
   equal E5's chosen values. Selection-period, retrospective. Not re-run. Approved: n/a, pre-registered rule.
+- 2026-10-26 P2 S1 ACCEPTED (shots on target in the update, w in {0.25, 0.5, 0.75}): w 0.5 on top of S0. DEV
+  log-loss 0.989816 -> 0.981546, VAL 0.973652 -> 0.968042, DEV+VAL diff -0.007396, 99% CI [-0.009959, -0.004874]
+  (seed 20261030). Rows updated with shots (coverage, not a score): 99.67% of DEV, 99.95% of VAL. Selection-period,
+  retrospective. Not re-run. Approved: n/a, pre-registered rule.
