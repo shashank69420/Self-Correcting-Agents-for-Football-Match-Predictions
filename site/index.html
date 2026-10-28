@@ -5,18 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>B12 Match Forecasts</title>
 <meta name="description" content="A sequential Bayesian football model, tested under pre-registered rules. Group B12.">
-<link rel="stylesheet" href="style.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 10'%3E%3Crect width='13' height='10' fill='%230B6E5F'/%3E%3Crect x='13' width='7' height='10' fill='%238C8478'/%3E%3Crect x='20' width='10' height='10' fill='%237A2E52'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css?v=6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 10'%3E%3Crect width='13' height='10' fill='%230B6E5F'/%3E%3Crect x='13' width='7' height='10' fill='%23736B60'/%3E%3Crect x='20' width='10' height='10' fill='%237A2E52'/%3E%3C/svg%3E">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="masthead">
   <div class="masthead-inner">
-    <a class="brand" href="#top" aria-label="B12 match forecasts, top of page">
+    <a class="brand" href="#home" aria-label="B12 match forecasts, start page">
       <span class="brand-strip" aria-hidden="true"><i></i><i></i><i></i></span>
       <span>B12 match forecasts</span>
     </a>
-    <nav aria-label="Sections">
+    <nav class="tabs" aria-label="Sections">
+      <span class="tab-indicator" aria-hidden="true"></span>
       <ul>
         <li><a href="#overview">Overview</a></li>
         <li><a href="#season">2026-27 season</a></li>
@@ -31,23 +32,44 @@
 </header>
 
 <main id="main">
-  <section class="hero" id="top" aria-labelledby="hero-title">
-    <div class="hero-copy">
-      <h1 id="hero-title">Every team, re-rated after every match.</h1>
-      <p class="lede">A sequential Bayesian model for eight European leagues. Each team carries an attack and a defence
-        rating with its own uncertainty; after each result both move, by more when the model was less sure. Every
-        improvement was written down and committed before its data was looked at, then judged once.</p>
-      <p class="credit">Group B12: Akshara Sree R, Anirudh S Nair, Iniyaa Muthuselvan, Shashank Kannan. Guided by Dr. Sruti S.</p>
+  <!-- ======================================================== home -->
+  <section class="view" data-view="home" id="home" aria-labelledby="hero-title">
+    <div class="hero wrap">
+      <p class="kicker">Group B12 project, Amrita School of Artificial Intelligence</p>
+      <h1 id="hero-title" tabindex="-1">Every team, re-rated after every match.</h1>
+      <p class="lede">This project forecasts football matches in eight European leagues. Each team has an attack and a
+        defence rating, and the model is never sure of either: it keeps a best guess and a measure of doubt. After every
+        result both ratings move, further when the doubt was large. That is the self-correcting part.</p>
+      <p class="lede">The project was run like an experiment. Each idea was written down and committed before its data was
+        looked at, then judged once, so the failures are reported as plainly as the successes.</p>
+      <p class="credit">Akshara Sree R, Anirudh S Nair, Iniyaa Muthuselvan and Shashank Kannan. Guided by Dr. Sruti S.</p>
     </div>
-    <figure class="hero-board" aria-labelledby="hero-board-cap">
-      <figcaption id="hero-board-cap">Latest matches in the 2026-27 data: the final model's forecast, with what happened outlined</figcaption>
-      <ol class="board" id="hero-board"></ol>
-    </figure>
+
+    <div class="wrap">
+      <h2 class="explore-title" id="explore-title">Explore</h2>
+      <ul class="tiles" aria-labelledby="explore-title">
+        <li><a class="tile" href="#overview"><span class="tile-name">Overview</span><span class="tile-desc">What the model is, the results, and what to read before trusting them.</span></a></li>
+        <li><a class="tile tile-lead" href="#season"><span class="tile-name">2026-27 season</span><span class="tile-desc">Every completed match so far, with each forecast beside the final score.</span></a></li>
+        <li><a class="tile" href="#ratings"><span class="tile-name">Team ratings</span><span class="tile-desc">Attack and defence for every team, league by league.</span></a></li>
+        <li><a class="tile" href="#matchup"><span class="tile-name">Matchup</span><span class="tile-desc">Pick any two teams, from any leagues, and see the scoreline odds.</span></a></li>
+        <li><a class="tile" href="#forward"><span class="tile-name">Forward log</span><span class="tile-desc">Forecasts written down before kickoff, waiting for their results.</span></a></li>
+        <li><a class="tile" href="#methods"><span class="tile-name">Methods</span><span class="tile-desc">How the testing was kept honest, and the ideas that did not work.</span></a></li>
+      </ul>
+    </div>
+
+    <div class="wrap">
+      <figure class="hero-board" aria-labelledby="hero-board-cap">
+        <figcaption id="hero-board-cap">Latest matches in the 2026-27 data: the final model's forecast, with what happened outlined</figcaption>
+        <ol class="board" id="hero-board"></ol>
+        <a class="text-link" href="#season">See all the matches</a>
+      </figure>
+    </div>
   </section>
 
-  <section id="overview" class="band" aria-labelledby="overview-title">
+  <!-- ======================================================== overview -->
+  <section class="view" data-view="overview" id="overview" aria-labelledby="overview-title" hidden>
     <div class="wrap">
-      <h2 id="overview-title">Overview</h2>
+      <h2 id="overview-title" tabindex="-1">Overview</h2>
       <div class="split">
         <div class="prose">
           <p>Each team has two numbers: how many goals it tends to score (attack) and how many it tends to let in
@@ -66,8 +88,8 @@
         </aside>
       </div>
       <h3 class="table-title" id="results-title">Results, as decided under each pre-registered rule</h3>
-      <p class="note">Log-loss differences: below zero means the first model forecast better. Hover or focus a number
-        to see the id of the claim in <code>results/claims.json</code> it comes from.</p>
+      <p class="note">Log-loss differences: below zero means the first model forecast better. Hover a number to see the
+        id of its entry in <code>results/claims.json</code>.</p>
       <div class="table-scroll" tabindex="0" role="region" aria-labelledby="results-title">
         <table class="results" id="results-table">
           <thead><tr><th scope="col">Comparison</th><th scope="col">Data</th><th scope="col">Difference</th><th scope="col">Interval</th><th scope="col">Verdict</th></tr></thead>
@@ -77,11 +99,12 @@
     </div>
   </section>
 
-  <section id="season" class="band band-alt" aria-labelledby="season-title">
+  <!-- ======================================================== season -->
+  <section class="view" data-view="season" id="season" aria-labelledby="season-title" hidden>
     <div class="wrap">
-      <h2 id="season-title">Season 2026-27 so far</h2>
-      <p class="label-retro" id="season-label">Retrospective: parameters frozen before any 2026-27 data was fetched;
-        forecasts computed after the matches, not timestamped before kickoff.</p>
+      <h2 id="season-title" tabindex="-1">Season 2026-27 so far</h2>
+      <p class="label-retro">Retrospective: parameters frozen before any 2026-27 data was fetched; forecasts computed
+        after the matches, not timestamped before kickoff.</p>
       <div class="season-head">
         <div class="aggregate" id="aggregate" aria-label="Aggregate result"></div>
         <aside class="blind" aria-labelledby="blind-title">
@@ -103,7 +126,13 @@
         <label class="grow">Search <input type="search" id="f-q" placeholder="Team name" autocomplete="off"></label>
         <button type="reset" class="ghost" id="f-clear">Clear filters</button>
       </form>
-      <p class="count" id="match-count" aria-live="polite"></p>
+      <div class="list-bar">
+        <p class="count" id="match-count" aria-live="polite"></p>
+        <div class="seg" role="radiogroup" aria-label="Matches per page" id="page-size">
+          <span class="seg-label" aria-hidden="true">Per page</span>
+          <span class="seg-thumb" aria-hidden="true"></span>
+        </div>
+      </div>
       <div class="legend" aria-hidden="true">
         <span><i class="sw sw-h"></i>Home win</span><span><i class="sw sw-d"></i>Draw</span><span><i class="sw sw-a"></i>Away win</span>
         <span><i class="sw sw-actual"></i>What happened</span>
@@ -113,12 +142,13 @@
     </div>
   </section>
 
-  <section id="ratings" class="band" aria-labelledby="ratings-title">
+  <!-- ======================================================== ratings -->
+  <section class="view" data-view="ratings" id="ratings" aria-labelledby="ratings-title" hidden>
     <div class="wrap">
-      <h2 id="ratings-title">Team ratings</h2>
+      <h2 id="ratings-title" tabindex="-1">Team ratings</h2>
       <p class="prose">Final ratings of the frozen model after the snapshot, centred within each league so that 1.00 is
         the league average. Attack: higher scores more. <strong>Defence: lower is better</strong>; it multiplies the
-        goals the opponent is expected to score.</p>
+        goals the opponent is expected to score. Pick a team's name to try it in the matchup tool.</p>
       <div class="ratings-controls">
         <label>League <select id="r-league"></select></label>
         <label>Sort by <select id="r-sort">
@@ -137,30 +167,40 @@
         </table>
       </div>
       <p class="note" id="r-interval"></p>
-      <div class="excluded" id="r-excluded"></div>
     </div>
   </section>
 
-  <section id="matchup" class="band band-alt" aria-labelledby="matchup-title">
+  <!-- ======================================================== matchup -->
+  <section class="view" data-view="matchup" id="matchup" aria-labelledby="matchup-title" hidden>
     <div class="wrap">
-      <div class="title-row">
-        <h2 id="matchup-title">Matchup</h2>
-        <p class="parity" id="parity" role="status">Parity check running</p>
-      </div>
+      <h2 id="matchup-title" tabindex="-1">Matchup</h2>
       <p class="label-retro" id="matchup-label"></p>
-      <form class="filters matchup-form" onsubmit="return false" aria-label="Choose a matchup">
-        <label>League <select id="m-league"></select></label>
-        <label>Home <select id="m-home"></select></label>
-        <button type="button" class="ghost swap" id="m-swap" aria-label="Swap home and away">Swap</button>
-        <label>Away <select id="m-away"></select></label>
+      <form class="matchup-form" onsubmit="return false" aria-label="Choose a matchup">
+        <fieldset class="side">
+          <legend>Home</legend>
+          <label>League <select id="m-home-league"></select></label>
+          <label>Team <select id="m-home"></select></label>
+        </fieldset>
+        <button type="button" class="swap" id="m-swap" aria-label="Swap home and away">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M7 7h11l-3-3M17 17H6l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Swap</span>
+        </button>
+        <fieldset class="side">
+          <legend>Away</legend>
+          <label>League <select id="m-away-league"></select></label>
+          <label>Team <select id="m-away"></select></label>
+        </fieldset>
       </form>
+      <p class="cross-note" id="m-cross" hidden>These teams are from different leagues and never met in the data, so their
+        ratings were never measured against each other. Treat a cross-league forecast as an illustration.</p>
       <div class="matchup-out" id="m-out" aria-live="polite"></div>
     </div>
   </section>
 
-  <section id="forward" class="band" aria-labelledby="forward-title">
+  <!-- ======================================================== forward -->
+  <section class="view" data-view="forward" id="forward" aria-labelledby="forward-title" hidden>
     <div class="wrap">
-      <h2 id="forward-title">Forward log</h2>
+      <h2 id="forward-title" tabindex="-1">Forward log</h2>
       <p class="prose" id="forward-intro"></p>
       <div class="table-scroll" tabindex="0" role="region" aria-labelledby="forward-title">
         <table class="forward" id="forward-table">
@@ -171,9 +211,10 @@
     </div>
   </section>
 
-  <section id="methods" class="band band-alt" aria-labelledby="methods-title">
+  <!-- ======================================================== methods -->
+  <section class="view" data-view="methods" id="methods" aria-labelledby="methods-title" hidden>
     <div class="wrap">
-      <h2 id="methods-title">Methods, and what did not work</h2>
+      <h2 id="methods-title" tabindex="-1">Methods, and what did not work</h2>
       <div class="split methods">
         <div class="prose">
           <h3>How the testing was kept honest</h3>
@@ -222,16 +263,18 @@
       </div>
     </div>
   </section>
+
+  <nav class="pager wrap" id="pager" aria-label="Previous and next section"></nav>
 </main>
 
 <footer class="foot">
   <div class="wrap">
-    <p>Group B12, B.Tech Artificial Intelligence and Data Science, Amrita School of Artificial Intelligence. Source,
-      results and the full findings are in the project repository; <code>results/FINDINGS.md</code> is the reference.</p>
+    <p>Group B12, B.Tech Artificial Intelligence and Data Science, Amrita School of Artificial Intelligence.</p>
   </div>
 </footer>
+<div class="pop" id="pop" role="tooltip" hidden></div>
 <noscript><p class="noscript">This page needs JavaScript to load its data file.</p></noscript>
-<script src="forecast.js"></script>
-<script src="app.js"></script>
+<script src="forecast.js?v=6"></script>
+<script src="app.js?v=6"></script>
 </body>
 </html>
