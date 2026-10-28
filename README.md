@@ -103,18 +103,4 @@ These commands spend a protected data window and refuse a second run, or would r
 `--test-look`, the default `live2627.py` run, and `run_pp.py --evaluate`. Use the committed results instead. `pytest.ini` limits collection to `tests/` so that a plain
 `pytest` never imports a scoring script.
 
-## Limitations
 
-- The TEST window was examined during the early stages before P1 was scored on it, so it is a retrospective holdout,
-  not a clean out-of-sample result. The fresh-season replication is the stronger evidence [6, 7, 9].
-- The 2026-27 result covers the first weeks of the season, and the forecasts were recomputed after the matches with
-  frozen parameters; they are not timestamped before kickoff. The gain is concentrated in matches involving newly
-  promoted teams [10].
-- The rating bars show the model's own uncertainty, not measured accuracy [11].
-- The forward test has started but has too few scored matches for any inference [8].
-
-## History
-
-The dated decision log and the working plan files were removed from the tree at the end of the project. The lines that
-back numbers in FINDINGS are kept verbatim in `results/decision_extract.md`, and the full files remain in the git
-history.
