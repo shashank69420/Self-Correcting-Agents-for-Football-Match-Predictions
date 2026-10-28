@@ -413,3 +413,6 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   EXPECTED_TESTS differs (92 on main, 123 on demo); nothing to revert. (e) python -m pytest -q on demo: 123 passed; git
   status afterwards showed none of TEST, results/experiments/test_once.md, results/p2/, results/live2627/,
   forward/predictions.jsonl or any PREREGISTRATION.md changed.
+
+   ## 2026-10-28 - Reproduction check of results/fan/ratings.json
+   Re-ran `python fan_features.py --ratings` in a copy of the repo (C:\dev\b12-check, outside the tracked tree). Every top-level key of the output equals the committed results/fan/ratings.json except `provenance`. The committed file was recorded with fan_features_dirty: true. The discrepancy is in provenance metadata only; no numbers differ. No file in results/fan/ was edited.
