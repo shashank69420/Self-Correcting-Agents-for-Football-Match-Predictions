@@ -280,3 +280,31 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   states a forward-log count, because no claim backs one. Comparison of every plotted value with FINDINGS: no
   mismatch. The new test is an extra case inside test_uncovered_number_fails, so EXPECTED_TESTS stays 64. Approved:
   user, 2026-10-26.
+- 2026-10-28 Fan-features session (branch demo). Exceptions granted by the session prompt: create fan_features.py,
+  tests/test_fan.py, fan/NOTES.md, results/fan/*.md and results/fan/*.json; DECISIONS.md append-only;
+  tools/ownership.txt gains exactly those five paths; tools/gate.py changes only EXPECTED_TESTS, to the final pytest
+  total. FINDINGS.md, README.md, claims.json, every model file, forward/, p2/, live2627/ and every frozen JSON are not
+  edited; their helpers are imported. Commit messages carry no Co-Authored-By or Claude trailer. Approved: user,
+  2026-10-28 (session prompt).
+- 2026-10-28 Fan preflight: branch demo, clean tree, HEAD a2d7337; pandas 3.0.6, numpy 2.5.4, scipy 1.18.1,
+  statsmodels 0.15.0, penaltyblog 1.12.3; python -X utf8 main.py: 0.2057 / 0.2060 / 0.2059 / CHANGE_SCALE 0;
+  python -m pytest -q: 92 passed (= EXPECTED_TESTS); candidate_p2.json loads; snapshot_20261026.json rows sha256
+  equals its manifest (live2627.snapshot_failures: none). Approved: n/a, recorded.
+- 2026-10-28 Fan readings (prompt: take the stricter reading, log it): (1) README.md does not exist at the root; the
+  other four binding files were read and nothing was created in its place. (2) exp_model.dixon_coles_probs takes
+  max_goals but returns only 1X2, not the grid, so the market grid is a thin reimplementation, tested against it to
+  1e-12 at max_goals 10 and 30. (3) "Pre-normalisation mass" is the mass of the uncorrected Poisson product grid at
+  30 goals, before the rho factors; below 1 - 1e-7 raises. (4) Final team states are the objects p2_model.run_filter
+  passes to update_step, recorded by patching p2_model.update_step as forward_logger.snapshot_states does for
+  exp_model (that function is exp_model-specific, so the pattern is reused, not the function); a final state is
+  post-update with no extra predict_step; the wrapped run's forecasts must equal an unwrapped run's exactly. (5) VAL is
+  exp_harness.split_index's val on H only (non-TEST H rows from 2023-07-01); L rows are not added to VAL. (6) Every
+  95% half-width is the normal approximation: 1.96 sqrt(p(1-p)/n) for rates, 1.96 sd/sqrt(n) for means and mean
+  score differences. (7) Climatology is the over-2.5 and BTTS base rate over H rows dated before 2020-07-01 (all
+  non-TEST, asserted). (8) The 1X2 grid diagnostic covers the scored rows only (live test set and VAL). (9) Per team,
+  matches before 2026-27 (H, the cached history, counts only) and in 2026-27 (L) are both stored, with their sum.
+  (10) Top-scoreline ties sort by probability descending, then home goals, then away goals. (11) Ranks: 1 is best;
+  attack by highest factor, defence by lowest factor, overall by highest attack/defence ratio. (12) Rating teams are
+  the active 2026-27 teams of each league minus the teams flagged by live2627.name_audit; the filter itself still
+  runs over every row, flagged teams included. (13) The sd-versus-matches rank correlation uses established teams,
+  total matches, attack and defence sd separately (Spearman). Approved: n/a, prompt rule.
