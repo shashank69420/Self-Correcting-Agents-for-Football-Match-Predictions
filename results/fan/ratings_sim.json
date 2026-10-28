@@ -1,0 +1,55 @@
+{
+  "label": "WHAT THE MODEL IMPLIES: synthetic matches from the model's own prior; not a football finding",
+  "wording": "Parameters were fixed before 2026-27 data was fetched. Forecasts were recomputed after the matches were played and are not timestamped before kickoff.",
+  "provenance": {
+    "code_commit": "cc60ae5a86244ec73a916c957cf87e4d479cbcef",
+    "fan_features_sha256": "090de447abb7125a4e0bd1390782771c9ffc26741a9706cf7889928b335637ac",
+    "fan_features_dirty": true,
+    "params_sha256": "bf7d5226316fe2cb4473e7120c624802f7dcdbd651b603200747f179728b0e3f",
+    "snapshot_date": "20261026"
+  },
+  "seed": 20261028,
+  "design": {
+    "leagues": 8,
+    "teams": 20,
+    "seasons": 7,
+    "relegated": 3
+  },
+  "parameters": {
+    "process_noise": 0.0025,
+    "initial_var": 0.15,
+    "cold_defence": 0.45,
+    "clip_rates": true,
+    "rho": -0.04,
+    "shots_w": 0.5,
+    "home_adv": 0.20356233139056304
+  },
+  "result": {
+    "n_established": 136,
+    "n_matches": 21280,
+    "sd_vs_matches": {
+      "attack": {
+        "spearman": -0.12958201794200155,
+        "p_value": 0.13269177292650403,
+        "n": 136
+      },
+      "defence": {
+        "spearman": 0.2356106647889013,
+        "p_value": 0.005757311183623907,
+        "n": 136
+      }
+    },
+    "matches_range": [
+      76,
+      266
+    ]
+  },
+  "claims_display": {
+    "seed": "20261028",
+    "n_established": "136",
+    "spearman_attack": "-0.130",
+    "spearman_defence": "+0.236"
+  },
+  "same_sign_pattern_as_real": true,
+  "reading": "In the simulation the signs match the real teams: defence sd rises and attack sd falls with matches played. Under this design the filter's variance dynamics and the exit of the weakest teams each season both act, and the simulation does not separate the two."
+}

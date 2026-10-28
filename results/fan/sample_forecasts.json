@@ -1,0 +1,280 @@
+{
+  "label": "DESCRIPTIVE: recomputed forecasts, not timestamped before kickoff; no test, no claim",
+  "wording": "Parameters were fixed before 2026-27 data was fetched. Forecasts were recomputed after the matches were played and are not timestamped before kickoff.",
+  "provenance": {
+    "code_commit": "cc60ae5a86244ec73a916c957cf87e4d479cbcef",
+    "fan_features_sha256": "090de447abb7125a4e0bd1390782771c9ffc26741a9706cf7889928b335637ac",
+    "fan_features_dirty": true,
+    "params_sha256": "bf7d5226316fe2cb4473e7120c624802f7dcdbd651b603200747f179728b0e3f",
+    "snapshot_date": "20261026"
+  },
+  "purpose": "parity fixtures: markets from lambda_home, mu_away and rho",
+  "rho": -0.04,
+  "samples": [
+    {
+      "date": "2026-08-07 19:00:00",
+      "league": "NLD Eredivisie",
+      "home": "Cambuur",
+      "away": "Excelsior",
+      "goals_home": 0,
+      "goals_away": 4,
+      "lambda_home": 1.2355131974014215,
+      "mu_away": 1.6819477167443597,
+      "model_1x2_max_goals_10": [
+        0.2767844656625087,
+        0.24918082515929407,
+        0.47403470917819746
+      ],
+      "markets": {
+        "home": 0.2767840694793588,
+        "draw": 0.24918039371812165,
+        "away": 0.4740355368025194,
+        "xg_home": 1.2355131974014213,
+        "xg_away": 1.6819477167443593,
+        "top_scorelines": [
+          {
+            "home_goals": 1,
+            "away_goals": 1,
+            "p": 0.11685735270342032
+          },
+          {
+            "home_goals": 1,
+            "away_goals": 2,
+            "p": 0.09449421036745584
+          },
+          {
+            "home_goals": 0,
+            "away_goals": 1,
+            "p": 0.08644975103176208
+          },
+          {
+            "home_goals": 0,
+            "away_goals": 2,
+            "p": 0.07648174909519354
+          },
+          {
+            "home_goals": 2,
+            "away_goals": 1,
+            "p": 0.06941288532618678
+          }
+        ],
+        "over_2_5": 0.5580658043944893,
+        "under_2_5": 0.4419341956055107,
+        "btts": 0.5818684465034974,
+        "btts_no": 0.41813155349650255
+      }
+    },
+    {
+      "date": "2026-08-29 17:45:00",
+      "league": "NLD Eredivisie",
+      "home": "AZ Alkmaar",
+      "away": "Go Ahead Eagles",
+      "goals_home": 5,
+      "goals_away": 2,
+      "lambda_home": 2.1738439216033694,
+      "mu_away": 1.2110661840703176,
+      "model_1x2_max_goals_10": [
+        0.5893330047854812,
+        0.2092419372860766,
+        0.20142505792844212
+      ],
+      "markets": {
+        "home": 0.5893402596252727,
+        "draw": 0.20923820609223337,
+        "away": 0.2014215342824941,
+        "xg_home": 2.1738439216033703,
+        "xg_away": 1.2110661840703179,
+        "top_scorelines": [
+          {
+            "home_goals": 2,
+            "away_goals": 1,
+            "p": 0.09694977821849865
+          },
+          {
+            "home_goals": 1,
+            "away_goals": 1,
+            "p": 0.09276449734521026
+          },
+          {
+            "home_goals": 2,
+            "away_goals": 0,
+            "p": 0.08005324522616636
+          },
+          {
+            "home_goals": 3,
+            "away_goals": 1,
+            "p": 0.07025122869369269
+          },
+          {
+            "home_goals": 1,
+            "away_goals": 0,
+            "p": 0.07008346214777146
+          }
+        ],
+        "over_2_5": 0.6573402662761192,
+        "under_2_5": 0.3426597337238808,
+        "btts": 0.6258294679529282,
+        "btts_no": 0.37417053204707185
+      }
+    },
+    {
+      "date": "2026-09-12 15:00:00",
+      "league": "ENG Premier League",
+      "home": "Crystal Palace",
+      "away": "Ipswich",
+      "goals_home": 2,
+      "goals_away": 3,
+      "lambda_home": 2.007346983535718,
+      "mu_away": 1.074483439578362,
+      "model_1x2_max_goals_10": [
+        0.5856963114133998,
+        0.22076058628884518,
+        0.1935431022977548
+      ],
+      "markets": {
+        "home": 0.5856998593892231,
+        "draw": 0.22075868473356017,
+        "away": 0.19354145587721674,
+        "xg_home": 2.0073469835357174,
+        "xg_away": 1.0744834395783618,
+        "top_scorelines": [
+          {
+            "home_goals": 1,
+            "away_goals": 1,
+            "p": 0.10290431082717597
+          },
+          {
+            "home_goals": 2,
+            "away_goals": 1,
+            "p": 0.09930993169795847
+          },
+          {
+            "home_goals": 2,
+            "away_goals": 0,
+            "p": 0.09242574435295968
+          },
+          {
+            "home_goals": 1,
+            "away_goals": 0,
+            "p": 0.08812960371130318
+          },
+          {
+            "home_goals": 3,
+            "away_goals": 1,
+            "p": 0.06644983060967835
+          }
+        ],
+        "over_2_5": 0.5948911798191387,
+        "under_2_5": 0.40510882018086125,
+        "btts": 0.5740143442755585,
+        "btts_no": 0.42598565572444147
+      }
+    },
+    {
+      "date": "2026-09-20 20:00:00",
+      "league": "ESP La Liga",
+      "home": "Valencia",
+      "away": "Sociedad",
+      "goals_home": 2,
+      "goals_away": 3,
+      "lambda_home": 1.483776445455888,
+      "mu_away": 1.2331736111622222,
+      "model_1x2_max_goals_10": [
+        0.425147319764673,
+        0.2645856025242018,
+        0.31026707771112527
+      ],
+      "markets": {
+        "home": 0.42514757069935777,
+        "draw": 0.26458544951019153,
+        "away": 0.3102669797904508,
+        "xg_home": 1.4837764454558882,
+        "xg_away": 1.2331736111622222,
+        "top_scorelines": [
+          {
+            "home_goals": 1,
+            "away_goals": 1,
+            "p": 0.12573888857252172
+          },
+          {
+            "home_goals": 1,
+            "away_goals": 0,
+            "p": 0.09320586480713548
+          },
+          {
+            "home_goals": 2,
+            "away_goals": 1,
+            "p": 0.0896963467027453
+          },
+          {
+            "home_goals": 0,
+            "away_goals": 1,
+            "p": 0.07664703809367757
+          },
+          {
+            "home_goals": 1,
+            "away_goals": 2,
+            "p": 0.07454705734831774
+          }
+        ],
+        "over_2_5": 0.5105185001026562,
+        "under_2_5": 0.4894814998973438,
+        "btts": 0.5527660131412845,
+        "btts_no": 0.4472339868587155
+      }
+    },
+    {
+      "date": "2026-10-21 19:00:00",
+      "league": "ESP La Liga",
+      "home": "Levante",
+      "away": "Ath Bilbao",
+      "goals_home": 3,
+      "goals_away": 1,
+      "lambda_home": 1.4524531904786524,
+      "mu_away": 1.3650099088709882,
+      "model_1x2_max_goals_10": [
+        0.38921512327570373,
+        0.2611075752845806,
+        0.34967730143971554
+      ],
+      "markets": {
+        "home": 0.3892152841301241,
+        "draw": 0.261107412034191,
+        "away": 0.349677303835685,
+        "xg_home": 1.4524531904786522,
+        "xg_away": 1.3650099088709877,
+        "top_scorelines": [
+          {
+            "home_goals": 1,
+            "away_goals": 1,
+            "p": 0.12321472474629325
+          },
+          {
+            "home_goals": 2,
+            "away_goals": 1,
+            "p": 0.08604020195754929
+          },
+          {
+            "home_goals": 1,
+            "away_goals": 0,
+            "p": 0.082055724384068
+          },
+          {
+            "home_goals": 1,
+            "away_goals": 2,
+            "p": 0.08086025009495271
+          },
+          {
+            "home_goals": 0,
+            "away_goals": 1,
+            "p": 0.07683034568436371
+          }
+        ],
+        "over_2_5": 0.5346986692744469,
+        "under_2_5": 0.46530133072555313,
+        "btts": 0.5751226836839067,
+        "btts_no": 0.42487731631609327
+      }
+    }
+  ]
+}

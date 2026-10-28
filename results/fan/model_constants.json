@@ -1,0 +1,51 @@
+{
+  "label": "DESCRIPTIVE: recomputed forecasts, not timestamped before kickoff; no test, no claim",
+  "wording": "Parameters were fixed before 2026-27 data was fetched. Forecasts were recomputed after the matches were played and are not timestamped before kickoff.",
+  "provenance": {
+    "code_commit": "cc60ae5a86244ec73a916c957cf87e4d479cbcef",
+    "fan_features_sha256": "090de447abb7125a4e0bd1390782771c9ffc26741a9706cf7889928b335637ac",
+    "fan_features_dirty": true,
+    "params_sha256": "bf7d5226316fe2cb4473e7120c624802f7dcdbd651b603200747f179728b0e3f",
+    "snapshot_date": "20261026"
+  },
+  "home_adv": 0.20356233139056304,
+  "rho": -0.04,
+  "rate_bounds": [
+    0.15,
+    6.0
+  ],
+  "clip_rates": true,
+  "process_noise": 0.0025,
+  "grid": {
+    "market_max_goals": 30,
+    "model_max_goals": 10,
+    "min_mass": 0.9999999,
+    "mass_check": "Poisson product mass before the rho factors must be at least min_mass, else raise"
+  },
+  "correction": {
+    "rule": "multiply the four low-score cells, floor each factor at 0, renormalise the whole grid",
+    "cells": {
+      "0-0": "1 - lambda*mu*rho",
+      "0-1": "1 + lambda*rho",
+      "1-0": "1 + mu*rho",
+      "1-1": "1 - rho"
+    },
+    "source": "exp_model.dixon_coles_probs"
+  },
+  "markets": {
+    "over_line": 2.5,
+    "over": "P(total goals > over_line)",
+    "btts": "P(home >= 1 and away >= 1)",
+    "top_k": 5,
+    "top_tie_break": "probability descending, then home goals, then away goals"
+  },
+  "params": {
+    "process_noise": 0.0025,
+    "initial_var": 0.15,
+    "cold_defence": 0.45,
+    "clip_rates": true,
+    "rho": -0.04,
+    "shots_w": 0.5
+  },
+  "params_sha256": "bf7d5226316fe2cb4473e7120c624802f7dcdbd651b603200747f179728b0e3f"
+}

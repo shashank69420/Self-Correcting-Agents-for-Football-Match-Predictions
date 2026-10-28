@@ -1521,6 +1521,111 @@
    "value": "89",
    "source": "results/live2627/primary.md",
    "locator": "\\| ESP La Liga \\| 89 \\|$"
+  },
+  {
+   "id": "fan_n_established",
+   "value": "139",
+   "source": "results/fan/ratings.json",
+   "locator": "\"n_established\": \"139\"",
+   "script": "fan_features.py --ratings"
+  },
+  {
+   "id": "fan_spearman_defence",
+   "value": "+0.456",
+   "source": "results/fan/ratings.json",
+   "locator": "\"spearman_defence\": \"\\+0\\.456\"",
+   "script": "fan_features.py --ratings"
+  },
+  {
+   "id": "fan_spearman_attack",
+   "value": "-0.396",
+   "source": "results/fan/ratings.json",
+   "locator": "\"spearman_attack\": \"-0\\.396\"",
+   "script": "fan_features.py --ratings"
+  },
+  {
+   "id": "fan_smallest_significant_rho",
+   "value": "0.17",
+   "source": "results/fan/ratings.json",
+   "locator": "\"smallest_significant_rho\": \"0\\.17\"",
+   "script": "fan_features.py --ratings"
+  },
+  {
+   "id": "fan_defence_sd_min",
+   "value": "0.177",
+   "source": "results/fan/ratings.json",
+   "locator": "\"defence_sd_min\": \"0\\.177\"",
+   "script": "fan_features.py --ratings"
+  },
+  {
+   "id": "fan_defence_sd_max",
+   "value": "0.240",
+   "source": "results/fan/ratings.json",
+   "locator": "\"defence_sd_max\": \"0\\.240\"",
+   "script": "fan_features.py --ratings"
+  },
+  {
+   "id": "fan_bar_factor_min",
+   "value": "1.19",
+   "source": "results/fan/ratings.json",
+   "locator": "\"bar_factor_min\": \"1\\.19\"",
+   "script": "fan_features.py --ratings"
+  },
+  {
+   "id": "fan_bar_factor_max",
+   "value": "1.27",
+   "source": "results/fan/ratings.json",
+   "locator": "\"bar_factor_max\": \"1\\.27\"",
+   "script": "fan_features.py --ratings"
+  },
+  {
+   "id": "fan_newcomers_larger",
+   "value": "10",
+   "source": "results/fan/ratings.json",
+   "locator": "\"newcomers_larger\": \"10\"",
+   "script": "fan_features.py --ratings"
+  },
+  {
+   "id": "fan_newcomers_n",
+   "value": "10",
+   "source": "results/fan/ratings.json",
+   "locator": "\"newcomers_n\": \"10\"",
+   "script": "fan_features.py --ratings"
+  },
+  {
+   "id": "fan_sim_seed",
+   "value": "20261028",
+   "source": "results/fan/ratings_sim.json",
+   "locator": "\"seed\": \"20261028\"",
+   "script": "fan_features.py --ratings"
+  },
+  {
+   "id": "fan_sim_n_established",
+   "value": "136",
+   "source": "results/fan/ratings_sim.json",
+   "locator": "\"n_established\": \"136\"",
+   "script": "fan_features.py --ratings"
+  },
+  {
+   "id": "fan_sim_spearman_defence",
+   "value": "+0.236",
+   "source": "results/fan/ratings_sim.json",
+   "locator": "\"spearman_defence\": \"\\+0\\.236\"",
+   "script": "fan_features.py --ratings"
+  },
+  {
+   "id": "fan_sim_spearman_attack",
+   "value": "-0.130",
+   "source": "results/fan/ratings_sim.json",
+   "locator": "\"spearman_attack\": \"-0\\.130\"",
+   "script": "fan_features.py --ratings"
+  },
+  {
+   "id": "fan_over_line",
+   "value": "2.5",
+   "source": "results/fan/model_constants.json",
+   "locator": "\"over_line\": 2\\.5",
+   "script": "fan_features.py --outputs"
   }
  ]
 }
