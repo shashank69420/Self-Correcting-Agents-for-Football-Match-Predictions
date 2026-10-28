@@ -485,3 +485,10 @@ and claims pp_001 to pp_015 record it. Labelling: the result carries the owner's
 numerical check". It is not labelled EXPLORATORY because v2, including the node rule, was committed before any
 outcome for this forecast was computed; the revision is disclosed in FINDINGS section 12. Item 3 is closed as a
 negative finding. Nothing in results/fan/, results/p2/, results/experiments/, results/live2627/ or forward/ changed.
+
+## 2026-10-29 - Owner approval: log-loss kept as the decisive metric for PP v2
+The 2026-10-29 "PP v2 pre-registered" entry records that the assistant kept v1's log-loss rule where the owner's v2
+instruction described RPS. The owner approved that choice in chat after the result was known, by asking the assistant to
+"Complete 1, 2 and 3", where item 2 was recording this approval. The outcome is the same under either metric (the RPS
+99% CI is also entirely above 0; FINDINGS section 12), so the approval changes no result or verdict. Approved by: the
+owner (the user).
