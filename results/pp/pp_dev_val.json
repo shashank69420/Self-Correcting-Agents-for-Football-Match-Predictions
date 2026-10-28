@@ -1,0 +1,228 @@
+{
+  "label": "v2, revised after a failed numerical check",
+  "selection_label": "selection-period, retrospective, not out-of-sample",
+  "protocol": "pp/PREREGISTRATION_v2.md",
+  "protocol_sha256": "12bf26792d73fc5cf93323d38d181f5095643b1fc624c1e8235b0757e9f33fe2",
+  "nodes": 301,
+  "verdict": "REJECTED",
+  "checks": {
+    "(i) DEV log-loss improves": false,
+    "(ii) VAL log-loss improves": false,
+    "(iii) 99% CI upper bound < 0": false
+  },
+  "table": {
+    "baseline": {
+      "dev": {
+        "logloss": 0.9815456294205566,
+        "rps": 0.20008182727044183,
+        "brier": 0.19463244240688052
+      },
+      "val": {
+        "logloss": 0.9680423527953276,
+        "rps": 0.19294366764674978,
+        "brier": 0.19174206350282755
+      },
+      "pooled": {
+        "logloss": 0.9771089862353454,
+        "rps": 0.19773651004645543,
+        "brier": 0.19368277809774642
+      }
+    },
+    "pp": {
+      "dev": {
+        "logloss": 0.9832772852454564,
+        "rps": 0.20038264241399356,
+        "brier": 0.19493202575086102
+      },
+      "val": {
+        "logloss": 0.971352256089881,
+        "rps": 0.19346398362278364,
+        "brier": 0.1922802294891024
+      },
+      "pooled": {
+        "logloss": 0.9793591918222884,
+        "rps": 0.198109444491093,
+        "brier": 0.1940607502715956
+      }
+    }
+  },
+  "differences": {
+    "dev": {
+      "logloss": 0.0017316558248998692,
+      "rps": 0.0003008151435517359,
+      "brier": 0.0002995833439805029
+    },
+    "val": {
+      "logloss": 0.0033099032945533846,
+      "rps": 0.0005203159760338583,
+      "brier": 0.0005381659862748467
+    },
+    "pooled": {
+      "logloss": 0.0022502055869429993,
+      "rps": 0.0003729344446375682,
+      "brier": 0.00037797217384918924
+    }
+  },
+  "n_dev": 8769,
+  "n_val": 4291,
+  "n_pooled": 13060,
+  "mean_delta_logloss": 0.002250205586942968,
+  "ci99_logloss": [
+    0.0015614374767598227,
+    0.003001315214670665
+  ],
+  "ci99_rps": [
+    0.00025262541182793403,
+    0.0004914224893769309
+  ],
+  "seed": 20261030,
+  "n_resamples": 2000,
+  "plug_in_gap": 0.0,
+  "per_league_val": [
+    {
+      "competition": "DEU Bundesliga 1",
+      "model": "baseline",
+      "n": 478,
+      "RPS": 0.1931636153360231,
+      "Brier": 0.19034673345232875,
+      "LogLoss": 0.9633763428432138,
+      "Accuracy": 0.5502092050209205
+    },
+    {
+      "competition": "DEU Bundesliga 1",
+      "model": "pp",
+      "n": 478,
+      "RPS": 0.1937502757498249,
+      "Brier": 0.19088470707417532,
+      "LogLoss": 0.967116004178783,
+      "Accuracy": 0.5502092050209205
+    },
+    {
+      "competition": "ENG Premier League",
+      "model": "baseline",
+      "n": 610,
+      "RPS": 0.19301296921138542,
+      "Brier": 0.18773479873112595,
+      "LogLoss": 0.9518960100417316,
+      "Accuracy": 0.5508196721311476
+    },
+    {
+      "competition": "ENG Premier League",
+      "model": "pp",
+      "n": 610,
+      "RPS": 0.19358400424225958,
+      "Brier": 0.18827656190030181,
+      "LogLoss": 0.9551964534227484,
+      "Accuracy": 0.5491803278688525
+    },
+    {
+      "competition": "ESP La Liga",
+      "model": "baseline",
+      "n": 591,
+      "RPS": 0.1930411722127765,
+      "Brier": 0.19473209613603223,
+      "LogLoss": 0.9818749594879921,
+      "Accuracy": 0.5313028764805414
+    },
+    {
+      "competition": "ESP La Liga",
+      "model": "pp",
+      "n": 591,
+      "RPS": 0.19388603962308687,
+      "Brier": 0.19553492360604222,
+      "LogLoss": 0.986475419587102,
+      "Accuracy": 0.5296108291032149
+    },
+    {
+      "competition": "FRA Ligue 1",
+      "model": "baseline",
+      "n": 478,
+      "RPS": 0.210037254073763,
+      "Brier": 0.20427234143734593,
+      "LogLoss": 1.0203257335340383,
+      "Accuracy": 0.5104602510460251
+    },
+    {
+      "competition": "FRA Ligue 1",
+      "model": "pp",
+      "n": 478,
+      "RPS": 0.21011958080008508,
+      "Brier": 0.20435447280874355,
+      "LogLoss": 1.0215905240093541,
+      "Accuracy": 0.5104602510460251
+    },
+    {
+      "competition": "ITA Serie A",
+      "model": "baseline",
+      "n": 599,
+      "RPS": 0.1900102454100839,
+      "Brier": 0.19514944961451267,
+      "LogLoss": 0.9804417238812226,
+      "Accuracy": 0.5275459098497496
+    },
+    {
+      "competition": "ITA Serie A",
+      "model": "pp",
+      "n": 599,
+      "RPS": 0.19073641447942935,
+      "Brier": 0.1959119507897408,
+      "LogLoss": 0.9850309308208567,
+      "Accuracy": 0.5258764607679466
+    },
+    {
+      "competition": "NLD Eredivisie",
+      "model": "baseline",
+      "n": 484,
+      "RPS": 0.1855773408894811,
+      "Brier": 0.18336865785941947,
+      "LogLoss": 0.9302940798937349,
+      "Accuracy": 0.5599173553719008
+    },
+    {
+      "competition": "NLD Eredivisie",
+      "model": "pp",
+      "n": 484,
+      "RPS": 0.18576350950286583,
+      "Brier": 0.1836818448275871,
+      "LogLoss": 0.9327590988871908,
+      "Accuracy": 0.5599173553719008
+    },
+    {
+      "competition": "PRT Liga 1",
+      "model": "baseline",
+      "n": 478,
+      "RPS": 0.18547726558232,
+      "Brier": 0.1843759125619589,
+      "LogLoss": 0.9368734531305447,
+      "Accuracy": 0.5355648535564853
+    },
+    {
+      "competition": "PRT Liga 1",
+      "model": "pp",
+      "n": 478,
+      "RPS": 0.18608653243576018,
+      "Brier": 0.18503271740367533,
+      "LogLoss": 0.9404651887433656,
+      "Accuracy": 0.5376569037656904
+    },
+    {
+      "competition": "TUR Super Lig",
+      "model": "baseline",
+      "n": 573,
+      "RPS": 0.19384348230040405,
+      "Brier": 0.19329100126233542,
+      "LogLoss": 0.976165860879135,
+      "Accuracy": 0.5357766143106457
+    },
+    {
+      "competition": "TUR Super Lig",
+      "model": "pp",
+      "n": 573,
+      "RPS": 0.19427793527508957,
+      "Brier": 0.19378950053190985,
+      "LogLoss": 0.9786434715558004,
+      "Accuracy": 0.537521815008726
+    }
+  ],
+  "seconds": 442.0
+}
