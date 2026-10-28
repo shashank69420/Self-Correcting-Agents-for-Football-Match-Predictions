@@ -464,3 +464,12 @@ decides on log-loss (the P2 rule), so the two parts of the instruction conflict.
 unchanged from v1 (log-loss, 99% paired week-block CI, DEV and VAL each improve). Changing the decisive metric after a
 failed check would change a locked rule. RPS with its 99% CI is reported, not decisive. Decided by the assistant under
 the owner's "do not ask" instruction; the owner may overrule this before the evaluation runs.
+
+## 2026-10-29 - PP v2: N* selected without outcomes
+`python -X utf8 run_pp.py --select-nodes` (code commit 14592ff) wrote results/pp/pp_nodes.json. Largest absolute
+difference from the 301-node reference over every scoreline cell and home/draw/away on the 2,000 fixed rows: 9 nodes
+5.35e-04, 21 nodes 2.77e-04, 41 nodes 1.74e-04, 81 nodes 5.36e-05, 161 nodes 4.39e-05. None is below 1e-5, so the
+pre-registered fallback applies: N* = 301. Its recorded maximum error is 0 only because it is the reference itself; the
+rule does not measure the error of the 301-node integration against the exact integral, and the slow decrease along
+the ladder (the rate clip makes the integrand non-smooth) means that error is not shown to be below 1e-5. No outcome was
+used. Pre-registered rule applied as written; no approval needed.

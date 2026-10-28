@@ -1,0 +1,30 @@
+{
+  "label": "v2, revised after a failed numerical check",
+  "protocol": "pp/PREREGISTRATION_v2.md",
+  "protocol_sha256": "12bf26792d73fc5cf93323d38d181f5095643b1fc624c1e8235b0757e9f33fe2",
+  "outcomes_used": false,
+  "reference_nodes": 301,
+  "ladder": [
+    9,
+    21,
+    41,
+    81,
+    161,
+    301
+  ],
+  "tolerance": 1e-05,
+  "seed": 20261019,
+  "n_rows": 2000,
+  "n_work_rows": 15316,
+  "max_error": {
+    "9": 0.0005346693007732828,
+    "21": 0.00027715253143550944,
+    "41": 0.00017424704049662232,
+    "81": 5.361401425629797e-05,
+    "161": 4.3912180623495445e-05,
+    "301": 0.0
+  },
+  "n_star": 301,
+  "n_star_max_error": 0.0,
+  "seconds": 77.4
+}
