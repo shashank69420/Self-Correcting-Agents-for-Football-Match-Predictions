@@ -180,7 +180,12 @@
     window.addEventListener('hashchange', function () { show(routeName()); });
     window.addEventListener('resize', function () { moveIndicator(router.current, true); });
     show(routeName(), true);
-    if (router.current === 'home') document.querySelector('.view[data-view="home"]').classList.add('intro');
+    if (router.current === 'home') {
+      var homeView = document.querySelector('.view[data-view="home"]');
+      homeView.classList.add('intro');
+      // Drop the entrance once it should be over, so a stalled animation never leaves the page faded.
+      setTimeout(function () { homeView.classList.remove('intro'); }, 1800);
+    }
   }
 
   // ---------------------------------------------------------------- popover
@@ -315,21 +320,12 @@
         el('span', { class: 'num' }, [claim(r[1])])
       ]));
     });
-    box.appendChild(wrap);
-    box.appendChild(el('div', { class: 'agg-tests' }, [
+    var tests = el('div', { class: 'agg-tests' }, [
       el('p', null, [frag([el('strong', null, [term('T1', 't1'), ', P1 vs baseline: ']), claim('l10_009'), ' ', claimInterval('l10_010', 'l10_011'), ', accepted.'])]),
       el('p', null, [frag([el('strong', null, [term('T2', 't2'), ', final model vs P1: ']), claim('l10_013'), ' ', claimInterval('l10_014', 'l10_015'), ', accepted.'])]),
       el('p', { class: 'note' }, [frag(['Intervals are ', claim('l10_006'), ' paired bootstrap intervals. Market odds are a benchmark only.'])])
-    ]));
-  }
-
-  function renderBlind(s) {
-    var dl = $('blind'), pre = s.manifest_preregistration;
-    function row(t, d) { dl.appendChild(el('dt', { text: t })); dl.appendChild(el('dd', null, [d])); }
-    row('Pre-registration committed', frag([el('code', { text: pre.path }), ' at commit ', el('code', { text: s.preregistration_commit.slice(0, 12) })]));
-    row('Season data fetched (UTC)', el('span', { text: fmtStamp(s.fetched_at_utc) }));
-    row('Frozen model file, self-hash', el('code', { text: s.p2_frozen_sha256.slice(0, 16) + '…' }));
-    row('Snapshot rows, sha256', el('code', { text: s.rows_sha256.slice(0, 16) + '…' }));
+    ]);
+    box.appendChild(el('div', { class: 'agg-body' }, [wrap, tests]));
   }
 
   var season = { size: 10, shown: 10, list: [], total: 0 };
@@ -471,10 +467,10 @@
     }
     function render() {
       var L = R.leagues[+sel.value];
-      $('r-note').textContent = L.defence_bar_note;
       var teams = L.teams.slice();
       var key = { overall: 'rank_overall', attack: 'rank_attack', defence: 'rank_defence' }[sort.value];
       teams.sort(function (a, b) { return a[key] - b[key]; });
+      teams = teams.slice(0, 5);
       var ae = extent(teams, 'attack_low', 'attack_high'), de = extent(teams, 'defence_low', 'defence_high');
       var sa = logScale(ae[0], ae[1]), sd = logScale(de[0], de[1]);
       var tb = document.querySelector('#ratings-table tbody');
@@ -653,7 +649,6 @@
     renderResults();
     renderCaveats(d.season);
     renderAggregate();
-    renderBlind(d.season);
     initSeason(d.season.matches);
     initRatings(d.ratings);
     initMatchup(d.ratings, d.constants, d.samples, d.constants.snapshot_date);

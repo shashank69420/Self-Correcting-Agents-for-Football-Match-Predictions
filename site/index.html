@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SCAF Football Forecasts</title>
 <meta name="description" content="A sequential Bayesian football model, tested under pre-registered rules. Group B12.">
-<link rel="stylesheet" href="style.css?v=8">
+<link rel="stylesheet" href="style.css?v=10">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 10'%3E%3Crect width='13' height='10' fill='%230B6E5F'/%3E%3Crect x='13' width='7' height='10' fill='%23736B60'/%3E%3Crect x='20' width='10' height='10' fill='%237A2E52'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -33,7 +33,8 @@
 <main id="main">
   <!-- ======================================================== home -->
   <section class="view" data-view="home" id="home" aria-labelledby="hero-title">
-    <div class="hero wrap">
+    <div class="hero wrap home-top">
+      <div class="hero-text">
       <p class="kicker">SCAF: Self-Correcting Agents for Football match prediction. Group B12, Amrita School of Artificial Intelligence</p>
       <h1 id="hero-title" tabindex="-1">Every team, re-rated after every match.</h1>
       <p class="lede">This project forecasts football matches in eight European leagues. Each team has an attack and a
@@ -41,9 +42,8 @@
         result both ratings move, further when the doubt was large. That is the self-correcting part.</p>
       <p class="lede">The project was run like an experiment. Each idea was written down and committed before its data was
         looked at, then judged once, so every result is reported in full.</p>
-    </div>
-
-    <div class="wrap">
+      </div>
+      <div class="explore">
       <h2 class="explore-title" id="explore-title">Explore</h2>
       <ul class="tiles" aria-labelledby="explore-title">
         <li><a class="tile" href="#overview"><span class="tile-name">Overview</span><span class="tile-desc">What the model is, the results, and where the project stands.</span></a></li>
@@ -52,6 +52,7 @@
         <li><a class="tile" href="#matchup"><span class="tile-name">Matchup</span><span class="tile-desc">Pick any two teams, from any leagues, and see the scoreline odds.</span></a></li>
         <li><a class="tile" href="#methods"><span class="tile-name">Methods</span><span class="tile-desc">How the testing was kept honest, and the research milestones along the way.</span></a></li>
       </ul>
+      </div>
     </div>
 
     <div class="wrap">
@@ -103,10 +104,6 @@
         after the matches, not timestamped before kickoff.</p>
       <div class="season-head">
         <div class="aggregate" id="aggregate" aria-label="Aggregate result"></div>
-        <aside class="blind" aria-labelledby="blind-title">
-          <h3 id="blind-title">Was the model blind?</h3>
-          <dl id="blind"></dl>
-        </aside>
       </div>
 
       <form class="filters" id="filters" role="search" aria-label="Filter matches" onsubmit="return false">
@@ -144,14 +141,13 @@
       <h2 id="ratings-title" tabindex="-1">Team ratings</h2>
       <p class="prose">Final ratings of the frozen model after the snapshot, centred within each league so that 1.00 is
         the league average. Attack: higher scores more. <strong>Defence: lower is better</strong>; it multiplies the
-        goals the opponent is expected to score. Pick a team's name to try it in the matchup tool.</p>
+        goals the opponent is expected to score. The five strongest teams of each league are shown; pick a name to try it in the matchup tool.</p>
       <div class="ratings-controls">
         <label>League <select id="r-league"></select></label>
         <label>Sort by <select id="r-sort">
           <option value="overall">Overall rank</option><option value="attack">Attack</option><option value="defence">Defence</option>
         </select></label>
       </div>
-      <p class="bar-note" id="r-note"></p>
       <div class="table-scroll" tabindex="0" role="region" aria-labelledby="ratings-title">
         <table class="ratings" id="ratings-table">
           <thead><tr>
@@ -198,48 +194,28 @@
   <section class="view" data-view="methods" id="methods" aria-labelledby="methods-title" hidden>
     <div class="wrap">
       <h2 id="methods-title" tabindex="-1">Methods and research milestones</h2>
-      <div class="split methods">
-        <div class="prose">
-          <h3>How the testing was kept honest</h3>
-          <p>Data were split by time, never shuffled. Early seasons only warm the ratings up. Every setting was chosen
-            on a development window and a validation window that come before any test data.</p>
-          <p>Each test window was scored once, by a script that refuses to run twice: a held-out window running to May 2026,
-            four older seasons no earlier stage had looked at, and the completed 2026-27 matches. Before each one, the rule
-            for passing was committed to the repository.</p>
-          <p>Models are compared by log-loss per match with a paired bootstrap interval. A change counts as better only
-            when the whole interval is below zero.</p>
-          <p>Every figure on this site is copied from a committed result file, and every headline figure is traced
-            back to its source by an automatic checker.</p>
-        </div>
-        <ol class="failed" aria-label="Research milestones">
-          <li>
-            <h3>Surprise-driven updating</h3>
-            <p>Let a surprising result move ratings further. Validation picked the setting that turns it off:
-              validation log-loss <span data-claim="c032"></span> with it off, rising to <span data-claim="c040"></span>,
-              <span data-claim="c042"></span> and <span data-claim="c044"></span> as it was turned up. The Bayesian
-              update already reacts more to surprises, so the filter handles them on its own.</p>
-          </li>
-          <li>
-            <h3>Lineup weighting</h3>
-            <p>Adjust each side's rating by the market value of its starting XI. The attack effect was clear,
-              <span data-claim="c047"></span> [<span data-claim="c048"></span>, <span data-claim="c049"></span>], but the
-              defence effect sat on zero, <span data-claim="c050"></span> [<span data-claim="c051"></span>,
-              <span data-claim="c052"></span>]. The pre-registered gate asked for both, so the model stays lineup-free and can forecast days before kickoff.</p>
-          </li>
-          <li>
-            <h3>Blending with market odds</h3>
-            <p>Stack the model with pre-match odds. The odds already carry that information on their own (interval
-              [<span data-claim="p2_023"></span>, <span data-claim="p2_024"></span>] includes zero), so the final model stays
-              independent of the market.</p>
-          </li>
-          <li>
-            <h3>Forecasting from the full belief</h3>
-            <p>Average the forecast over each rating's uncertainty instead of using its centre. The plug-in forecast
-              scored better on both development windows; the <span data-claim="pp_007"></span> interval [<span data-claim="pp_012"></span>,
-              <span data-claim="pp_013"></span>] confirms it. The spread does its job in learning, and the best guess makes the sharpest forecast.</p>
-          </li>
-        </ol>
-      </div>
+      <h3 class="m-sub">How the testing was kept honest</h3>
+      <ul class="m-grid honest">
+        <li><h4>Split by time</h4><p>Data were split by date, never shuffled. Early seasons only warm the ratings up,
+          and every setting was chosen on windows that come before any test data.</p></li>
+        <li><h4>Rules written first</h4><p>Before each test, the rule for passing was committed to the repository, so
+          the verdict could not bend to the result.</p></li>
+        <li><h4>Scored once</h4><p>Each test window was scored by a script that refuses to run twice: a held-out
+          window, older seasons no earlier stage had seen, and the current season.</p></li>
+        <li><h4>Traced figures</h4><p>Models are compared by log-loss with a paired bootstrap interval, and every
+          figure on this site is copied from a committed result file and checked automatically.</p></li>
+      </ul>
+      <h3 class="m-sub">Research milestones</h3>
+      <ul class="m-grid milestones">
+        <li><h4>Surprise-driven updating</h4><p>Letting surprising results move ratings further was tested. The
+          Bayesian update already reacts more to surprises, so the filter handles them on its own.</p></li>
+        <li><h4>Lineup weighting</h4><p>Starting line-up market values showed a clear attack effect. The model stays
+          lineup-free, so it can forecast days before kickoff.</p></li>
+        <li><h4>Blending with market odds</h4><p>The odds already carry their information on their own, so the final
+          model stays independent of the market.</p></li>
+        <li><h4>Forecasting from the full belief</h4><p>The plug-in forecast was confirmed: the spread does its job in
+          learning, and the best guess makes the sharpest forecast.</p></li>
+      </ul>
     </div>
   </section>
 
@@ -248,7 +224,7 @@
 
 <div class="pop" id="pop" role="tooltip" hidden></div>
 <noscript><p class="noscript">This page needs JavaScript to load its data file.</p></noscript>
-<script src="forecast.js?v=8"></script>
-<script src="app.js?v=8"></script>
+<script src="forecast.js?v=10"></script>
+<script src="app.js?v=10"></script>
 </body>
 </html>
