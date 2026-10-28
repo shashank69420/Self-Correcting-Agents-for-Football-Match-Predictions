@@ -139,12 +139,11 @@ def check_ownership():
 
 
 def check_test_once():
-    with open(os.path.join(ROOT, 'DECISIONS.md'), encoding='utf-8') as handle:
-        entries = handle.read().lower().count(TEST_ONCE_PHRASE)
+    """The TEST window was scored once: exactly one commit says so. (The decision log that also recorded it was
+    removed from the tree at the 2026-10-29 cleanup; it stays in the git history.)"""
     subjects = [s for s in git('log', '--format=%s').stdout.splitlines() if TEST_ONCE_PHRASE in s.lower()]
-    ok = entries == 1 and len(subjects) == 1
-    return [(ok, 'test-once: 1 DECISIONS entry, 1 commit' if ok
-             else f'test-once: actual {entries} DECISIONS entries and {len(subjects)} commits, expected 1 and 1')]
+    ok = len(subjects) == 1
+    return [(ok, 'test-once: 1 commit' if ok else f'test-once: actual {len(subjects)} commits, expected 1')]
 
 
 def main():
@@ -152,7 +151,9 @@ def main():
     checks = [check_branch_and_status]
     if not fast:
         checks.append(check_anchors)
-    checks += [check_tests, check_claims, check_hygiene, check_ownership, check_test_once]
+    # check_ownership enforced per-session file ownership while the work ran in parallel sessions; it is no longer
+    # run after the 2026-10-29 cleanup (tools/ownership.txt and its test are kept).
+    checks += [check_tests, check_claims, check_hygiene, check_test_once]
     lines, failures = [], 0
     for check in checks:
         for ok, message in check():

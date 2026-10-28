@@ -109,7 +109,7 @@
   {
    "id": "c017",
    "value": "90%",
-   "source": "CLAUDE.md",
+   "source": "results/decision_extract.md",
    "locator": "Gate A \\(test-period lineup coverage >= 90% full XI\\)"
   },
   {
@@ -291,133 +291,133 @@
   {
    "id": "c046",
    "value": "2026-10-19",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "2026-10-19 Gate B FAILED"
   },
   {
    "id": "c047",
    "value": "+0.0950",
-   "source": "CLAUDE.md",
+   "source": "results/decision_extract.md",
    "locator": "c_att \\+0\\.0950 CI"
   },
   {
    "id": "c048",
    "value": "0.0487",
-   "source": "CLAUDE.md",
+   "source": "results/decision_extract.md",
    "locator": "c_att \\+0\\.0950 CI \\[0\\.0487, 0\\.1413\\]"
   },
   {
    "id": "c049",
    "value": "0.1413",
-   "source": "CLAUDE.md",
+   "source": "results/decision_extract.md",
    "locator": "c_att \\+0\\.0950 CI \\[0\\.0487, 0\\.1413\\]"
   },
   {
    "id": "c050",
    "value": "-0.0022",
-   "source": "CLAUDE.md",
+   "source": "results/decision_extract.md",
    "locator": "c_def -0\\.0022 CI \\[-0\\.0413, 0\\.0368\\]"
   },
   {
    "id": "c051",
    "value": "-0.0413",
-   "source": "CLAUDE.md",
+   "source": "results/decision_extract.md",
    "locator": "c_def -0\\.0022 CI \\[-0\\.0413, 0\\.0368\\]"
   },
   {
    "id": "c052",
    "value": "0.0368",
-   "source": "CLAUDE.md",
+   "source": "results/decision_extract.md",
    "locator": "c_def -0\\.0022 CI \\[-0\\.0413, 0\\.0368\\]"
   },
   {
    "id": "c053",
    "value": "200",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "0/200 within-season placebos"
   },
   {
    "id": "c054",
    "value": "0.056",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "MDE for c_def 0\\.056"
   },
   {
    "id": "c055",
    "value": "99.8%",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "power\\s+99\\.8%"
   },
   {
    "id": "c056",
    "value": "+0.09503",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "Frozen c_att = \\+0\\.09503"
   },
   {
    "id": "c057",
    "value": "3786",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "\\(3786/3829"
   },
   {
    "id": "c058",
    "value": "3829",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "\\(3786/3829"
   },
   {
    "id": "c059",
    "value": "98.88%",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "3786/3829, 98\\.88%"
   },
   {
    "id": "c060",
    "value": "+0.000109",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "LogLoss diff \\+0\\.000109"
   },
   {
    "id": "c061",
    "value": "-0.000669",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "\\[-0\\.000669, \\+0\\.000878\\]"
   },
   {
    "id": "c062",
    "value": "+0.000878",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "\\[-0\\.000669, \\+0\\.000878\\]"
   },
   {
    "id": "c063",
    "value": "3543",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "on 3543 covered common rows"
   },
   {
    "id": "c064",
    "value": "+0.000148",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "Placebo \\+0\\.000148"
   },
   {
    "id": "c065",
    "value": "-0.000677",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "\\[-0\\.000677,\\s+\\+0\\.001007\\]"
   },
   {
    "id": "c066",
    "value": "+0.001007",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "\\[-0\\.000677,\\s+\\+0\\.001007\\]"
   },
   {
    "id": "c067",
    "value": "95%",
-   "source": "DECISIONS.md",
+   "source": "results/decision_extract.md",
    "locator": "95% paired week-block CI"
   },
   {
@@ -441,13 +441,13 @@
   {
    "id": "c071",
    "value": "0.15",
-   "source": "CLAUDE.md",
+   "source": "results/decision_extract.md",
    "locator": "is outside \\[0\\.15, 6\\.0\\]"
   },
   {
    "id": "c072",
    "value": "6.0",
-   "source": "CLAUDE.md",
+   "source": "results/decision_extract.md",
    "locator": "is outside \\[0\\.15, 6\\.0\\]"
   },
   {

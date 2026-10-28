@@ -3,7 +3,7 @@
 Every number below is checked by `tools/verify_claims.py` against `results/claims.json`: each number maps to a
 repository file and a pattern that must match next to it. Where no file records a number it says "not recorded".
 Sources are tracked files: `results/sources/` (the Stage 1-5 notebook output and the Transfermarkt README),
-`results/audit/` (the Gate A audit run), `results/experiments/`, `DECISIONS.md` and `CLAUDE.md`.
+`results/audit/` (the Gate A audit run), `results/experiments/` and `results/decision_extract.md` (lines copied from the removed decision log).
 
 ## 1. Data and pipeline
 - 56 league-seasons: 8 leagues (ENG, ESP, DEU, ITA, FRA, NLD, PRT, TUR) x 7 seasons (2019-20 to 2025-26), 19,145 valid
@@ -115,7 +115,7 @@ upper bound on the mean log-loss difference (P1 minus Stage 2) over all 3,829 TE
   -0.012828 and CI [-0.015519, -0.010091], matching the original. A rerun is a reproduction, not a new test.
 - During tooling work a plain pytest run re-imported a TEST scoring script once and reran the already-scored
   comparison; the output file was restored from git before commit and no parameter, row or rule changed. Logged in
-  DECISIONS.md.
+  the decision log (git history).
 
 ## 8. Forward test
 Started on 2026-10-26 and pre-registered in `forward/PREREGISTRATION.md`, which was committed before the first
@@ -206,7 +206,7 @@ matches are the first weeks of the season only. This is not a forward test: that
   on the same 563 matches. M2 is 0.019317 worse than the market.
 - Name audit. There are 11 newcomers in the eight leagues. The pre-registered WRatio rule (flag a newcomer whose best
   same-league WRatio against the earlier names is 88 or more) flagged 0 at WRatio >= 88.
-  The alias check, a post-hoc stricter reading logged in `DECISIONS.md` on 2026-10-27 before any score, flagged 1,
+  The alias check, a post-hoc stricter reading logged in the decision log (git history) on 2026-10-27 before any score, flagged 1,
   including Erzurumspor, which the WRatio rule missed. Its best same-league WRatio was 66.7. In the Transfermarkt tables
   Erzurumspor is club_id 39722 ("Erzurumspor FK"), and the earlier name "Erzurum BB" (Turkish league 2020-21, 40 earlier
   matches) links to the same club_id 39722 in all 40. Its 8 matches, all in the Turkish league, were excluded from the test
@@ -238,7 +238,7 @@ Same states, parameters and updates; only the forecast step differs. Numbers: `r
   ran. A diagnosis made after the failure, comparing forecasts with forecasts only, pointed to the rate clip, which
   makes the integrand non-smooth. On the owner's instruction a second pre-registration (`pp/PREREGISTRATION_v2.md`) was
   committed before any DEV/VAL outcome for this forecast was computed. It kept v1's decision rule unchanged and added
-  an outcome-free rule for the node count. Details and figures are in DECISIONS.md (2026-10-29).
+  an outcome-free rule for the node count. Details and figures are in the decision log (git history, 2026-10-29).
 - Node count, chosen without outcomes: the smallest ladder value within a pre-registered tolerance of a 301-node reference on 2,000 fixed
   non-TEST rows. No smaller value qualified (161 nodes was still above the tolerance), so the pre-registered fallback
   gave 301 nodes. Its error against the exact integral is not measured by this rule.
