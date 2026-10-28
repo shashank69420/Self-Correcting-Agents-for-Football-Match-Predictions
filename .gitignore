@@ -9,5 +9,3 @@ data/
 *.csv
 .ipynb_checkpoints/
 # Local assistant configuration, kept out of the repository
-CLAUDE.md
-.claude/

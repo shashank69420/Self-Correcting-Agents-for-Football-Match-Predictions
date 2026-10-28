@@ -1,6 +1,6 @@
 # Decision-log extract
 
-Verbatim lines from `DECISIONS.md` (the dated decision log) and `CLAUDE.md` (the project rules), copied on
+Verbatim lines from `DECISIONS.md` (the dated decision log) and the project rules file, copied on
 2026-10-29 when both files were removed from the repository tree. They are kept because numbers in
 `results/FINDINGS.md` (Gate B and the post-hoc lineup checks) were recorded only there. The full files remain
 in the git history.
@@ -21,7 +21,7 @@ in the git history.
   [-0.000669, +0.000878] on 3543 covered common rows: no improvement. Placebo +0.000148, CI
   [-0.000677, +0.001007]. No further post-hoc runs for Gate B. Approved: user, 2026-10-19.
 
-## From CLAUDE.md
+## From the project rules
 
 - Gate A (test-period lineup coverage >= 90% full XI): PASSED.
 - Gate B: FAILED (2026-10-19). c_att +0.0950 CI [0.0487, 0.1413];
