@@ -436,3 +436,19 @@ PP is decided on log-loss under that rule (DEV and VAL log-loss improve, and the
 0); RPS and Brier are reported, not decisive. The S2 restriction to rows with snapshot odds does not apply because PP
 does not use the market. tools/ownership.txt gained this work's own new files (pp/, pp_model.py, run_pp.py,
 tests/test_pp.py, results/pp/, HANDOFF.md). Decided by the assistant under the user's task prompt (Step 3).
+
+## 2026-10-29 - PP v1: a failed pre-registered check; v1 evaluation never run
+pp/PREREGISTRATION.md (v1, commit 8392c3f) required check (c): 9 and 21 Gauss-Hermite nodes agree to 1e-6 on 50 real
+matches. It failed: the largest difference in the home/draw/away probabilities was 6.69e-05, and 24% of the 50 rows
+exceeded 1e-6. As v1 requires, the evaluation did not run: no DEV/VAL outcome was computed. The v1 pp_model.py and
+tests/test_pp.py were never committed. v1 stays committed and unchanged.
+Post-failure diagnosis (outputs/diagnose/pp_nodes_check.py, outcome-free, not committed): an independent
+implementation (own Poisson pmf, Dixon-Coles, normalisation and quadrature) matched pp_model to at most 4.4e-16 on
+2,000 non-TEST rows (seed 20261019). With the rate clip off, 9 and 21 nodes agreed to at most 3.0e-07 on the 50 rows.
+On the 2,000 rows, 58% have at least one 9-node rate outside the clip bounds; their median 9-vs-21 difference was
+2.2e-07, against at most 3.2e-08 on rows with no clipped node. On the 50 rows, 21 nodes differed from a 301-point
+trapezoid reference by up to 1.35e-05. The largest change in per-row log-probability between 9 and 21 nodes was
+3.1e-04 (50 rows) and 3.0e-03 (2,000 rows). Reading of the diagnosis: the rate clip makes the integrand non-smooth, so
+the quadrature converges slowly where a node is clipped. This is a post-failure diagnosis, not a pre-registered
+finding. The owner (the user) instructed a v2 pre-registration on 2026-10-29, replacing the assistant's recommendation
+to record item 3 as not run.
