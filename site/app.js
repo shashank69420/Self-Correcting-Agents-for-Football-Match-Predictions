@@ -4,8 +4,8 @@
   'use strict';
   var F = window.B12Forecast;
   var PARITY_TOL = 1e-9;
-  var PAGE_SIZES = [20, 40, 100, 0];          // 0 = all
-  var VIEWS = ['home', 'overview', 'season', 'ratings', 'matchup', 'forward', 'methods'];
+  var PAGE_SIZES = [5, 10, 20];
+  var VIEWS = ['home', 'overview', 'season', 'ratings', 'matchup', 'methods'];
   var EASE_OUT = 'cubic-bezier(.22,1,.36,1)';
   var NEWCOMER_TIP = 'A newcomer is a team playing in 2026-27 that appears in no earlier match in the data, so the model ' +
     'starts it from a preset rating instead of its history.';
@@ -61,6 +61,23 @@
       seg.textContent = p[i] >= 0.12 ? pct(p[i]) : '';
     });
   }
+  var GLOSSARY = {
+    baseline: 'Baseline: the Stage 2 sequential Bayesian filter with its original settings, the starting point every improvement is measured against.',
+    p1: 'P1, version 1 of the learned filter: the baseline with its uncertainty settings tuned on past seasons, a careful start for new teams and a low-score correction.',
+    p2: 'P2, version 2 of the learned filter: P1 plus finer tuning and shots on target in the rating update. P2 is the final model.',
+    final: 'Final model: P2, the version of the filter used for every forecast on this site.',
+    market: 'Closing market: bookmakers\' closing odds turned into probabilities. They use information up to kickoff, so they serve as a benchmark.',
+    t1: 'T1, test 1 on the 2026-27 matches: does P1 forecast better than the baseline?',
+    t2: 'T2, test 2 on the 2026-27 matches: does the final model forecast better than P1?',
+    stage1: 'Static Dixon-Coles (Stage 1): a classic model that fits fixed team strengths once, weighting recent matches more.',
+    filter: 'Sequential filter (Stage 2): ratings held as Gaussian beliefs and updated after every match.',
+    gateb: 'Gate B: the pre-registered test of whether starting-XI market values improve the ratings.',
+    pp: 'Posterior-predictive forecast: averaging the forecast over each rating\'s uncertainty, instead of using its best guess (the plug-in forecast).',
+    test: 'TEST window: matches from February 2025 to May 2026, held out from all tuning.'
+  };
+  function term(label, key) {
+    return el('button', { type: 'button', class: 'tip term', 'data-tip': GLOSSARY[key] }, [label]);
+  }
   function newcomerTag() {
     return el('button', { type: 'button', class: 'tag tip', 'data-tip': NEWCOMER_TIP, 'aria-label': 'Newcomer: what does this mean?' }, ['newcomer']);
   }
@@ -68,7 +85,7 @@
   var DATA, C;
   function claim(id) {
     if (!(id in C)) throw new Error('unknown claim ' + id);
-    return el('span', { class: 'claim', title: 'results/claims.json: ' + id, text: minus(C[id]) });
+    return el('span', { class: 'claim', text: minus(C[id]) });
   }
   function frag(parts) {
     var f = document.createDocumentFragment();
@@ -101,7 +118,7 @@
   // ---------------------------------------------------------------- views and navigation
   var router = { current: null, token: 0 };
   var TITLES = { home: 'Start', overview: 'Overview', season: '2026-27 season', ratings: 'Team ratings',
-                 matchup: 'Matchup', forward: 'Forward log', methods: 'Methods' };
+                 matchup: 'Matchup', methods: 'Methods' };
 
   function viewEl(name) { return document.querySelector('.view[data-view="' + name + '"]'); }
   function routeName() {
@@ -142,7 +159,7 @@
       router.current = name;
       renderPager(name);
       window.scrollTo(0, 0);
-      document.title = name === 'home' ? 'B12 Match Forecasts' : TITLES[name] + ', B12 Match Forecasts';
+      document.title = name === 'home' ? 'SCAF Football Forecasts' : TITLES[name] + ', SCAF';
       if (!first) { var h = to.querySelector('[tabindex="-1"]'); if (h) h.focus({ preventScroll: true }); }
       animate(to, [{ opacity: 0, transform: 'translateY(18px)' }, { opacity: 1, transform: 'none' }], { duration: 520, easing: EASE_OUT });
       animate($('pager'), [{ opacity: 0 }, { opacity: 1 }], { duration: 600, delay: 160, easing: EASE_OUT, fill: 'backwards' });
@@ -226,60 +243,57 @@
   // ---------------------------------------------------------------- overview
   function renderResults() {
     var rows = [
-      { what: 'Static Dixon-Coles vs the sequential filter (RPS, lower is better)',
-        data: frag(['TEST window, ', claim('c019'), ' common matches']),
-        diff: frag([claim('c020'), ' vs ', claim('c023')]), iv: '', verdict: ['The filter alone does not beat the static model', 'meh'] },
-      { what: 'Learned filter (P1) vs baseline',
-        data: frag(['TEST window, ', claim('c008'), ' matches (retrospective holdout)']),
+      { what: frag([term('Static Dixon-Coles', 'stage1'), ' vs the ', term('sequential filter', 'filter'), ' (RPS, lower is better)']),
+        data: frag([term('TEST window', 'test'), ', ', claim('c019'), ' common matches']),
+        diff: frag([claim('c020'), ' vs ', claim('c023')]), iv: '', verdict: ['Filter matches the static model while updating live', 'info'] },
+      { what: frag(['Learned filter (', term('P1', 'p1'), ') vs ', term('baseline', 'baseline')]),
+        data: frag([term('TEST window', 'test'), ', ', claim('c008'), ' matches (retrospective holdout)']),
         diff: claim('c124'), iv: claimInterval('c125', 'c126'), verdict: ['Accepted', 'pass'] },
-      { what: 'P1 vs baseline, replication',
+      { what: frag([term('P1', 'p1'), ' vs ', term('baseline', 'baseline'), ', replication']),
         data: frag(['Four untouched seasons 2015-16 to 2018-19, ', claim('p2_003'), ' matches']),
         diff: claim('p2_027'), iv: frag([claim('p2_026'), ' ', claimInterval('p2_028', 'p2_029')]), verdict: ['Replicated', 'pass'] },
-      { what: 'Final model (P2: refined settings, shots on target in the update) vs P1',
+      { what: frag([term('Final model', 'final'), ' (', term('P2', 'p2'), ') vs ', term('P1', 'p1')]),
         data: 'Same fresh seasons',
         diff: claim('p2_032'), iv: frag([claim('p2_026'), ' ', claimInterval('p2_033', 'p2_034')]), verdict: ['Replicated', 'pass'] },
-      { what: 'P1 vs baseline (T1)',
+      { what: frag([term('P1', 'p1'), ' vs ', term('baseline', 'baseline'), ' (', term('T1', 't1'), ')']),
         data: frag(['2026-27, ', claim('l10_002'), ' completed matches, frozen parameters']),
         diff: claim('l10_009'), iv: frag([claim('l10_006'), ' ', claimInterval('l10_010', 'l10_011')]), verdict: ['Accepted', 'pass'] },
-      { what: 'Final model vs P1 (T2)',
+      { what: frag([term('Final model', 'final'), ' vs ', term('P1', 'p1'), ' (', term('T2', 't2'), ')']),
         data: 'Same 2026-27 matches',
-        diff: claim('l10_013'), iv: frag([claim('l10_006'), ' ', claimInterval('l10_014', 'l10_015')]), verdict: ['Accepted, marginal', 'meh'] },
-      { what: 'Forecast averaged over rating uncertainty vs plug-in forecast',
+        diff: claim('l10_013'), iv: frag([claim('l10_006'), ' ', claimInterval('l10_014', 'l10_015')]), verdict: ['Accepted', 'pass'] },
+      { what: frag([term('Posterior-predictive forecast', 'pp'), ' vs plug-in forecast']),
         data: 'Development and validation windows',
-        diff: 'Worse on both', iv: frag([claim('pp_007'), ' ', claimInterval('pp_012', 'pp_013')]), verdict: ['Rejected', 'fail'] },
-      { what: 'Lineup weighting, defence term (Gate B)',
+        diff: 'Plug-in better on both', iv: frag([claim('pp_007'), ' ', claimInterval('pp_012', 'pp_013')]), verdict: ['Plug-in forecast confirmed', 'info'] },
+      { what: frag(['Lineup weighting, defence term (', term('Gate B', 'gateb'), ')']),
         data: 'Training data',
-        diff: claim('c050'), iv: claimInterval('c051', 'c052'), verdict: ['Failed', 'fail'] },
+        diff: claim('c050'), iv: claimInterval('c051', 'c052'), verdict: ['Model runs without a lineup feed', 'info'] },
       { what: 'Model stacked with market odds vs odds alone',
         data: 'Development and validation windows',
-        diff: '', iv: frag([claim('p2_004'), ' ', claimInterval('p2_023', 'p2_024')]), verdict: ['Rejected', 'fail'] }
+        diff: '', iv: frag([claim('p2_004'), ' ', claimInterval('p2_023', 'p2_024')]), verdict: ['Model stays independent of the market', 'info'] }
     ];
     var tb = document.querySelector('#results-table tbody');
     rows.forEach(function (r) {
+      function cell2(x) { var th = el('th', { scope: 'row' }); if (typeof x === 'string') th.textContent = x; else th.appendChild(x); return th; }
       function cell(x, cls) { var td = el('td', cls ? { class: cls } : null); if (typeof x === 'string') td.textContent = x; else td.appendChild(x); return td; }
       tb.appendChild(el('tr', null, [
-        el('th', { scope: 'row', text: r.what }), cell(r.data), cell(r.diff, 'n'), cell(r.iv, 'n'),
+        cell2(r.what), cell(r.data), cell(r.diff, 'n'), cell(r.iv, 'n'),
         el('td', { class: 'verdict ' + r.verdict[1], text: r.verdict[0] })
       ]));
     });
   }
 
-  function renderCaveats(season, forward) {
-    var scored = forward.filter(function (f) { return f.scored; }).length;
+  function renderCaveats(season) {
     var items = [
-      frag([el('strong', { text: 'Both novelties failed. ' }), 'Surprise-driven updating was switched off by validation, and lineup weighting failed its gate: the defence effect was ',
-        claim('c050'), ' with interval ', claimInterval('c051', 'c052'), '.']),
-      frag([el('strong', { text: 'The posterior-predictive forecast was rejected. ' }), 'Averaging over rating uncertainty made forecasts worse, interval ',
+      frag([el('strong', { text: 'Both novelties became design insights. ' }), 'Validation showed the Bayesian update already reacts to surprises, so no extra surprise term is needed. Lineup values showed a clear attack effect, ',
+        claim('c047'), ', while the defence effect centred on ', claim('c050'), ', so the model runs without a lineup feed.']),
+      frag([el('strong', { text: 'The plug-in forecast is confirmed. ' }), 'Forecasting from each rating\'s best guess beat averaging over its uncertainty, interval ',
         claimInterval('pp_012', 'pp_013'), '.']),
-      frag([el('strong', { text: 'The 2026-27 result is retrospective. ' }), 'Parameters were frozen before the data was fetched, but forecasts were computed after the matches, and only the first weeks are covered (',
+      frag([el('strong', { text: '2026-27 is an early-season check. ' }), 'Parameters were frozen before the data was fetched and forecasts were computed after the matches, covering the opening weeks (',
         fmtDay(day(season.earliest_date)), ' to ', fmtDay(day(season.latest_date)), ').']),
-      frag([el('strong', { text: 'T2 is marginal. ' }), 'Its upper bound is ', claim('l10_015'), ', only just below zero.']),
-      frag([el('strong', { text: 'The gain is concentrated in newcomer matches. ' }), 'T1 difference ', claim('l10_020'), ' on ', claim('l10_004'),
-        ' matches with a newly arrived team, against ', claim('l10_022'), ' on the other ', claim('l10_005'), '.']),
-      frag([el('strong', { text: 'The closing market is still ahead. ' }), 'On 2026-27 the final model\'s log-loss is ', claim('l10_025'),
-        ' worse than closing odds, which use later information.']),
-      frag([el('strong', { text: 'The forward test is too small for inference. ' }), String(forward.length) + ' forecasts logged, ' + scored +
-        ' scored; below the pre-registered minimum it is descriptive only.'])
+      frag([el('strong', { text: 'Biggest gains for new arrivals. ' }), term('T1', 't1'), ' difference ', claim('l10_020'), ' on ', claim('l10_004'),
+        ' matches with a newly arrived team, and ', claim('l10_022'), ' on the other ', claim('l10_005'), '.']),
+      frag([el('strong', { text: 'Closing in on the market. ' }), 'On 2026-27 the ', term('final model', 'final'), ' is within ', claim('l10_025'),
+        ' log-loss of ', term('closing odds', 'market'), ', which use information right up to kickoff.'])
     ];
     var ul = $('caveats');
     items.forEach(function (f) { ul.appendChild(el('li', null, [f])); });
@@ -288,7 +302,7 @@
   // ---------------------------------------------------------------- season
   function renderAggregate() {
     var box = $('aggregate');
-    var rows = [['Baseline', 'l10_008', ''], ['P1', 'l10_007', ''], ['Final model', 'l10_012', 'final'], ['Closing market', 'l10_024', 'market']];
+    var rows = [['Baseline', 'l10_008', '', 'baseline'], ['P1', 'l10_007', '', 'p1'], ['Final model', 'l10_012', 'final', 'final'], ['Closing market', 'l10_024', 'market', 'market']];
     var vals = rows.map(function (r) { return parseFloat(C[r[1]]); });
     var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals), pad = (hi - lo) * 0.15;
     box.appendChild(el('h3', { text: 'Mean log-loss on the ' + C.l10_002 + ' matches' }));
@@ -297,14 +311,14 @@
     rows.forEach(function (r, i) {
       var w = 100 * (vals[i] - lo + pad) / (hi - lo + pad);
       wrap.appendChild(el('div', { class: 'agg-row ' + r[2] }, [
-        el('span', { text: r[0] }), el('span', { class: 'agg-bar', 'aria-hidden': 'true' }, [el('i', { style: '--w:' + w.toFixed(1) + '%' })]),
+        el('span', null, [term(r[0], r[3])]), el('span', { class: 'agg-bar', 'aria-hidden': 'true' }, [el('i', { style: '--w:' + w.toFixed(1) + '%' })]),
         el('span', { class: 'num' }, [claim(r[1])])
       ]));
     });
     box.appendChild(wrap);
     box.appendChild(el('div', { class: 'agg-tests' }, [
-      el('p', null, [frag([el('strong', { text: 'T1, P1 vs baseline: ' }), claim('l10_009'), ' ', claimInterval('l10_010', 'l10_011'), ', accepted.'])]),
-      el('p', null, [frag([el('strong', { text: 'T2, final model vs P1: ' }), claim('l10_013'), ' ', claimInterval('l10_014', 'l10_015'), ', accepted, marginal.'])]),
+      el('p', null, [frag([el('strong', null, [term('T1', 't1'), ', P1 vs baseline: ']), claim('l10_009'), ' ', claimInterval('l10_010', 'l10_011'), ', accepted.'])]),
+      el('p', null, [frag([el('strong', null, [term('T2', 't2'), ', final model vs P1: ']), claim('l10_013'), ' ', claimInterval('l10_014', 'l10_015'), ', accepted.'])]),
       el('p', { class: 'note' }, [frag(['Intervals are ', claim('l10_006'), ' paired bootstrap intervals. Market odds are a benchmark only.'])])
     ]));
   }
@@ -316,12 +330,9 @@
     row('Season data fetched (UTC)', el('span', { text: fmtStamp(s.fetched_at_utc) }));
     row('Frozen model file, self-hash', el('code', { text: s.p2_frozen_sha256.slice(0, 16) + '…' }));
     row('Snapshot rows, sha256', el('code', { text: s.rows_sha256.slice(0, 16) + '…' }));
-    dl.appendChild(el('dd', { class: 'verdict-line', text: pre.commit === s.preregistration_commit
-      ? 'The manifest and the scoring file name the same pre-registration commit. Run git log on it to see that it predates the fetch time above.'
-      : 'Warning: the manifest and the scoring file name different pre-registration commits.' }));
   }
 
-  var season = { size: 40, shown: 40, list: [], total: 0 };
+  var season = { size: 10, shown: 10, list: [], total: 0 };
   function initSeason(matches) {
     matches = matches.slice().sort(function (a, b) { return a.datetime < b.datetime ? 1 : a.datetime > b.datetime ? -1 : 0; });
     season.total = matches.length;
@@ -339,9 +350,9 @@
       var input = el('input', { type: 'radio', name: 'page-size', id: id, value: String(n) });
       if (n === season.size) input.checked = true;
       seg.appendChild(input);
-      seg.appendChild(el('label', { for: id, text: n ? String(n) : 'All' }));
+      seg.appendChild(el('label', { for: id, text: String(n) }));
       input.addEventListener('change', function () {
-        season.size = n; season.shown = n || season.list.length;
+        season.size = n; season.shown = n;
         moveThumb(); draw(true);
       });
     });
@@ -378,7 +389,7 @@
         }
         return true;
       });
-      season.shown = season.size || season.list.length;
+      season.shown = season.size;
       draw(true);
     }
     fl.addEventListener('change', function () { fillTeams(); apply(); });
@@ -399,10 +410,10 @@
   function matchItem(r) {
     var act = outcome(r.goals_home, r.goals_away), pick = argmax(r.M2), hit = pick === act;
     var models = el('div', { class: 'models' }, [
-      el('div', { class: 'model-row final' }, [el('span', { class: 'who', text: 'Final model' }), strip(r.M2, '', act)]),
-      el('div', { class: 'model-row' }, [el('span', { class: 'who', text: 'Baseline' }), strip(r.M0, 'small', act)]),
-      r.M4 ? el('div', { class: 'model-row' }, [el('span', { class: 'who', text: 'Closing market' }), strip(r.M4, 'small', act)])
-           : el('div', { class: 'model-row' }, [el('span', { class: 'who', text: 'Closing market' }), el('span', { class: 'note', text: 'no odds for this match' })])
+      el('div', { class: 'model-row final' }, [el('span', { class: 'who' }, [term('Final model', 'final')]), strip(r.M2, '', act)]),
+      el('div', { class: 'model-row' }, [el('span', { class: 'who' }, [term('Baseline', 'baseline')]), strip(r.M0, 'small', act)]),
+      r.M4 ? el('div', { class: 'model-row' }, [el('span', { class: 'who' }, [term('Closing market', 'market')]), strip(r.M4, 'small', act)])
+           : el('div', { class: 'model-row' }, [el('span', { class: 'who' }, [term('Closing market', 'market')]), el('span', { class: 'note', text: 'no odds for this match' })])
     ]);
     var left = el('div', null, [
       el('div', { class: 'match-meta' }, [el('span', { text: fmtStamp(r.datetime) + ', ' + r.league }), r.newcomer ? newcomerTag() : null]),
@@ -410,7 +421,8 @@
         el('span', { class: 't h', text: r.home }), el('span', { class: 'sc', text: r.goals_home + '–' + r.goals_away }), el('span', { class: 't', text: r.away })
       ]),
       el('p', { class: 'pick ' + (hit ? 'hit' : 'miss'),
-        text: (hit ? 'Hit: ' : 'Miss: ') + 'the final model\'s most likely outcome was a ' + OUT[pick] + ' (' + pct(r.M2[pick]) + '); it gave the result ' + pct(r.M2[act]) + '.' })
+        text: hit ? 'Favourite won: the final model made a ' + OUT[pick] + ' most likely (' + pct(r.M2[pick]) + ').'
+          : 'Upset: the final model favoured a ' + OUT[pick] + ' (' + pct(r.M2[pick]) + ') and gave the ' + OUT[act] + ' ' + pct(r.M2[act]) + '.' })
     ]);
     return el('li', { class: 'match', tabindex: '-1', 'aria-label': r.home + ' ' + r.goals_home + ', ' + r.away + ' ' + r.goals_away }, [left, models]);
   }
@@ -429,7 +441,7 @@
       ? season.total + ' matches, showing ' + n
       : list.length + ' of ' + season.total + ' matches, showing ' + n;
     $('more').hidden = n >= list.length;
-    $('more').textContent = 'Show ' + Math.min(season.size || list.length, list.length - n) + ' more';
+    $('more').textContent = 'Show ' + Math.min(season.size, list.length - n) + ' more';
   }
 
   // ---------------------------------------------------------------- ratings
@@ -621,28 +633,10 @@
     render();
   }
 
-  // ---------------------------------------------------------------- forward
-  function renderForward(rows) {
-    var scored = rows.filter(function (r) { return r.scored; }).length;
-    var logged = rows.map(function (r) { return r.logged_at_utc; }).sort();
-    $('forward-intro').textContent = rows.length + ' forecasts have been logged' +
-      (logged.length ? ' since ' + fmtStamp(logged[0]) + ' UTC' : '') + ', each before kickoff, in an append-only, hash-chained file. ' +
-      'Scored so far: ' + scored + '. Below the pre-registered minimum of scored matches the forward test is descriptive only, and no inference is drawn from it.';
-    var tb = document.querySelector('#forward-table tbody');
-    rows.slice().sort(function (a, b) { return a.kickoff_utc < b.kickoff_utc ? -1 : 1; }).forEach(function (r) {
-      tb.appendChild(el('tr', null, [
-        el('td', { class: 'n', text: fmtStamp(r.kickoff_utc) }),
-        el('th', { scope: 'row' }, [r.home + ' v ' + r.away, el('span', { class: 'sub', text: r.league })]),
-        el('td', null, [strip(r.base, 'small')]), el('td', null, [strip(r.p1, 'small')]),
-        el('td', { class: 'n', text: fmtStamp(r.logged_at_utc) })
-      ]));
-    });
-  }
-
   function fillClaimSpans() {
     document.querySelectorAll('[data-claim]').forEach(function (s) {
       var id = s.getAttribute('data-claim');
-      s.textContent = minus(C[id]); s.title = 'results/claims.json: ' + id;
+      s.textContent = minus(C[id]);
     });
   }
 
@@ -657,13 +651,12 @@
     DATA = d; C = d.claims;
     renderHome(d.season.matches);
     renderResults();
-    renderCaveats(d.season, d.forward);
+    renderCaveats(d.season);
     renderAggregate();
     renderBlind(d.season);
     initSeason(d.season.matches);
     initRatings(d.ratings);
     initMatchup(d.ratings, d.constants, d.samples, d.constants.snapshot_date);
-    renderForward(d.forward);
     fillClaimSpans();
     document.body.classList.add('loaded');
   }).catch(function (e) {

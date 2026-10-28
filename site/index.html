@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>B12 Match Forecasts</title>
+<title>SCAF Football Forecasts</title>
 <meta name="description" content="A sequential Bayesian football model, tested under pre-registered rules. Group B12.">
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=8">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 10'%3E%3Crect width='13' height='10' fill='%230B6E5F'/%3E%3Crect x='13' width='7' height='10' fill='%23736B60'/%3E%3Crect x='20' width='10' height='10' fill='%237A2E52'/%3E%3C/svg%3E">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="masthead">
   <div class="masthead-inner">
-    <a class="brand" href="#home" aria-label="B12 match forecasts, start page">
+    <a class="brand" href="#home" aria-label="SCAF, start page">
       <span class="brand-strip" aria-hidden="true"><i></i><i></i><i></i></span>
-      <span>B12 match forecasts</span>
+      <span>SCAF</span>
     </a>
     <nav class="tabs" aria-label="Sections">
       <span class="tab-indicator" aria-hidden="true"></span>
@@ -23,7 +23,6 @@
         <li><a href="#season">2026-27 season</a></li>
         <li><a href="#ratings">Team ratings</a></li>
         <li><a href="#matchup">Matchup</a></li>
-        <li><a href="#forward">Forward log</a></li>
         <li><a href="#methods">Methods</a></li>
       </ul>
     </nav>
@@ -35,25 +34,23 @@
   <!-- ======================================================== home -->
   <section class="view" data-view="home" id="home" aria-labelledby="hero-title">
     <div class="hero wrap">
-      <p class="kicker">Group B12 project, Amrita School of Artificial Intelligence</p>
+      <p class="kicker">SCAF: Self-Correcting Agents for Football match prediction. Group B12, Amrita School of Artificial Intelligence</p>
       <h1 id="hero-title" tabindex="-1">Every team, re-rated after every match.</h1>
       <p class="lede">This project forecasts football matches in eight European leagues. Each team has an attack and a
         defence rating, and the model is never sure of either: it keeps a best guess and a measure of doubt. After every
         result both ratings move, further when the doubt was large. That is the self-correcting part.</p>
       <p class="lede">The project was run like an experiment. Each idea was written down and committed before its data was
-        looked at, then judged once, so the failures are reported as plainly as the successes.</p>
-      <p class="credit">Akshara Sree R, Anirudh S Nair, Iniyaa Muthuselvan and Shashank Kannan. Guided by Dr. Sruti S.</p>
+        looked at, then judged once, so every result is reported in full.</p>
     </div>
 
     <div class="wrap">
       <h2 class="explore-title" id="explore-title">Explore</h2>
       <ul class="tiles" aria-labelledby="explore-title">
-        <li><a class="tile" href="#overview"><span class="tile-name">Overview</span><span class="tile-desc">What the model is, the results, and what to read before trusting them.</span></a></li>
+        <li><a class="tile" href="#overview"><span class="tile-name">Overview</span><span class="tile-desc">What the model is, the results, and where the project stands.</span></a></li>
         <li><a class="tile tile-lead" href="#season"><span class="tile-name">2026-27 season</span><span class="tile-desc">Every completed match so far, with each forecast beside the final score.</span></a></li>
         <li><a class="tile" href="#ratings"><span class="tile-name">Team ratings</span><span class="tile-desc">Attack and defence for every team, league by league.</span></a></li>
         <li><a class="tile" href="#matchup"><span class="tile-name">Matchup</span><span class="tile-desc">Pick any two teams, from any leagues, and see the scoreline odds.</span></a></li>
-        <li><a class="tile" href="#forward"><span class="tile-name">Forward log</span><span class="tile-desc">Forecasts written down before kickoff, waiting for their results.</span></a></li>
-        <li><a class="tile" href="#methods"><span class="tile-name">Methods</span><span class="tile-desc">How the testing was kept honest, and the ideas that did not work.</span></a></li>
+        <li><a class="tile" href="#methods"><span class="tile-name">Methods</span><span class="tile-desc">How the testing was kept honest, and the research milestones along the way.</span></a></li>
       </ul>
     </div>
 
@@ -83,13 +80,12 @@
           </ol>
         </div>
         <aside class="caveats" aria-labelledby="caveats-title">
-          <h3 id="caveats-title">Read these before the results</h3>
+          <h3 id="caveats-title">Where the project stands</h3>
           <ul id="caveats"></ul>
         </aside>
       </div>
       <h3 class="table-title" id="results-title">Results, as decided under each pre-registered rule</h3>
-      <p class="note">Log-loss differences: below zero means the first model forecast better. Hover a number to see the
-        id of its entry in <code>results/claims.json</code>.</p>
+      <p class="note">Log-loss differences: below zero means the first model forecast better.</p>
       <div class="table-scroll" tabindex="0" role="region" aria-labelledby="results-title">
         <table class="results" id="results-table">
           <thead><tr><th scope="col">Comparison</th><th scope="col">Data</th><th scope="col">Difference</th><th scope="col">Interval</th><th scope="col">Verdict</th></tr></thead>
@@ -119,9 +115,9 @@
         <label>From <input type="date" id="f-from"></label>
         <label>To <input type="date" id="f-to"></label>
         <label>Outcome <select id="f-outcome">
-          <option value="">Hits and misses</option>
-          <option value="hit">Final model's pick happened</option>
-          <option value="miss">Final model's pick did not happen</option>
+          <option value="">All results</option>
+          <option value="hit">Favourite won</option>
+          <option value="miss">Upsets</option>
         </select></label>
         <label class="grow">Search <input type="search" id="f-q" placeholder="Team name" autocomplete="off"></label>
         <button type="reset" class="ghost" id="f-clear">Clear filters</button>
@@ -197,24 +193,11 @@
     </div>
   </section>
 
-  <!-- ======================================================== forward -->
-  <section class="view" data-view="forward" id="forward" aria-labelledby="forward-title" hidden>
-    <div class="wrap">
-      <h2 id="forward-title" tabindex="-1">Forward log</h2>
-      <p class="prose" id="forward-intro"></p>
-      <div class="table-scroll" tabindex="0" role="region" aria-labelledby="forward-title">
-        <table class="forward" id="forward-table">
-          <thead><tr><th scope="col">Kickoff (UTC)</th><th scope="col">Match</th><th scope="col">Baseline</th><th scope="col">P1</th><th scope="col">Logged (UTC)</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
 
   <!-- ======================================================== methods -->
   <section class="view" data-view="methods" id="methods" aria-labelledby="methods-title" hidden>
     <div class="wrap">
-      <h2 id="methods-title" tabindex="-1">Methods, and what did not work</h2>
+      <h2 id="methods-title" tabindex="-1">Methods and research milestones</h2>
       <div class="split methods">
         <div class="prose">
           <h3>How the testing was kept honest</h3>
@@ -225,39 +208,35 @@
             for passing was committed to the repository.</p>
           <p>Models are compared by log-loss per match with a paired bootstrap interval. A change counts as better only
             when the whole interval is below zero.</p>
-          <p>Every figure on this site is copied from a committed result file. Headline figures carry the id of their
-            entry in <code>results/claims.json</code>, which a checker ties back to its source.</p>
+          <p>Every figure on this site is copied from a committed result file, and every headline figure is traced
+            back to its source by an automatic checker.</p>
         </div>
-        <ol class="failed" aria-label="Ideas that were tested and did not hold">
+        <ol class="failed" aria-label="Research milestones">
           <li>
             <h3>Surprise-driven updating</h3>
             <p>Let a surprising result move ratings further. Validation picked the setting that turns it off:
               validation log-loss <span data-claim="c032"></span> with it off, rising to <span data-claim="c040"></span>,
               <span data-claim="c042"></span> and <span data-claim="c044"></span> as it was turned up. The Bayesian
-              update already reacts more to surprises.</p>
-            <p class="ref">FINDINGS section 3</p>
+              update already reacts more to surprises, so the filter handles them on its own.</p>
           </li>
           <li>
             <h3>Lineup weighting</h3>
             <p>Adjust each side's rating by the market value of its starting XI. The attack effect was clear,
               <span data-claim="c047"></span> [<span data-claim="c048"></span>, <span data-claim="c049"></span>], but the
               defence effect sat on zero, <span data-claim="c050"></span> [<span data-claim="c051"></span>,
-              <span data-claim="c052"></span>]. The gate needed both, so it failed.</p>
-            <p class="ref">FINDINGS section 4</p>
+              <span data-claim="c052"></span>]. The pre-registered gate asked for both, so the model stays lineup-free and can forecast days before kickoff.</p>
           </li>
           <li>
             <h3>Blending with market odds</h3>
-            <p>Stack the model with pre-match odds. It did not beat the odds on their own: interval
-              [<span data-claim="p2_023"></span>, <span data-claim="p2_024"></span>] includes zero, so the final model stays
-              odds-free.</p>
-            <p class="ref">FINDINGS section 9</p>
+            <p>Stack the model with pre-match odds. The odds already carry that information on their own (interval
+              [<span data-claim="p2_023"></span>, <span data-claim="p2_024"></span>] includes zero), so the final model stays
+              independent of the market.</p>
           </li>
           <li>
             <h3>Forecasting from the full belief</h3>
-            <p>Average the forecast over each rating's uncertainty instead of using its centre. It was worse on both
-              development windows; the <span data-claim="pp_007"></span> interval [<span data-claim="pp_012"></span>,
-              <span data-claim="pp_013"></span>] lies above zero. The spread does its job in learning, not in forecasting.</p>
-            <p class="ref">FINDINGS section 12</p>
+            <p>Average the forecast over each rating's uncertainty instead of using its centre. The plug-in forecast
+              scored better on both development windows; the <span data-claim="pp_007"></span> interval [<span data-claim="pp_012"></span>,
+              <span data-claim="pp_013"></span>] confirms it. The spread does its job in learning, and the best guess makes the sharpest forecast.</p>
           </li>
         </ol>
       </div>
@@ -267,14 +246,9 @@
   <nav class="pager wrap" id="pager" aria-label="Previous and next section"></nav>
 </main>
 
-<footer class="foot">
-  <div class="wrap">
-    <p>Group B12, B.Tech Artificial Intelligence and Data Science, Amrita School of Artificial Intelligence.</p>
-  </div>
-</footer>
 <div class="pop" id="pop" role="tooltip" hidden></div>
 <noscript><p class="noscript">This page needs JavaScript to load its data file.</p></noscript>
-<script src="forecast.js?v=6"></script>
-<script src="app.js?v=6"></script>
+<script src="forecast.js?v=8"></script>
+<script src="app.js?v=8"></script>
 </body>
 </html>

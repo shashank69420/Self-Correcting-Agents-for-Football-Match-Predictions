@@ -168,10 +168,12 @@ tbody tr { transition: background-color .25s ease; }
 tbody tr:hover { background: color-mix(in srgb, var(--alt) 60%, transparent); }
 td.n { font-family: var(--display); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .verdict { font-weight: 600; min-width: 8rem; }
-.verdict.pass { color: var(--good); } .verdict.fail { color: var(--bad); } .verdict.meh { color: var(--caution); }
+.verdict.pass { color: var(--good); } .verdict.info { color: var(--home); }
 table.results tbody th { min-width: 13rem; font-weight: 600; }
 table.results td:nth-child(2) { min-width: 10rem; }
-.claim { border-bottom: 1px dotted var(--muted); cursor: help; font-family: var(--display); font-variant-numeric: tabular-nums; }
+.claim { font-family: var(--display); font-variant-numeric: tabular-nums; }
+.term { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: help; text-decoration: underline dotted; text-decoration-color: color-mix(in srgb, var(--home) 70%, transparent); text-decoration-thickness: 1.5px; text-underline-offset: 3px; transition: color .25s ease, text-decoration-color .25s ease; }
+.term:hover, .term[aria-describedby] { color: var(--home); text-decoration-color: var(--home); background: none; }
 .label-retro { display: inline-block; font-size: .9rem; font-weight: 600; border: 1.5px solid var(--caution); color: var(--caution); background: var(--caution-bg); padding: .45rem .75rem; border-radius: 6px; max-width: 80ch; }
 
 /* season */
@@ -226,7 +228,7 @@ input[type="search"] { width: 100%; }
 .fixture .t.h { text-align: right; }
 .fixture .sc { font: 700 1.4rem/1 var(--display); font-variant-numeric: tabular-nums; }
 .pick { font-size: .8rem; font-weight: 600; margin: .3rem 0 0; }
-.pick.hit { color: var(--good); } .pick.miss { color: var(--bad); }
+.pick.hit { color: var(--good); } .pick.miss { color: var(--caution); }
 .tag { display: inline-flex; align-items: center; font: inherit; font-size: .72rem; line-height: 1.4; border: 1px solid var(--rule); border-radius: 99px; padding: 0 .5rem; margin-left: .35rem; color: var(--muted); background: transparent; }
 button.tip { cursor: help; transition: border-color .25s ease, color .25s ease, background-color .25s ease; }
 button.tip:hover, button.tip[aria-describedby] { border-color: var(--home); color: var(--ink); background: color-mix(in srgb, var(--home) 12%, transparent); }
@@ -322,8 +324,6 @@ table.sgrid tbody tr:hover { background: none; }
 .pager-dir { font-size: .78rem; color: var(--muted); }
 .pager-name { font: 600 1.15rem/1.15 var(--display); }
 
-.foot { padding: 1.5rem 0 2rem; border-top: 1px solid var(--rule); font-size: .88rem; color: var(--muted); }
-.foot p { margin: 0; }
 .noscript { padding: 1rem; text-align: center; }
 
 @media (max-width: 600px) {
