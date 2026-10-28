@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SCAF Football Forecasts</title>
 <meta name="description" content="A sequential Bayesian football model, tested under pre-registered rules. Group B12.">
-<link rel="stylesheet" href="style.css?v=11">
+<link rel="stylesheet" href="style.css?v=13">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 10'%3E%3Crect width='13' height='10' fill='%230B6E5F'/%3E%3Crect x='13' width='7' height='10' fill='%23736B60'/%3E%3Crect x='20' width='10' height='10' fill='%237A2E52'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -19,13 +19,16 @@
     <nav class="tabs" aria-label="Sections">
       <span class="tab-indicator" aria-hidden="true"></span>
       <ul>
+        <li><a href="#project">Project</a></li>
         <li><a href="#overview">Overview</a></li>
         <li><a href="#season">2026-27 season</a></li>
         <li><a href="#ratings">Team ratings</a></li>
         <li><a href="#matchup">Matchup</a></li>
         <li><a href="#methods">Methods</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
       </ul>
     </nav>
+    <a class="gh-link" href="https://github.com/shashank69420/Self-Correcting-Agents-for-Football-Match-Predictions" target="_blank" rel="noopener" aria-label="Source code on GitHub"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>GitHub</span></a>
     <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false">Dark mode</button>
   </div>
 </header>
@@ -41,25 +44,69 @@
         result both ratings move, further when the doubt was large. That is the self-correcting part.</p>
       <p class="lede">The project was run like an experiment. Each idea was written down and committed before its data was
         looked at, then judged once, so every result is reported in full.</p>
+      <p class="cta-row"><a class="cta" href="#project">Start with the project</a>
+        <a class="cta ghost-cta" href="https://github.com/shashank69420/Self-Correcting-Agents-for-Football-Match-Predictions" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>Source code on GitHub</span></a></p>
       </div>
       <div class="explore">
       <h2 class="explore-title" id="explore-title">Explore</h2>
       <ul class="tiles" aria-labelledby="explore-title">
+        <li><a class="tile" href="#project"><span class="tile-name">Project</span><span class="tile-desc">The problem, the objectives, the data and how it was prepared.</span></a></li>
         <li><a class="tile" href="#overview"><span class="tile-name">Overview</span><span class="tile-desc">What the model is, the results, and where the project stands.</span></a></li>
-        <li><a class="tile tile-lead" href="#season"><span class="tile-name">2026-27 season</span><span class="tile-desc">Every completed match so far, with each forecast beside the final score.</span></a></li>
+        <li><a class="tile" href="#season"><span class="tile-name">2026-27 season</span><span class="tile-desc">Every completed match so far, with each forecast beside the final score.</span></a></li>
         <li><a class="tile" href="#ratings"><span class="tile-name">Team ratings</span><span class="tile-desc">Attack and defence for every team, league by league.</span></a></li>
         <li><a class="tile" href="#matchup"><span class="tile-name">Matchup</span><span class="tile-desc">Pick any two teams, from any leagues, and see the scoreline odds.</span></a></li>
         <li><a class="tile" href="#methods"><span class="tile-name">Methods</span><span class="tile-desc">How the testing was kept honest, and the research milestones along the way.</span></a></li>
+        <li><a class="tile" href="#conclusion"><span class="tile-name">Conclusion</span><span class="tile-desc">What the project achieved, what comes next, references and contributors.</span></a></li>
       </ul>
       </div>
     </div>
 
+  </section>
+
+  <!-- ======================================================== project -->
+  <section class="view" data-view="project" id="project" aria-labelledby="project-title" hidden>
     <div class="wrap">
-      <figure class="hero-board" aria-labelledby="hero-board-cap">
-        <figcaption id="hero-board-cap">Latest matches in the 2026-27 data: the final model's forecast, with what happened outlined</figcaption>
-        <ol class="board" id="hero-board"></ol>
-        <a class="text-link" href="#season">See all the matches</a>
-      </figure>
+      <h2 id="project-title" tabindex="-1">The project</h2>
+      <p class="prose lead-in"><strong>Problem statement.</strong> Given the results so far, give every upcoming match in
+        eight European top divisions a probability for a home win, a draw and an away win, using only what is known an
+        hour before kickoff, and judge those forecasts on matches the model has never been fitted to.</p>
+      <div class="m-grid three">
+        <section class="card"><h3>Why it matters</h3><ul>
+          <li>Clubs and analysts use team ratings to scout opponents and to tell real change from a lucky run.</li>
+          <li>Media and fan platforms publish win probabilities; honest uncertainty makes them more useful.</li>
+          <li>The gap to the betting market shows how much public information the market already prices.</li>
+          <li>Time-ordered testing and pre-registration carry over to forecasting in demand, health and credit.</li>
+        </ul></section>
+        <section class="card"><h3>Objectives</h3><ul>
+          <li>A reproducible data pipeline with a strict time-ordered split and no post-match information.</li>
+          <li>A static Dixon-Coles benchmark and a sequential Bayesian filter for team strength.</li>
+          <li>Two self-correcting extensions: surprise-driven updates and starting line-up values.</li>
+          <li>Better filter settings learned from training data only, accepted by a rule written in advance.</li>
+          <li>Confirmation on unseen seasons and on 2026-27, compared with the closing market.</li>
+          <li>Tested software and fan-facing outputs: ratings with uncertainty and scoreline odds.</li>
+        </ul></section>
+        <section class="card"><h3>Scope</h3>
+          <p><strong>Covered:</strong> full-time home, draw and away probabilities and expected goals for the top
+            divisions of England, Spain, Germany, Italy, France, the Netherlands, Portugal and Turkey, using pre-match
+            information only. Market odds serve as a benchmark.</p>
+          <p><strong>Next steps beyond this scope:</strong> in-play prediction, cups and international matches,
+            event-level data such as expected goals, and betting strategy.</p>
+        </section>
+      </div>
+      <h3 class="m-sub">Data and preparation</h3>
+      <ul class="m-grid">
+        <li><h4>Results and odds</h4><p>Results, shots on target and bookmaker odds for seasons 2019-20 to 2025-26 from
+          <a href="https://www.football-data.co.uk" target="_blank" rel="noopener">football-data.co.uk</a>, read through
+          the <a href="https://github.com/martineastwood/penaltyblog" target="_blank" rel="noopener">penaltyblog</a>
+          library. Older seasons from the same source confirm the results.</p></li>
+        <li><h4>Line-ups and values</h4><p>Starting line-ups and dated player valuations from the open
+          <a href="https://github.com/dcaribou/transfermarkt-datasets" target="_blank" rel="noopener">Transfermarkt dataset</a>,
+          using only each player's last valuation before the match.</p></li>
+        <li><h4>Cleaning</h4><p>Seasons are joined, incomplete rows dropped and every match sorted by kickoff time. Each
+          match becomes a date, two teams, the goals, shots on target and odds.</p></li>
+        <li><h4>Time-ordered split</h4><p>The earliest matches warm the ratings up, later windows tune and validate, and
+          the most recent matches are held out for testing, so the model never sees the future.</p></li>
+      </ul>
     </div>
   </section>
 
@@ -218,12 +265,59 @@
     </div>
   </section>
 
+  <!-- ======================================================== conclusion -->
+  <section class="view" data-view="conclusion" id="conclusion" aria-labelledby="conclusion-title" hidden>
+    <div class="wrap">
+      <h2 id="conclusion-title" tabindex="-1">Conclusion</h2>
+      <div class="m-grid three">
+        <section class="card"><h3>What the project achieved</h3>
+          <p>A transparent, fully tested forecasting system for eight European leagues. The filter matches a classic
+            static model while updating live. Learned settings (P1) improved forecasts under a rule written in advance,
+            and the gain was confirmed on unseen seasons and on 2026-27. Adding shots on target (P2) improved them
+            further. The result is a lean model that needs only results and shots and closes much of the gap to the
+            betting market.</p></section>
+        <section class="card"><h3>Future enhancements</h3><ul>
+          <li>Keep the live forecast log running to build a large forward test.</li>
+          <li>Use reserved older seasons to confirm the next model.</li>
+          <li>Feed richer evidence into the update, such as expected goals and big chances.</li>
+          <li>Sharpen the defence signal with goalkeeper and minutes-weighted values.</li>
+          <li>Extend to second divisions and European cups to link the leagues.</li>
+        </ul></section>
+        <section class="card"><h3>Contributors</h3>
+          <p>Group B12, Amrita School of Artificial Intelligence</p>
+          <ul class="people">
+            <li>Shashank Kannan</li><li>Akshara Sree R</li><li>Anirudh S Nair</li><li>Iniyaa Muthuselvan</li>
+          </ul>
+          <p>Guided by Dr. Sruti S.</p>
+          <p><a class="cta ghost-cta" href="https://github.com/shashank69420/Self-Correcting-Agents-for-Football-Match-Predictions" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>Source code on GitHub</span></a></p>
+        </section>
+      </div>
+      <h3 class="m-sub">References</h3>
+      <ol class="refs">
+        <li>M. J. Maher. Modelling association football scores. <em>Statistica Neerlandica</em>, 1982.</li>
+        <li>M. J. Dixon and S. G. Coles. Modelling association football scores and inefficiencies in the football betting market. <em>JRSS Series C</em>, 1997.</li>
+        <li>H. Rue and &Oslash;. Salvesen. Prediction and retrospective analysis of soccer matches in a league. <em>JRSS Series D</em>, 2000.</li>
+        <li>S. J. Koopman and R. Lit. A dynamic bivariate Poisson model for analysing and forecasting match results in the English Premier League. <em>JRSS Series A</em>, 2015.</li>
+        <li>R. E. Kalman. A new approach to linear filtering and prediction problems. <em>Journal of Basic Engineering</em>, 1960.</li>
+        <li>M. E. Glickman. Parameter estimation in large dynamic paired comparison experiments. <em>JRSS Series C</em>, 1999.</li>
+        <li>E. S. Epstein. A scoring system for probability forecasts of ranked categories. <em>Journal of Applied Meteorology</em>, 1969.</li>
+        <li>A. C. Constantinou and N. E. Fenton. Solving the problem of inadequate scoring rules for assessing probabilistic football forecast models. <em>JQAS</em>, 2012.</li>
+        <li>G. W. Brier. Verification of forecasts expressed in terms of probability. <em>Monthly Weather Review</em>, 1950.</li>
+        <li>B. A. Nosek, C. R. Ebersole, A. C. DeHaven and D. T. Mellor. The preregistration revolution. <em>PNAS</em>, 2018.</li>
+        <li><a href="https://www.football-data.co.uk" target="_blank" rel="noopener">Football-Data.co.uk</a>: historical football results and betting odds.</li>
+        <li>M. Eastwood. <a href="https://github.com/martineastwood/penaltyblog" target="_blank" rel="noopener">penaltyblog</a>: football data and modelling in Python.</li>
+        <li>D. Cariboo. <a href="https://github.com/dcaribou/transfermarkt-datasets" target="_blank" rel="noopener">transfermarkt-datasets</a>.</li>
+      </ol>
+    </div>
+  </section>
+
+
   <nav class="pager wrap" id="pager" aria-label="Previous and next section"></nav>
 </main>
 
 <div class="pop" id="pop" role="tooltip" hidden></div>
 <noscript><p class="noscript">This page needs JavaScript to load its data file.</p></noscript>
-<script src="forecast.js?v=11"></script>
-<script src="app.js?v=11"></script>
+<script src="forecast.js?v=13"></script>
+<script src="app.js?v=13"></script>
 </body>
 </html>

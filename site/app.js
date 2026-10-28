@@ -5,7 +5,7 @@
   var F = window.B12Forecast;
   var PARITY_TOL = 1e-9;
   var PAGE_SIZES = [5, 10, 20];
-  var VIEWS = ['home', 'overview', 'season', 'ratings', 'matchup', 'methods'];
+  var VIEWS = ['home', 'project', 'overview', 'season', 'ratings', 'matchup', 'methods', 'conclusion'];
   var EASE_OUT = 'cubic-bezier(.22,1,.36,1)';
   var NEWCOMER_TIP = 'A newcomer is a team playing in 2026-27 that appears in no earlier match in the data, so the model ' +
     'starts it from a preset rating instead of its history.';
@@ -117,7 +117,7 @@
 
   // ---------------------------------------------------------------- views and navigation
   var router = { current: null, token: 0 };
-  var TITLES = { home: 'Start', overview: 'Overview', season: '2026-27 season', ratings: 'Team ratings',
+  var TITLES = { home: 'Start', project: 'Project', conclusion: 'Conclusion', overview: 'Overview', season: '2026-27 season', ratings: 'Team ratings',
                  matchup: 'Matchup', methods: 'Methods' };
 
   function viewEl(name) { return document.querySelector('.view[data-view="' + name + '"]'); }
@@ -227,22 +227,6 @@
     });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
     window.addEventListener('scroll', function () { if (owner) place(owner); }, { passive: true });
-  }
-
-  // ---------------------------------------------------------------- home
-  function renderHome(matches) {
-    var games = matches.slice().sort(function (a, b) { return a.datetime < b.datetime ? 1 : -1; }).slice(0, 6);
-    var ol = $('hero-board');
-    games.forEach(function (r) {
-      var act = outcome(r.goals_home, r.goals_away);
-      ol.appendChild(el('li', null, [
-        el('span', { class: 't h', text: r.home }),
-        el('span', { class: 'sc', text: r.goals_home + '–' + r.goals_away }),
-        el('span', { class: 't', text: r.away }),
-        strip(r.M2, 'small', act),
-        el('span', { class: 'lg', text: r.league + ', ' + fmtDay(day(r.datetime)) })
-      ]));
-    });
   }
 
   // ---------------------------------------------------------------- overview
@@ -645,7 +629,6 @@
     return r.json();
   }).then(function (d) {
     DATA = d; C = d.claims;
-    renderHome(d.season.matches);
     renderResults();
     renderCaveats(d.season);
     renderAggregate();
