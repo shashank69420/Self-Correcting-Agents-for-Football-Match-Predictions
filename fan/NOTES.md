@@ -26,7 +26,7 @@ not timestamped before kickoff.
 - Parameters: `live2627.load_models()` (frozen-blob guard, `run_p2.load_p1`, `run_p2.load_frozen` self-hash, and the
   check against the pre-registered P2 parameters and home_adv). `p2_model.split_params(params)` fills the
   `exp_model.make_params` defaults: `rate_bounds` (0.15, 6.0) from `exp_model.DEFAULT_PARAMS`, `clip_rates` True, `rho`
-  -0.04, `shots_w` 0.5. home_adv 0.20356233139056304 comes from `candidate_p2.json` and equals `live2627.HOME_ADV`.
+  -0.04, `shots_w` 0.5. home_adv comes from `candidate_p2.json` and equals `live2627.HOME_ADV`.
 
 ## (b) The score grid, the draw correction and the clip
 
@@ -38,8 +38,9 @@ not timestamped before kickoff.
   (rows home goals, columns away goals), renormalises, and returns only (home, draw, away). It accepts `max_goals` but
   does not return the grid.
 - Decision: the market grid is a thin reimplementation of those lines in `fan_features.score_grid`, used at
-  max_goals 30, with the Poisson product mass (before the correction) checked to be at least 1 - 1e-7. A test checks
-  its 1X2 against `dixon_coles_probs` to 1e-12 at max_goals 10 and 30.
+  the market size `fan_features.MARKET_GOALS`, with the Poisson product mass (before the correction) checked against
+  `fan_features.MIN_MASS`. A test checks its 1X2 against `dixon_coles_probs` to a tight tolerance at the model's own
+  max_goals and at the market size.
 
 ## (c) The live test set and VAL
 
@@ -48,9 +49,9 @@ not timestamped before kickoff.
   `live2627.concatenate(history, live)` (handles the string-dtype mismatch; no cast was needed),
   `live2627.data_checks(history, live)` (name audit with `CLUB_ID_ALIASES`), `live2627.forward_state()` and
   `live2627.select_scored(both, history, forward_keys, flagged)`.
-- Counts on 2026-10-28: H 19,145 rows, L 571, concatenated 19,716; TEST_INDEX 3,829 rows; live test set 563;
+- Counts on 2026-10-28: H 19,145 rows, L 571, and their concatenation; TEST_INDEX 3,829 rows; live test set 563;
   excluded 0 forward-log rows and 8 rows of the flagged alias Erzurumspor (= Erzurum BB, club_id 39722).
-- Shots on target `hst`, `ast` are present in both frames (L 100% of rows complete, H 99.83%).
+- Shots on target `hst`, `ast` are present in both frames (complete in every L row and in nearly every H row).
 - VAL: `exp_harness.split_index` with `VAL_START` 2023-07-01, i.e. H rows not in TEST_INDEX dated on or after
   2023-07-01. L rows are not part of VAL. No metric is computed on a TEST_INDEX row.
 
@@ -68,18 +69,18 @@ not timestamped before kickoff.
 
 For a match with home team h, away team a, goals (g_h, g_a), process noise q and home advantage H:
 
-1. Predict, both teams, before the forecast: var_att(t) += q and var_def(t) += q.
-2. Rates: lambda = clip(exp(att(h) + def(a) + H)) and mu = clip(exp(att(a) + def(h))), clip to `rate_bounds`.
-3. Effective goals: y_h = (1 - w) g_h + w c SoT_h and y_a likewise (w = 0 when a row has no shots on target).
-4. Precisions, using the variances after step 1: P_att(h) = 1/var_att(h) + lambda; P_def(a) = 1/var_def(a) + lambda;
+(a) Predict, both teams, before the forecast: var_att(t) += q and var_def(t) += q.
+(b) Rates: lambda = clip(exp(att(h) + def(a) + H)) and mu = clip(exp(att(a) + def(h))), clip to `rate_bounds`.
+(c) Effective goals: y_h = (1 - w) g_h + w c SoT_h and y_a likewise (w is zero when a row has no shots on target).
+(d) Precisions, using the variances after step (a): P_att(h) = 1/var_att(h) + lambda; P_def(a) = 1/var_def(a) + lambda;
    P_att(a) = 1/var_att(a) + mu; P_def(h) = 1/var_def(h) + mu.
-5. Variances: each of those four variances becomes 1/P (all four use the same lambda and mu).
-6. Means: att(h) += (y_h - lambda)/P_att(h); def(a) += (y_h - lambda)/P_def(a); att(a) += (y_a - mu)/P_att(a);
+(e) Variances: each of those four variances becomes 1/P (all four use the same lambda and mu).
+(f) Means: att(h) += (y_h - lambda)/P_att(h); def(a) += (y_h - lambda)/P_def(a); att(a) += (y_a - mu)/P_att(a);
    def(h) += (y_a - mu)/P_def(h).
-7. A team first seen starts with both means 0 and both variances initial_var; if it first appears after the first
+(g) A team first seen starts with both means 0 and both variances initial_var; if it first appears after the first
    season of its league, attack mean -cold_attack and defence mean +cold_defence instead.
 
-The variances follow from steps 1, 4 and 5 given only lambda and mu per match, in processing order. A plain-loop
+The variances follow from steps (a), (d) and (e) given only lambda and mu per match, in processing order. A plain-loop
 recomputation of the final sd values therefore takes lambda and mu from the model's own output and checks the
 variance bookkeeping and the capture of the final states (`tests/test_fan_independent.py`). It does not check the
 rates, which come from the model, and it is not independent of the model: the equations above were written by the
@@ -98,5 +99,7 @@ The expectation that defence sd falls as matches played rises did not hold: defe
   stated design, in which the weakest teams leave each season; it is not a football finding and it does not separate
   the filter's variance dynamics from that exit rule.
 - Every rating bar is labelled "model uncertainty, not measured accuracy", and the defence bars carry the note that
-  they do not narrow with more matches, a property of the model, not of the team. The fan page does not exist yet
+  they do not narrow with more matches. The note says this most likely reflects how the model's variance behaves and
+  that a simulation reproduced the signs but could not separate it from team selection, so it is unconfirmed. The
+  fan page does not exist yet
   (not started in this session): both strings are fields in `results/fan/ratings.json` for it to display.

@@ -2,8 +2,8 @@
   "label": "DESCRIPTIVE: recomputed forecasts, not timestamped before kickoff; no test, no claim",
   "wording": "Parameters were fixed before 2026-27 data was fetched. Forecasts were recomputed after the matches were played and are not timestamped before kickoff.",
   "provenance": {
-    "code_commit": "695d4e1ba610bc6f2e19d88d672d2421ad7fb786",
-    "fan_features_sha256": "a9f6e95cbcffce774e5b323a0d110cb43af5ab43e67bb2a69711f4394b5c7b5c",
+    "code_commit": "cc60ae5a86244ec73a916c957cf87e4d479cbcef",
+    "fan_features_sha256": "090de447abb7125a4e0bd1390782771c9ffc26741a9706cf7889928b335637ac",
     "fan_features_dirty": true,
     "params_sha256": "bf7d5226316fe2cb4473e7120c624802f7dcdbd651b603200747f179728b0e3f",
     "snapshot_date": "20261026"

@@ -45,8 +45,9 @@ WORDING = ('Parameters were fixed before 2026-27 data was fetched. Forecasts wer
 DESCRIPTIVE = 'DESCRIPTIVE: recomputed forecasts, not timestamped before kickoff; no test, no claim'
 CENTRING_TOLERANCE = 1e-9
 BAR_LABEL = 'model uncertainty, not measured accuracy'
-DEFENCE_BAR_NOTE = ('Defence bars do not narrow with more matches. This is a property of the model, not of the team '
-                    '(see ratings_check.md).')
+DEFENCE_BAR_NOTE = ("Defence bars do not narrow with more matches. This most likely reflects how the model's variance "
+                    'behaves. A simulation reproduced the signs but could not separate this from team selection, so '
+                    'treat it as unconfirmed (see ratings_check.md).')
 SIM_SEED = 20261028
 SIM_DESIGN = dict(leagues=8, teams=20, seasons=7, relegated=3)
 SIM_START = '2020-08-01'
@@ -329,47 +330,44 @@ def header(title, provenance):
 
 
 def markets_text(payload):
+    """The human-readable report: no table values. Every number is in markets_calibration.json; the comparisons
+    below are stated in words from that payload (a gap against its own interval; descriptive, not a test)."""
     lines = header('Goal markets: calibration', payload['provenance'])
-    c = payload['climatology']
-    lines += [f'Forecasts: one run of the filter over the {payload["counts"]["concatenated"]:,} concatenated rows; a row\'s '
-              'forecast uses only earlier rows. Markets come from the rho-corrected 30-goal score grid. Nothing was '
-              'tuned or recalibrated. Half-widths are 95% normal approximations. No TEST_INDEX row is scored.', '',
-              f'Climatology baseline: {c["n"]:,} H rows dated before 2020-07-01 (last {c["last_date"]}); over 2.5 rate '
-              f'{c["over_2_5"]:.4f}, BTTS rate {c["btts"]:.4f}.', '']
-    for set_name, title in (('live', 'Live 2026-27 test set'), ('val', 'VAL (H, 2023-07-01 onward, excluding TEST_INDEX)')):
+    lines += ['Forecasts: one run of the filter over the concatenated history and the 2026-27 snapshot; a row\'s forecast '
+              'uses only earlier rows. Markets come from the rho-corrected market score grid. Nothing was tuned or '
+              'recalibrated. No TEST_INDEX row is scored. Half-widths are normal approximations at the usual two-sided '
+              'level.', '',
+              'The over market is over 2.5 goals in total; BTTS is both teams to score. The climatology baseline is the '
+              'base rate over history rows dated before the DEV start, so it never sees a scored row.', '',
+              'Numbers are not repeated here. They are in `markets_calibration.json`: `calibration.live` and '
+              '`calibration.val` (Brier and log-loss against climatology, Brier skill, mean predicted against observed '
+              'rate, a reliability table with counts, scoreline hit rates), `climatology`, and `grid_diagnostic`.', '']
+    for set_name, title in (('live', 'Live 2026-27 test set'), ('val', 'VAL (history rows from the VAL start date '
+                                                                       'onward, excluding TEST_INDEX)')):
         block = payload['calibration'][set_name]
         lines += [f'## {title}', '']
-        summary = []
         for market, label in (('over_2_5', 'Over 2.5'), ('btts', 'BTTS')):
             b = block[market]
-            summary.append(dict(market=label, n=b['n'], brier=b['brier'], brier_clim=b['brier_climatology'],
-                                skill=b['brier_skill'], brier_diff=f'{b["brier_diff"]:+.4f} +/- {b["brier_diff_hw95"]:.4f}',
-                                log_loss=b['log_loss'], log_loss_clim=b['log_loss_climatology'],
-                                log_loss_diff=f'{b["log_loss_diff"]:+.4f} +/- {b["log_loss_diff_hw95"]:.4f}',
-                                mean_pred=f'{b["mean_predicted"]:.4f} +/- {b["mean_predicted_hw95"]:.4f}',
-                                observed=f'{b["observed"]:.4f} +/- {b["observed_hw95"]:.4f}'))
-        lines += [md_table(summary, ['market', 'n', 'brier', 'brier_clim', 'skill', 'brier_diff', 'log_loss',
-                                     'log_loss_clim', 'log_loss_diff', 'mean_pred', 'observed']), '',
-                  'brier_diff and log_loss_diff: model minus climatology, mean per match +/- 95% half-width.', '']
-        for market, label in (('over_2_5', 'Over 2.5'), ('btts', 'BTTS')):
-            lines += [f'Reliability, {label} (10 equal-width bins):', '',
-                      md_table(block[market]['reliability'], ['bin', 'n', 'mean_predicted', 'observed',
-                                                             'observed_hw95']), '']
+            beats = b['brier_diff'] < 0 and abs(b['brier_diff']) > b['brier_diff_hw95']
+            gap = b['observed'] - b['mean_predicted']
+            lines.append(f'- {label}: the Brier score is {"better than" if b["brier_diff"] < 0 else "no better than"} '
+                         f'climatology and the difference is {"outside" if beats else "inside"} its interval. The mean '
+                         f'predicted rate is {"below" if gap > 0 else "above"} the observed rate, and the gap is '
+                         f'{"outside" if abs(gap) > b["observed_hw95"] else "inside"} the interval of the observed rate.')
         s = block['scorelines']
-        lines += ['Scorelines (n {:,}):'.format(s['n']), '', md_table(
-            [dict(scoreline=k, hit_rate=f'{s[k]["hit_rate"]:.4f} +/- {s[k]["hit_rate_hw95"]:.4f}',
-                  mean_predicted=f'{s[k]["mean_predicted"]:.4f} +/- {s[k]["mean_predicted_hw95"]:.4f}')
-             for k in ('top1', 'top3')], ['scoreline', 'hit_rate', 'mean_predicted']), '',
-                  'top1: the most likely scoreline; top3: the three most likely. mean_predicted is the mean model '
-                  'probability of those same scorelines.', '']
+        for key, label in (('top1', 'most likely scoreline'), ('top3', 'three most likely scorelines')):
+            gap = s[key]['hit_rate'] - s[key]['mean_predicted']
+            lines.append(f'- The hit rate of the {label} is {"above" if gap > 0 else "below"} its mean predicted '
+                         f'probability, and the gap is {"outside" if abs(gap) > s[key]["hit_rate_hw95"] else "inside"} '
+                         'the interval of the hit rate.')
+        lines.append('')
     lines += ['## Grid diagnostic', '',
-              f'Maximum absolute difference between 1X2 from the corrected 30-goal grid and the model\'s own max_goals '
-              f'{MODEL_GOALS} forecast. A description, not a failure.', '']
+              'The market grid and the model\'s own smaller grid give the same 1X2 to within a small difference. The largest '
+              'difference per set is in `grid_diagnostic`. This is a description, not a failure.', '']
     for set_name, d in payload['grid_diagnostic'].items():
-        lines.append(f'- {set_name}: n {d["n"]:,}, max {d["max_abs_diff"]:.3e}, rows above {DIAGNOSTIC_FLAG}: '
-                     f'{len(d["rows_above_0_01"])}')
-        lines += [f'  - {r["date"]} {r["league"]}: {r["home"]} v {r["away"]}, lambda {r["lambda_home"]:.3f}, '
-                  f'mu {r["mu_away"]:.3f}, diff {r["diff"]:.4f}' for r in d['rows_above_0_01']]
+        rows = d['rows_above_0_01']
+        lines.append(f'- {set_name}: ' + ('no row exceeds the flag threshold.' if not rows
+                                          else 'rows above the flag threshold are listed in the JSON.'))
     return '\n'.join(lines) + '\n'
 
 
@@ -378,8 +376,9 @@ def without_provenance(payload):
 
 
 def keep_committed(stem, payload, text_of, root=None):
-    """Write stem.json and stem.md only if they do not exist. If they do, the recomputed payload must equal the
-    committed one apart from the provenance block, and the files are left untouched (a committed result never changes)."""
+    """Write stem.json and stem.md if they do not exist. If the JSON exists, the recomputed payload must equal it apart
+    from the provenance block, and the JSON is left untouched (a committed result never changes); only the report text,
+    which is derived from that committed JSON, is rewritten."""
     path = os.path.join(root or PROJECT_DIR, RESULTS, f'{stem}.json')
     if not os.path.isfile(path):
         write_json(f'{stem}.json', payload, root)
@@ -389,6 +388,7 @@ def keep_committed(stem, payload, text_of, root=None):
         committed = json.load(handle)
     if without_provenance(committed) != without_provenance(payload):
         raise RuntimeError(f'{stem}.json is committed and the recomputed payload differs from it; nothing written.')
+    write_text(f'{stem}.md', text_of(committed), root)  # the report is derived from the committed JSON, which stays
     return committed
 
 

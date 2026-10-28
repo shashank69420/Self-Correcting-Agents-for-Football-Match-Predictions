@@ -4,7 +4,7 @@ Parameters were fixed before 2026-27 data was fetched. Forecasts were recomputed
 
 DESCRIPTIVE: ratings from the final states of the frozen P2 goals-only filter run over H and the 2026-27 snapshot 2026-10-26; no test, no claim.
 
-Model: `results/p2/candidate_p2.json` (sha256 bf7d5226316fe2cb4473e7120c624802f7dcdbd651b603200747f179728b0e3f); code commit 695d4e1ba610bc6f2e19d88d672d2421ad7fb786 (fan_features.py sha256 2931569a5d723715..., differs from that commit: True).
+Model: `results/p2/candidate_p2.json` (sha256 bf7d5226316fe2cb4473e7120c624802f7dcdbd651b603200747f179728b0e3f); code commit cc60ae5a86244ec73a916c957cf87e4d479cbcef (fan_features.py sha256 090de447abb7125a..., differs from that commit: True).
 
 Every bar: model uncertainty, not measured accuracy.
 
@@ -44,7 +44,7 @@ The expectation that defence sd falls as matches played rises did not hold: defe
 - Smallest |rho| that is significant at the usual two-sided level with n = 139 established teams: about 0.17 (normal approximation, n minus one in the denominator). This is a significance threshold for established teams only, not a power calculation.
 - Defence sd range across the established teams: 0.177 to 0.240 (n = 139), so the half-width factor of a defence bar ranges from 1.19 to 1.27 times.
 
-Defence bars do not narrow with more matches. This is a property of the model, not of the team (see ratings_check.md).
+Defence bars do not narrow with more matches. This most likely reflects how the model's variance behaves. A simulation reproduced the signs but could not separate this from team selection, so treat it as unconfirmed (see ratings_check.md).
 
 ## 5. What the model implies (simulation)
 

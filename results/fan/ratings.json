@@ -2,15 +2,15 @@
   "label": "DESCRIPTIVE: final filter states after the 2026-27 snapshot; no test, no claim",
   "wording": "Parameters were fixed before 2026-27 data was fetched. Forecasts were recomputed after the matches were played and are not timestamped before kickoff.",
   "provenance": {
-    "code_commit": "695d4e1ba610bc6f2e19d88d672d2421ad7fb786",
-    "fan_features_sha256": "2931569a5d723715e9cc5ce8de5e8f94c14c7bea8e1c1d59952c09d1d97a6180",
+    "code_commit": "cc60ae5a86244ec73a916c957cf87e4d479cbcef",
+    "fan_features_sha256": "090de447abb7125a4e0bd1390782771c9ffc26741a9706cf7889928b335637ac",
     "fan_features_dirty": true,
     "params_sha256": "bf7d5226316fe2cb4473e7120c624802f7dcdbd651b603200747f179728b0e3f",
     "snapshot_date": "20261026"
   },
   "lower_defence_is_better": true,
   "bar_label": "model uncertainty, not measured accuracy",
-  "defence_bar_note": "Defence bars do not narrow with more matches. This is a property of the model, not of the team (see ratings_check.md).",
+  "defence_bar_note": "Defence bars do not narrow with more matches. This most likely reflects how the model's variance behaves. A simulation reproduced the signs but could not separate this from team selection, so treat it as unconfirmed (see ratings_check.md).",
   "interval": "exp(centred mean minus sd) to exp(centred mean plus sd); approximate, coverage not checked",
   "centring": "mean of posterior means over the league's active 2026-27 teams (flagged teams excluded)",
   "excluded": [
@@ -31,7 +31,7 @@
       },
       "n_teams": 18,
       "bar_label": "model uncertainty, not measured accuracy",
-      "defence_bar_note": "Defence bars do not narrow with more matches. This is a property of the model, not of the team (see ratings_check.md).",
+      "defence_bar_note": "Defence bars do not narrow with more matches. This most likely reflects how the model's variance behaves. A simulation reproduced the signs but could not separate this from team selection, so treat it as unconfirmed (see ratings_check.md).",
       "excluded": [],
       "teams": [
         {
@@ -441,7 +441,7 @@
       },
       "n_teams": 18,
       "bar_label": "model uncertainty, not measured accuracy",
-      "defence_bar_note": "Defence bars do not narrow with more matches. This is a property of the model, not of the team (see ratings_check.md).",
+      "defence_bar_note": "Defence bars do not narrow with more matches. This most likely reflects how the model's variance behaves. A simulation reproduced the signs but could not separate this from team selection, so treat it as unconfirmed (see ratings_check.md).",
       "excluded": [],
       "teams": [
         {
@@ -851,7 +851,7 @@
       },
       "n_teams": 17,
       "bar_label": "model uncertainty, not measured accuracy",
-      "defence_bar_note": "Defence bars do not narrow with more matches. This is a property of the model, not of the team (see ratings_check.md).",
+      "defence_bar_note": "Defence bars do not narrow with more matches. This most likely reflects how the model's variance behaves. A simulation reproduced the signs but could not separate this from team selection, so treat it as unconfirmed (see ratings_check.md).",
       "excluded": [
         {
           "league": "TUR Super Lig",
@@ -1246,7 +1246,7 @@
       },
       "n_teams": 20,
       "bar_label": "model uncertainty, not measured accuracy",
-      "defence_bar_note": "Defence bars do not narrow with more matches. This is a property of the model, not of the team (see ratings_check.md).",
+      "defence_bar_note": "Defence bars do not narrow with more matches. This most likely reflects how the model's variance behaves. A simulation reproduced the signs but could not separate this from team selection, so treat it as unconfirmed (see ratings_check.md).",
       "excluded": [],
       "teams": [
         {
@@ -1700,7 +1700,7 @@
       },
       "n_teams": 18,
       "bar_label": "model uncertainty, not measured accuracy",
-      "defence_bar_note": "Defence bars do not narrow with more matches. This is a property of the model, not of the team (see ratings_check.md).",
+      "defence_bar_note": "Defence bars do not narrow with more matches. This most likely reflects how the model's variance behaves. A simulation reproduced the signs but could not separate this from team selection, so treat it as unconfirmed (see ratings_check.md).",
       "excluded": [],
       "teams": [
         {
@@ -2110,7 +2110,7 @@
       },
       "n_teams": 20,
       "bar_label": "model uncertainty, not measured accuracy",
-      "defence_bar_note": "Defence bars do not narrow with more matches. This is a property of the model, not of the team (see ratings_check.md).",
+      "defence_bar_note": "Defence bars do not narrow with more matches. This most likely reflects how the model's variance behaves. A simulation reproduced the signs but could not separate this from team selection, so treat it as unconfirmed (see ratings_check.md).",
       "excluded": [],
       "teams": [
         {
@@ -2564,7 +2564,7 @@
       },
       "n_teams": 20,
       "bar_label": "model uncertainty, not measured accuracy",
-      "defence_bar_note": "Defence bars do not narrow with more matches. This is a property of the model, not of the team (see ratings_check.md).",
+      "defence_bar_note": "Defence bars do not narrow with more matches. This most likely reflects how the model's variance behaves. A simulation reproduced the signs but could not separate this from team selection, so treat it as unconfirmed (see ratings_check.md).",
       "excluded": [],
       "teams": [
         {
@@ -3018,7 +3018,7 @@
       },
       "n_teams": 18,
       "bar_label": "model uncertainty, not measured accuracy",
-      "defence_bar_note": "Defence bars do not narrow with more matches. This is a property of the model, not of the team (see ratings_check.md).",
+      "defence_bar_note": "Defence bars do not narrow with more matches. This most likely reflects how the model's variance behaves. A simulation reproduced the signs but could not separate this from team selection, so treat it as unconfirmed (see ratings_check.md).",
       "excluded": [],
       "teams": [
         {

@@ -375,3 +375,41 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   files unchanged. This keeps item 9 true on every rerun. The Phase 4 outputs and tests/test_fan.py from the first fan
   prompt, not yet written at the start of this session, were completed here: results/fan/model_constants.json,
   results/fan/sample_forecasts.json and the listed tests. README.md does not exist and was not created.
+- 2026-10-28 Step 1 (close gaps on demo before merging; second fan correction prompt). Approved: user, 2026-10-28
+  (session prompt). (a) Unclaimed numbers found with tools/verify_claims.numbers_in against claims.json: 182 distinct
+  in results/fan/markets_calibration.md, 11 in fan/NOTES.md, 0 in ratings_check.md, FINAL_REPORT.md and the other
+  results/fan/*.md. Policy: prefer deletion. DELETED from markets_calibration.md: every table value (Brier, log-loss,
+  skill, rates, half-widths, reliability bins and counts, scoreline hit rates, climatology rates and n, grid-diagnostic
+  maxima, the row counts). The report now states the comparisons in words computed from the committed JSON (a gap
+  inside or outside its own interval); all values remain in markets_calibration.json, which is unchanged byte for byte.
+  The 182 distinct deleted tokens were:
+    -0.0300 -0.0143 -0.0134 -0.0090 -0.0066 -0.0043 -0.0009 -0.0004 0.0000 00 0.0006 0.0014 0.0016 0.0017 0.0024
+    0.0033 0.0034 0.0040 0.0049 0.0068 0.0069 0.0070 0.0088 0.0093 0.01 0.0101 0.0140 0.0141 0.0149 0.0177 0.0188
+    0.0226 0.0243 0.0262 0.0268 0.0272 0.0298 0.0307 0.0326 0.0367 0.0401 0.0407 0.0456 0.0485 0.0589 0.0611 0.0686
+    0.0700 0.0723 0.0777 0.0883 0.0893 0.0959 0.1 0.1036 0.1162 0.1198 0.1213 0.1279 0.1326 0.1479 0.1519 0.1822
+    0.1886 0.2 0.2000 0.2279 0.2285 0.2407 0.2410 0.2428 0.2450 0.2468 0.2472 0.2476 0.2691 0.2718 0.2750 0.2865
+    0.3085 0.3185 0.3279 0.3333 0.3506 0.3563 0.3627 0.3721 0.3757 0.4 0.4390 0.4486 0.4535 0.4552 0.4598 0.4602
+    0.4730 0.4853 0.5166 0.5333 0.5334 0.5346 0.5348 0.5399 0.5413 0.5485 0.5492 0.5497 0.5512 0.5516 0.5522 0.5537
+    0.5544 0.5604 0.5614 0.5826 0.5927 0.6 0.6129 0.6147 0.6200 0.6217 0.6268 0.6380 0.6390 0.6434 0.6467 0.6487
+    0.6625 0.6667 0.6742 0.6750 0.6787 0.6831 0.6868 0.6876 0.6884 0.7 0.7013 0.7182 0.7233 0.7242 0.7321 0.7393
+    0.7500 0.7619 0.8 0.8049 0.8182 0.8252 0.8348 0.9 0.9108 1.0 2.5 3 04 5 21 24 30 39 41 44 80 120 122 150 154 186
+    204 248 330 457 844 968 1076 1297 1377 1865 2,256 4291 19,716
+  DELETED or reworded in NOTES.md (11): 0.20356233139056304 (home_adv, now referred to by name), 30 (now
+  fan_features.MARKET_GOALS), 12 (the test tolerance, now unnamed), 19,716 (the concatenated row count), 100% and
+  99.83% (shots-on-target completeness, now in words), and the step numbers 2 to 6 (the update equations are now
+  labelled (a) to (g); tests/test_fan_independent.py comments follow). KEPT with a new claim: one number, 2.5, because
+  the over market is named over 2.5 and a dashboard needs it: claims.json fan_over_line (source
+  results/fan/model_constants.json, script fan_features.py --outputs), one bullet appended to FINDINGS section 11.
+  fan_features.markets_text was rewritten to produce the number-free report; keep_committed now rewrites only that
+  report from the committed JSON. tests/test_fan.py now checks every .md in results/fan and fan against claims.json.
+  (b) The defence note is now: "Defence bars do not narrow with more matches. This most likely reflects how the model's
+  variance behaves. A simulation reproduced the signs but could not separate this from team selection, so treat it as
+  unconfirmed (see ratings_check.md)." in fan_features.DEFENCE_BAR_NOTE, results/fan/ratings.json (top level and every
+  league), ratings_check.md, NOTES.md and FINAL_REPORT.md; the field test asserts it and forbids the old phrase.
+  ratings.json, ratings_sim.json, model_constants.json and sample_forecasts.json were regenerated; apart from the
+  provenance block and the note they are identical to the committed versions (checked field by field), so no number
+  moved. The earlier DECISIONS entries that quote the old note are append-only and stand as history.
+  (c) git ls-tree main README.md: empty; demo has none either. Nothing created. (d) git diff main -- tools/gate.py: only
+  EXPECTED_TESTS differs (92 on main, 123 on demo); nothing to revert. (e) python -m pytest -q on demo: 123 passed; git
+  status afterwards showed none of TEST, results/experiments/test_once.md, results/p2/, results/live2627/,
+  forward/predictions.jsonl or any PREREGISTRATION.md changed.

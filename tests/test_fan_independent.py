@@ -25,19 +25,19 @@ def read_json(*parts):
 
 
 def final_variances(matches, process_noise, initial_var):
-    """NOTES.md steps 1, 4 and 5, plain loops: matches are (home, away, lambda, mu) in processing order."""
+    """NOTES.md steps (a), (d) and (e), plain loops: matches are (home, away, lambda, mu) in processing order."""
     attack, defence = {}, {}
     for home, away, lam, mu in matches:
         for team in (home, away):
             attack.setdefault(team, initial_var)
             defence.setdefault(team, initial_var)
-            attack[team] += process_noise  # step 1
+            attack[team] += process_noise  # step (a)
             defence[team] += process_noise
-        precision_attack_home = 1.0 / attack[home] + lam  # step 4
+        precision_attack_home = 1.0 / attack[home] + lam  # step (d)
         precision_defence_away = 1.0 / defence[away] + lam
         precision_attack_away = 1.0 / attack[away] + mu
         precision_defence_home = 1.0 / defence[home] + mu
-        attack[home] = 1.0 / precision_attack_home  # step 5
+        attack[home] = 1.0 / precision_attack_home  # step (e)
         defence[away] = 1.0 / precision_defence_away
         attack[away] = 1.0 / precision_attack_away
         defence[home] = 1.0 / precision_defence_home

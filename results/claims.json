@@ -1619,6 +1619,13 @@
    "source": "results/fan/ratings_sim.json",
    "locator": "\"spearman_attack\": \"-0\\.130\"",
    "script": "fan_features.py --ratings"
+  },
+  {
+   "id": "fan_over_line",
+   "value": "2.5",
+   "source": "results/fan/model_constants.json",
+   "locator": "\"over_line\": 2\\.5",
+   "script": "fan_features.py --outputs"
   }
  ]
 }

@@ -225,3 +225,4 @@ Figures: `results/fan/ratings.json` and `results/fan/ratings_sim.json`, produced
 - Defence sd across the established teams (n = 139) ranges from 0.177 to 0.240, so the half-width factor of a defence bar ranges from 1.19 to 1.27 times.
 - 10 of 10 newcomers have both the attack sd and the defence sd above their league's median for established teams.
 - Simulation, what the model implies and not a football finding (synthetic matches from the model's own prior, no real data, seed 20261028, n = 136 synthetic established teams): defence Spearman +0.236, attack Spearman -0.130. The signs match the real teams. The simulation does not separate the filter's variance dynamics from its rule that the weakest teams leave each season.
+- The over market is over 2.5 goals in total (`results/fan/model_constants.json`); the goal-market calibration tables are in `results/fan/markets_calibration.json`.

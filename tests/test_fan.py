@@ -259,8 +259,11 @@ class CommittedFileTests(unittest.TestCase):
         ratings = fan.load_ratings()
         self.assertEqual(ratings['bar_label'], 'model uncertainty, not measured accuracy')
         for league in ratings['leagues']:
-            self.assertIn('Defence bars do not narrow with more matches. This is a property of the model, not of the '
-                          'team (see ratings_check.md).', league['defence_bar_note'])
+            self.assertEqual(league['defence_bar_note'],
+                             "Defence bars do not narrow with more matches. This most likely reflects how the model's "
+                             'variance behaves. A simulation reproduced the signs but could not separate this from '
+                             'team selection, so treat it as unconfirmed (see ratings_check.md).')
+            self.assertNotIn('property of the model', league['defence_bar_note'])
             self.assertTrue(all(t['bar_label'] == ratings['bar_label'] for t in league['teams']))
         self.assertIn(ratings['bar_label'], read_text('results', 'fan', 'ratings_check.md'))
         self.assertIn(fan.DEFENCE_BAR_NOTE, read_text('results', 'fan', 'ratings_check.md'))
@@ -269,7 +272,7 @@ class CommittedFileTests(unittest.TestCase):
 class ClaimsTests(unittest.TestCase):
     def test_every_fan_claim_names_a_tracked_source_and_a_script(self):
         claims = [c for c in read_json('results', 'claims.json')['claims'] if c['id'].startswith('fan_')]
-        self.assertGreaterEqual(len(claims), 14)
+        self.assertGreaterEqual(len(claims), 15)
         tracked = set(subprocess.run(['git', 'ls-files'], cwd=ROOT, capture_output=True, text=True).stdout.split('\n'))
         for claim in claims:
             self.assertIn(claim['source'], tracked, claim['id'])
@@ -277,7 +280,10 @@ class ClaimsTests(unittest.TestCase):
 
     def test_every_number_in_the_fan_deliverables_has_a_claim(self):
         claimed = {str(c['value']) for c in read_json('results', 'claims.json')['claims']}
-        for name in ('results/fan/ratings_check.md', 'fan/FINAL_REPORT.md'):
+        names = sorted(f'{folder}/{f}' for folder in ('results/fan', 'fan') for f in os.listdir(path(*folder.split('/')))
+                       if f.endswith('.md'))
+        self.assertGreaterEqual(len(names), 4)
+        for name in names:
             numbers = verify_claims.numbers_in(read_text(*name.split('/')))
             self.assertEqual(sorted(numbers - claimed), [], f'unclaimed numbers in {name}')
 

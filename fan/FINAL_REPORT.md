@@ -18,7 +18,8 @@ Every figure below is a value in `results/claims.json` (the id is in the last co
   rates from the model's own output and was written by the author of the code, so it is not described as independent.
 - A synthetic simulation with a pinned seed (`ratings_sim.json`) shows what the model implies, not a football finding.
 - `results/fan/ratings.json` carries the label "model uncertainty, not measured accuracy" on every team record and, on
-  every league, the note that defence bars do not narrow with more matches, a property of the model, not of the team.
+  every league, the note that defence bars do not narrow with more matches, that this most likely reflects how the
+  model's variance behaves, and that it is unconfirmed.
 - Both committed markets and metric files are unchanged; a test pins them byte for byte against the base commit.
   `fan_features.py --markets` now only verifies them.
 - The remaining outputs from the first fan brief were completed: `model_constants.json`, `sample_forecasts.json` and
@@ -48,13 +49,12 @@ Every figure below is a value in `results/claims.json` (the id is in the last co
 
 - The fan page and the dashboard were not started, as instructed. The bar label and the defence note exist only as data
   fields and in `ratings_check.md`; no page text has been built or looked at.
-- The prescribed note says the lack of narrowing is a property of the model, not of the team. The simulation supports
-  that only partly: the signs match the real teams, but its design also removes the weakest teams each season, one
-  simulation cannot separate that from the filter's own variance dynamics, and its attack correlation is small. A
-  variant without that exit rule was not run.
-- Numbers in `results/fan/markets_calibration.md` (committed earlier) and in `fan/NOTES.md` have no entries in
-  `results/claims.json`, and the JSON data files are not claim-checked. Only `ratings_check.md`, this report and
-  FINDINGS section 11 are.
+- The defence note was reworded after review: the simulation reproduced the signs but could not separate the
+  filter's variance behaviour from team selection (its design removes the weakest teams each season), and a variant
+  without that exit rule was not run. The note therefore calls the effect unconfirmed.
+- The tables that were in `results/fan/markets_calibration.md` and the figures in `fan/NOTES.md` that had no claim
+  were deleted from those files rather than claimed. The values remain in the JSON data files, which are not
+  claim-checked.
 - Two choices were taken by default and need review: the new FINDINGS section, and the update of the expected test count
   in `tools/gate.py` (see `DECISIONS.md`).
 - The plain-loop check does not test the rates. The rates are the model's own, and the frozen filter has no separate
