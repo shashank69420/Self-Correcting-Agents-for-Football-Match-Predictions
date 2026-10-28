@@ -33,6 +33,8 @@ The names are listed for reading by eye; this file does not judge them.
 
 ## 3. Newcomer sd against the league median of established teams
 
+A newcomer is a team with no match, home or away, in the history frame H (the rule in `fan_features.league_ratings` is `newcomer=history_n == 0`, with `history_n` the team's appearances in H); every other listed team is an established team.
+
 10 of 10 newcomers have both the attack sd and the defence sd above their league's median for established teams (per-team values are in `ratings.json`).
 
 ## 4. sd against matches played (established teams only)

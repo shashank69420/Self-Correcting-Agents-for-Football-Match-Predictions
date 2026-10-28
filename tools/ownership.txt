@@ -54,3 +54,12 @@ results/fan/*.json
 fan/FINAL_REPORT.md
 fan/GATE_RESULT.txt
 tests/test_fan_independent.py
+# Item 3 session (2026-10-29): posterior-predictive forecast, its own new files only
+pp/PREREGISTRATION.md
+pp/PREREGISTRATION_v2.md
+pp_model.py
+run_pp.py
+tests/test_pp.py
+results/pp/*.md
+results/pp/*.json
+HANDOFF.md

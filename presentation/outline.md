@@ -64,21 +64,29 @@ Caveat: this split was run after scoring and is descriptive, not a test; DEV and
 
 Caveat: FINDINGS records the start but not how many forecasts are logged, so no count is shown. It names a pre-registered minimum of scored matches without stating it; below that minimum the report is descriptive only, with no inference [8].
 
-## 8. Limitations
+## 8. Does the model's uncertainty help? (the "Bayesian" test)
+- Each team's attack and defence is a Gaussian belief, updated after every match; forecasts use the centre of each belief (the plug-in forecast) [12].
+- Pre-registered test: average each forecast over the whole belief (posterior predictive), same model and parameters otherwise. Worse on DEV (log-loss 0.981546 to 0.983277) and on VAL (0.968042 to 0.971352); 99% CI of the difference [+0.001561, +0.003001]: REJECTED [12].
+- Reading: the model learns in a Bayesian way, but its variances do not improve forecasts; the rating bars show model uncertainty, not measured accuracy [11, 12].
+
+Caveat: labelled "v2, revised after a failed numerical check". The first pre-registration's own numerical check failed before any outcome was computed; a second pre-registration was committed before the evaluation ran. Selection-period, not out-of-sample [12].
+
+## 9. Limitations
 - Market odds are a benchmark only, and snapshot-odds timing is known at schedule level only (weekend games Friday afternoon, midweek Tuesday afternoon) [7].
 - The test window was examined before P1 was scored; one post-hoc lineup run exists; `home_adv` carries slight look-ahead inside the training window [7].
 - The `--lineup` path is verified only by tests and the end-to-end check; a pytest run once re-ran an already-scored comparison and the output was restored, with no parameter, row or rule changed [7].
 
 Caveat: the pytest incident is logged in DECISIONS.md; say it plainly rather than waiting to be asked [7].
 
-## 9. What we claim and what we don't
+## 10. What we claim and what we don't
 - We claim: P1 improves log-loss over Stage 2 on the TEST window by -0.012828 (CI [-0.015519, -0.010091]), under a pre-registered rule, retrospectively [6].
 - We claim: surprise scaling and lineup weighting gave no reliable gain (Gate B FAILED, stays failed) [3, 4].
-- We don't claim: that P1 beats the market (it closes 26.54% of the RPS gap, not all of it), that the TEST result is out-of-sample, or any forward result [6, 7, 8].
+- We claim: averaging forecasts over the model's own uncertainty made them worse (REJECTED, v2, revised after a failed numerical check) [12].
+- We don't claim: that the model's uncertainty improves forecasts, that P1 beats the market (it closes 26.54% of the RPS gap, not all of it), that the TEST result is out-of-sample, or any forward result [6, 7, 8].
 
 Caveat: the claim is as strong as the pre-registration; a changed model would need a new model id and a separate log [8].
 
-## 10. Takeaway
+## 11. Takeaway
 - One line: a pre-registered, retrospectively tested filter improvement narrows, but does not close, the gap to the closing market, and the forward test will say whether it holds.
 
 Caveat: the forward test has no scored matches yet, so the takeaway is a hypothesis about the future, not a result [8].

@@ -416,3 +416,79 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
 
    ## 2026-10-28 - Reproduction check of results/fan/ratings.json
    Re-ran `python fan_features.py --ratings` in a copy of the repo (C:\dev\b12-check, outside the tracked tree). Every top-level key of the output equals the committed results/fan/ratings.json except `provenance`. The committed file was recorded with fan_features_dirty: true. The discrepancy is in provenance metadata only; no numbers differ. No file in results/fan/ was edited.
+
+## 2026-10-29 - Newcomer definition stated in results/fan/ratings_check.md
+results/fan/ratings_check.md used "newcomer" without defining it. One sentence was added under section 3, quoting the
+rule in fan_features.league_ratings (`newcomer=history_n == 0`, history_n = the team's home and away appearances in
+the history frame H from live2627.load_history); every other listed team is an established team. No number changed.
+The sentence was added to the committed markdown only: fan_features.py was not edited (its sha256 already differs from
+the recorded provenance, see the entry above), so a regeneration of ratings_check.md would drop the sentence. Commit
+a117abd "fan: state newcomer definition". pytest 123 passed; gate on pp: only the branch check failed. Decided by
+the assistant under the user's task prompt (Step 1).
+
+## 2026-10-29 - PP (plan item 3) pre-registered
+pp/PREREGISTRATION.md committed in 8392c3fff8d6fc25cf9c3ec612359393167d3bda ("pp: preregistration") before
+pp_model.py existed and before any PP forecast was computed. sha256 of the committed file:
+9d24e82b97a972bb99a4ce96197c609123ed565fbd5aa962b53f1918dbebcd51.
+Deviation from the task prompt, as the prompt itself directs: the prompt proposed RPS as the primary metric and said
+the P2 rule wins where the two differ. The P2 selection rule decides on log-loss with a 99% paired week-block CI, so
+PP is decided on log-loss under that rule (DEV and VAL log-loss improve, and the 99% CI upper bound on DEV+VAL is below
+0); RPS and Brier are reported, not decisive. The S2 restriction to rows with snapshot odds does not apply because PP
+does not use the market. tools/ownership.txt gained this work's own new files (pp/, pp_model.py, run_pp.py,
+tests/test_pp.py, results/pp/, HANDOFF.md). Decided by the assistant under the user's task prompt (Step 3).
+
+## 2026-10-29 - PP v1: a failed pre-registered check; v1 evaluation never run
+pp/PREREGISTRATION.md (v1, commit 8392c3f) required check (c): 9 and 21 Gauss-Hermite nodes agree to 1e-6 on 50 real
+matches. It failed: the largest difference in the home/draw/away probabilities was 6.69e-05, and 24% of the 50 rows
+exceeded 1e-6. As v1 requires, the evaluation did not run: no DEV/VAL outcome was computed. The v1 pp_model.py and
+tests/test_pp.py were never committed. v1 stays committed and unchanged.
+Post-failure diagnosis (outputs/diagnose/pp_nodes_check.py, outcome-free, not committed): an independent
+implementation (own Poisson pmf, Dixon-Coles, normalisation and quadrature) matched pp_model to at most 4.4e-16 on
+2,000 non-TEST rows (seed 20261019). With the rate clip off, 9 and 21 nodes agreed to at most 3.0e-07 on the 50 rows.
+On the 2,000 rows, 58% have at least one 9-node rate outside the clip bounds; their median 9-vs-21 difference was
+2.2e-07, against at most 3.2e-08 on rows with no clipped node. On the 50 rows, 21 nodes differed from a 301-point
+trapezoid reference by up to 1.35e-05. The largest change in per-row log-probability between 9 and 21 nodes was
+3.1e-04 (50 rows) and 3.0e-03 (2,000 rows). Reading of the diagnosis: the rate clip makes the integrand non-smooth, so
+the quadrature converges slowly where a node is clipped. This is a post-failure diagnosis, not a pre-registered
+finding. The owner (the user) instructed a v2 pre-registration on 2026-10-29, replacing the assistant's recommendation
+to record item 3 as not run.
+
+## 2026-10-29 - PP v2 pre-registered (owner instruction)
+pp/PREREGISTRATION_v2.md committed in 0dd45c34eff9240dc47166b79444380fdb79c137 ("pp: preregistration v2") before any
+DEV/VAL outcome was computed for PP and before N* was selected. sha256 of the committed file:
+12bf26792d73fc5cf93323d38d181f5095643b1fc624c1e8235b0757e9f33fe2. New outcome-free node rule: N* = smallest of 9, 21,
+41, 81, 161, 301 within 1e-5 of the 301-node reference on the 2,000 diagnostic rows. Approved by: the owner (the user),
+instruction of 2026-10-29.
+Decision rule: the owner's instruction says "copied unchanged from v1 and the P2 S2 rule" and describes it as RPS. v1
+decides on log-loss (the P2 rule), so the two parts of the instruction conflict. Default taken: the rule stays
+unchanged from v1 (log-loss, 99% paired week-block CI, DEV and VAL each improve). Changing the decisive metric after a
+failed check would change a locked rule. RPS with its 99% CI is reported, not decisive. Decided by the assistant under
+the owner's "do not ask" instruction; the owner may overrule this before the evaluation runs.
+
+## 2026-10-29 - PP v2: N* selected without outcomes
+`python -X utf8 run_pp.py --select-nodes` (code commit 14592ff) wrote results/pp/pp_nodes.json. Largest absolute
+difference from the 301-node reference over every scoreline cell and home/draw/away on the 2,000 fixed rows: 9 nodes
+5.35e-04, 21 nodes 2.77e-04, 41 nodes 1.74e-04, 81 nodes 5.36e-05, 161 nodes 4.39e-05. None is below 1e-5, so the
+pre-registered fallback applies: N* = 301. Its recorded maximum error is 0 only because it is the reference itself; the
+rule does not measure the error of the 301-node integration against the exact integral, and the slow decrease along
+the ladder (the rate clip makes the integrand non-smooth) means that error is not shown to be below 1e-5. No outcome was
+used. Pre-registered rule applied as written; no approval needed.
+
+## 2026-10-29 - PP v2 outcome: REJECTED (v2, revised after a failed numerical check)
+`python -X utf8 run_pp.py --evaluate` ran once (no crash, no re-run) and wrote results/pp/pp_dev_val.json and
+results/pp/pp_decision.md (commit 0f6a768). PP with N* = 301 against the frozen P2 goals-only candidate on DEV+VAL
+(13,060 rows): log-loss worse on DEV (0.981546 to 0.983277) and on VAL (0.968042 to 0.971352); 99% paired week-block
+CI of the per-row log-loss difference [+0.001561, +0.003001]. All three checks failed: REJECTED. RPS (reported, not
+decisive) is also worse, 99% CI [+0.000253, +0.000491], so the log-loss versus RPS conflict in the v2 instruction does
+not change the outcome. The 2009-14 confirmation was not run, and those seasons stay untouched. FINDINGS section 12
+and claims pp_001 to pp_015 record it. Labelling: the result carries the owner's label "v2, revised after a failed
+numerical check". It is not labelled EXPLORATORY because v2, including the node rule, was committed before any
+outcome for this forecast was computed; the revision is disclosed in FINDINGS section 12. Item 3 is closed as a
+negative finding. Nothing in results/fan/, results/p2/, results/experiments/, results/live2627/ or forward/ changed.
+
+## 2026-10-29 - Owner approval: log-loss kept as the decisive metric for PP v2
+The 2026-10-29 "PP v2 pre-registered" entry records that the assistant kept v1's log-loss rule where the owner's v2
+instruction described RPS. The owner approved that choice in chat after the result was known, by asking the assistant to
+"Complete 1, 2 and 3", where item 2 was recording this approval. The outcome is the same under either metric (the RPS
+99% CI is also entirely above 0; FINDINGS section 12), so the approval changes no result or verdict. Approved by: the
+owner (the user).
