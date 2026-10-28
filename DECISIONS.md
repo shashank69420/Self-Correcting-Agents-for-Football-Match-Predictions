@@ -416,3 +416,23 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
 
    ## 2026-10-28 - Reproduction check of results/fan/ratings.json
    Re-ran `python fan_features.py --ratings` in a copy of the repo (C:\dev\b12-check, outside the tracked tree). Every top-level key of the output equals the committed results/fan/ratings.json except `provenance`. The committed file was recorded with fan_features_dirty: true. The discrepancy is in provenance metadata only; no numbers differ. No file in results/fan/ was edited.
+
+## 2026-10-29 - Newcomer definition stated in results/fan/ratings_check.md
+results/fan/ratings_check.md used "newcomer" without defining it. One sentence was added under section 3, quoting the
+rule in fan_features.league_ratings (`newcomer=history_n == 0`, history_n = the team's home and away appearances in
+the history frame H from live2627.load_history); every other listed team is an established team. No number changed.
+The sentence was added to the committed markdown only: fan_features.py was not edited (its sha256 already differs from
+the recorded provenance, see the entry above), so a regeneration of ratings_check.md would drop the sentence. Commit
+a117abd "fan: state newcomer definition". pytest 123 passed; gate on pp: only the branch check failed. Decided by
+the assistant under the user's task prompt (Step 1).
+
+## 2026-10-29 - PP (plan item 3) pre-registered
+pp/PREREGISTRATION.md committed in 8392c3fff8d6fc25cf9c3ec612359393167d3bda ("pp: preregistration") before
+pp_model.py existed and before any PP forecast was computed. sha256 of the committed file:
+9d24e82b97a972bb99a4ce96197c609123ed565fbd5aa962b53f1918dbebcd51.
+Deviation from the task prompt, as the prompt itself directs: the prompt proposed RPS as the primary metric and said
+the P2 rule wins where the two differ. The P2 selection rule decides on log-loss with a 99% paired week-block CI, so
+PP is decided on log-loss under that rule (DEV and VAL log-loss improve, and the 99% CI upper bound on DEV+VAL is below
+0); RPS and Brier are reported, not decisive. The S2 restriction to rows with snapshot odds does not apply because PP
+does not use the market. tools/ownership.txt gained this work's own new files (pp/, pp_model.py, run_pp.py,
+tests/test_pp.py, results/pp/, HANDOFF.md). Decided by the assistant under the user's task prompt (Step 3).
