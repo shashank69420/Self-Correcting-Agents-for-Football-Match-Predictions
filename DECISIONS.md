@@ -452,3 +452,15 @@ trapezoid reference by up to 1.35e-05. The largest change in per-row log-probabi
 the quadrature converges slowly where a node is clipped. This is a post-failure diagnosis, not a pre-registered
 finding. The owner (the user) instructed a v2 pre-registration on 2026-10-29, replacing the assistant's recommendation
 to record item 3 as not run.
+
+## 2026-10-29 - PP v2 pre-registered (owner instruction)
+pp/PREREGISTRATION_v2.md committed in 0dd45c34eff9240dc47166b79444380fdb79c137 ("pp: preregistration v2") before any
+DEV/VAL outcome was computed for PP and before N* was selected. sha256 of the committed file:
+12bf26792d73fc5cf93323d38d181f5095643b1fc624c1e8235b0757e9f33fe2. New outcome-free node rule: N* = smallest of 9, 21,
+41, 81, 161, 301 within 1e-5 of the 301-node reference on the 2,000 diagnostic rows. Approved by: the owner (the user),
+instruction of 2026-10-29.
+Decision rule: the owner's instruction says "copied unchanged from v1 and the P2 S2 rule" and describes it as RPS. v1
+decides on log-loss (the P2 rule), so the two parts of the instruction conflict. Default taken: the rule stays
+unchanged from v1 (log-loss, 99% paired week-block CI, DEV and VAL each improve). Changing the decisive metric after a
+failed check would change a locked rule. RPS with its 99% CI is reported, not decisive. Decided by the assistant under
+the owner's "do not ask" instruction; the owner may overrule this before the evaluation runs.
