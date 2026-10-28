@@ -473,3 +473,15 @@ pre-registered fallback applies: N* = 301. Its recorded maximum error is 0 only 
 rule does not measure the error of the 301-node integration against the exact integral, and the slow decrease along
 the ladder (the rate clip makes the integrand non-smooth) means that error is not shown to be below 1e-5. No outcome was
 used. Pre-registered rule applied as written; no approval needed.
+
+## 2026-10-29 - PP v2 outcome: REJECTED (v2, revised after a failed numerical check)
+`python -X utf8 run_pp.py --evaluate` ran once (no crash, no re-run) and wrote results/pp/pp_dev_val.json and
+results/pp/pp_decision.md (commit 0f6a768). PP with N* = 301 against the frozen P2 goals-only candidate on DEV+VAL
+(13,060 rows): log-loss worse on DEV (0.981546 to 0.983277) and on VAL (0.968042 to 0.971352); 99% paired week-block
+CI of the per-row log-loss difference [+0.001561, +0.003001]. All three checks failed: REJECTED. RPS (reported, not
+decisive) is also worse, 99% CI [+0.000253, +0.000491], so the log-loss versus RPS conflict in the v2 instruction does
+not change the outcome. The 2009-14 confirmation was not run, and those seasons stay untouched. FINDINGS section 12
+and claims pp_001 to pp_015 record it. Labelling: the result carries the owner's label "v2, revised after a failed
+numerical check". It is not labelled EXPLORATORY because v2, including the node rule, was committed before any
+outcome for this forecast was computed; the revision is disclosed in FINDINGS section 12. Item 3 is closed as a
+negative finding. Nothing in results/fan/, results/p2/, results/experiments/, results/live2627/ or forward/ changed.

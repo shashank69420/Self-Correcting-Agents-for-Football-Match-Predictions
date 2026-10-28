@@ -1626,6 +1626,97 @@
    "source": "results/fan/model_constants.json",
    "locator": "\"over_line\": 2\\.5",
    "script": "fan_features.py --outputs"
+  },
+  {
+   "id": "pp_001",
+   "value": "9",
+   "source": "pp/PREREGISTRATION.md",
+   "locator": "\\(c\\) 9 and 21 nodes agree to 1e-6 on 50 real matches"
+  },
+  {
+   "id": "pp_002",
+   "value": "21",
+   "source": "pp/PREREGISTRATION.md",
+   "locator": "\\(c\\) 9 and 21 nodes agree to 1e-6 on 50 real matches"
+  },
+  {
+   "id": "pp_003",
+   "value": "50",
+   "source": "pp/PREREGISTRATION.md",
+   "locator": "\\(c\\) 9 and 21 nodes agree to 1e-6 on 50 real matches"
+  },
+  {
+   "id": "pp_004",
+   "value": "301",
+   "source": "results/pp/pp_nodes.json",
+   "locator": "\"n_star\": 301"
+  },
+  {
+   "id": "pp_005",
+   "value": "2,000",
+   "source": "results/pp/pp_nodes.json",
+   "locator": "\"n_rows\": 2000",
+   "source_value": "2000"
+  },
+  {
+   "id": "pp_006",
+   "value": "161",
+   "source": "results/pp/pp_nodes.json",
+   "locator": "\"161\": 4\\.39"
+  },
+  {
+   "id": "pp_007",
+   "value": "99%",
+   "source": "results/pp/pp_decision.md",
+   "locator": "Decisive: 99% paired week-block CI"
+  },
+  {
+   "id": "pp_008",
+   "value": "0.981546",
+   "source": "results/pp/pp_decision.md",
+   "locator": "\\| baseline \\| dev \\| 0\\.981546 \\|"
+  },
+  {
+   "id": "pp_009",
+   "value": "0.983277",
+   "source": "results/pp/pp_decision.md",
+   "locator": "\\| pp \\| dev \\| 0\\.983277 \\|"
+  },
+  {
+   "id": "pp_010",
+   "value": "0.968042",
+   "source": "results/pp/pp_decision.md",
+   "locator": "\\| baseline \\| val \\| 0\\.968042 \\|"
+  },
+  {
+   "id": "pp_011",
+   "value": "0.971352",
+   "source": "results/pp/pp_decision.md",
+   "locator": "\\| pp \\| val \\| 0\\.971352 \\|"
+  },
+  {
+   "id": "pp_012",
+   "value": "+0.001561",
+   "source": "results/pp/pp_decision.md",
+   "locator": "log-loss difference on DEV\\+VAL .*\\[\\+0\\.001561, "
+  },
+  {
+   "id": "pp_013",
+   "value": "+0.003001",
+   "source": "results/pp/pp_decision.md",
+   "locator": "\\[\\+0\\.001561, \\+0\\.003001\\]"
+  },
+  {
+   "id": "pp_014",
+   "value": "+0.000253",
+   "source": "results/pp/pp_decision.md",
+   "locator": "RPS difference: \\[\\+0\\.000253, "
+  },
+  {
+   "id": "pp_015",
+   "value": "+0.000491",
+   "source": "results/pp/pp_decision.md",
+   "locator": "\\[\\+0\\.000253, \\+0\\.000491\\]"
   }
  ]
 }

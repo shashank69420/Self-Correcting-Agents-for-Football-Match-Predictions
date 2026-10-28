@@ -226,3 +226,32 @@ Figures: `results/fan/ratings.json` and `results/fan/ratings_sim.json`, produced
 - 10 of 10 newcomers have both the attack sd and the defence sd above their league's median for established teams.
 - Simulation, what the model implies and not a football finding (synthetic matches from the model's own prior, no real data, seed 20261028, n = 136 synthetic established teams): defence Spearman +0.236, attack Spearman -0.130. The signs match the real teams. The simulation does not separate the filter's variance dynamics from its rule that the weakest teams leave each season.
 - The over market is over 2.5 goals in total (`results/fan/model_constants.json`); the goal-market calibration tables are in `results/fan/markets_calibration.json`.
+
+## 12. Posterior-predictive forecast: REJECTED (v2, revised after a failed numerical check)
+Selection-period, retrospective, not out-of-sample. Question: does integrating the forecast over the filter's own
+rating variances (a posterior-predictive score grid) beat the plug-in forecast of the frozen P2 goals-only candidate?
+Same states, parameters and updates; only the forecast step differs. Numbers: `results/pp/pp_decision.md`,
+`results/pp/pp_nodes.json`.
+
+- Revision disclosure. The first pre-registration (`pp/PREREGISTRATION.md`, v1) required a numerical check: 9 and 21
+  Gauss-Hermite nodes must agree within a pre-registered tolerance on 50 real matches. That pre-registered check failed, so v1's evaluation never
+  ran. A diagnosis made after the failure, comparing forecasts with forecasts only, pointed to the rate clip, which
+  makes the integrand non-smooth. On the owner's instruction a second pre-registration (`pp/PREREGISTRATION_v2.md`) was
+  committed before any DEV/VAL outcome for this forecast was computed. It kept v1's decision rule unchanged and added
+  an outcome-free rule for the node count. Details and figures are in DECISIONS.md (2026-10-29).
+- Node count, chosen without outcomes: the smallest ladder value within a pre-registered tolerance of a 301-node reference on 2,000 fixed
+  non-TEST rows. No smaller value qualified (161 nodes was still above the tolerance), so the pre-registered fallback
+  gave 301 nodes. Its error against the exact integral is not measured by this rule.
+- Decision (log-loss, the P2 selection rule; 99% paired week-block CI on DEV+VAL):
+
+| Split | Plug-in log-loss | Posterior-predictive log-loss |
+|---|---|---|
+| DEV | 0.981546 | 0.983277 |
+| VAL | 0.968042 | 0.971352 |
+
+  The 99% CI of the per-match log-loss difference (posterior-predictive minus plug-in) is [+0.001561, +0.003001]: worse,
+  with the whole interval above 0. Verdict: REJECTED. The RPS difference, reported and not decisive, points the same
+  way: 99% CI [+0.000253, +0.000491]. Brier is also worse on both splits.
+- The confirmation on 2009-10 to 2013-14 was not run (it was only for an accepted result); those seasons stay
+  untouched. The forecasts and the fan outputs keep using the plug-in forecast. The rating bars still show model
+  uncertainty, not measured accuracy.
