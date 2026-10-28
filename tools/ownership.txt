@@ -50,3 +50,7 @@ tests/test_fan.py
 fan/NOTES.md
 results/fan/*.md
 results/fan/*.json
+# Approved exception (2026-10-28): fan correction session
+fan/FINAL_REPORT.md
+fan/GATE_RESULT.txt
+tests/test_fan_independent.py

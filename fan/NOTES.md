@@ -63,3 +63,40 @@ not timestamped before kickoff.
   better.
 - The filter is a diagonal Gaussian (Laplace-style) approximation. Bars of exp(centred mean +/- 1 sd) use the model's
   own variance, ignore the uncertainty of the centring and have not been checked for coverage.
+
+## Update equations (written 2026-10-28 from stage2_dynamic.py; the same author wrote the code under test)
+
+For a match with home team h, away team a, goals (g_h, g_a), process noise q and home advantage H:
+
+1. Predict, both teams, before the forecast: var_att(t) += q and var_def(t) += q.
+2. Rates: lambda = clip(exp(att(h) + def(a) + H)) and mu = clip(exp(att(a) + def(h))), clip to `rate_bounds`.
+3. Effective goals: y_h = (1 - w) g_h + w c SoT_h and y_a likewise (w = 0 when a row has no shots on target).
+4. Precisions, using the variances after step 1: P_att(h) = 1/var_att(h) + lambda; P_def(a) = 1/var_def(a) + lambda;
+   P_att(a) = 1/var_att(a) + mu; P_def(h) = 1/var_def(h) + mu.
+5. Variances: each of those four variances becomes 1/P (all four use the same lambda and mu).
+6. Means: att(h) += (y_h - lambda)/P_att(h); def(a) += (y_h - lambda)/P_def(a); att(a) += (y_a - mu)/P_att(a);
+   def(h) += (y_a - mu)/P_def(h).
+7. A team first seen starts with both means 0 and both variances initial_var; if it first appears after the first
+   season of its league, attack mean -cold_attack and defence mean +cold_defence instead.
+
+The variances follow from steps 1, 4 and 5 given only lambda and mu per match, in processing order. A plain-loop
+recomputation of the final sd values therefore takes lambda and mu from the model's own output and checks the
+variance bookkeeping and the capture of the final states (`tests/test_fan_independent.py`). It does not check the
+rates, which come from the model, and it is not independent of the model: the equations above were written by the
+author of both the code and the test. Neither is described as independent in any deliverable.
+
+## Reading of the sd-against-matches check (replaces the earlier wording)
+
+The expectation that defence sd falls as matches played rises did not hold: defence sd rises with matches played
+(Spearman +0.456) while attack sd falls (Spearman -0.396); n = 139 established teams.
+
+- The smallest |rho| that is significant at the usual two-sided level with n = 139 established teams is about 0.17
+  (normal approximation, n minus one in the denominator). That is a significance threshold, not a power calculation,
+  and it applies to established teams only.
+- The same sign pattern appears in a synthetic simulation (seed 20261028, n = 136 synthetic established teams) built
+  from the model's own prior and fitted parameters with no real data. That shows what the model implies under the
+  stated design, in which the weakest teams leave each season; it is not a football finding and it does not separate
+  the filter's variance dynamics from that exit rule.
+- Every rating bar is labelled "model uncertainty, not measured accuracy", and the defence bars carry the note that
+  they do not narrow with more matches, a property of the model, not of the team. The fan page does not exist yet
+  (not started in this session): both strings are fields in `results/fan/ratings.json` for it to display.

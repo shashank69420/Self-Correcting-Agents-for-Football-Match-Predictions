@@ -308,3 +308,70 @@ Every deviation, failed gate and post-hoc run, with date, decision and approver.
   the active 2026-27 teams of each league minus the teams flagged by live2627.name_audit; the filter itself still
   runs over every row, flagged teams included. (13) The sd-versus-matches rank correlation uses established teams,
   total matches, attack and defence sd separately (Spearman). Approved: n/a, prompt rule.
+- 2026-10-28 Fan correction session (branch demo, on top of 695d4e1). Prompt rules taken: no scoring or editing of TEST,
+  results/experiments/test_once.md, results/p2/, results/live2627/, forward/predictions.jsonl or any PREREGISTRATION.md;
+  no anchor or committed results JSON changes; no attribution lines in commits; no push, PR or force-push.
+  Edited or created: fan_features.py, tests/test_fan.py, tests/test_fan_independent.py, fan/NOTES.md (appended),
+  fan/FINAL_REPORT.md, fan/GATE_RESULT.txt, results/fan/*.json and *.md, results/FINDINGS.md (a new section 11 only),
+  results/claims.json (14 entries appended, each with an extra "script" field the verifier ignores), tools/ownership.txt
+  (fan/FINAL_REPORT.md, fan/GATE_RESULT.txt, tests/test_fan_independent.py), tools/gate.py (EXPECTED_TESTS only, to the
+  collected total). Approved: user, 2026-10-28 (session prompt) for the claims, ratings and test work. Two choices were
+  taken by default and are flagged for review: (a) FINDINGS section 11, because tools/verify_claims.py accepts a claim
+  only if its value appears in results/FINDINGS.md, so item 3 (claims that pass the verifier) cannot be met otherwise;
+  the earlier fan prompt's ban on editing FINDINGS was scoped to that session; (b) EXPECTED_TESTS, covered by the earlier
+  fan prompt's exception for the final collected total.
+- 2026-10-28 DIAGNOSIS of ratings check 4 (/diagnose, read-only, outputs/diagnose/fan_sd.py and fan_sd.txt). Result: the
+  expectation that defence sd falls with matches played did not hold (defence Spearman +0.456, attack -0.396, n = 139
+  established teams). Class (d), spec problem: the expectation was badly chosen. Evidence: a plain-loop variance
+  recursion from the model's per-row rates matches the captured states exactly (max difference 0.0); the placebo
+  (matches shuffled within league, 200 draws, seed 20261019) gave 0 of 200 as extreme as the observed defence value.
+  No verdict, spec or expected number changes. Approved: n/a, pre-registered rule (report; no change to the spec).
+- 2026-10-28 POST-HOC EXPLORATORY – not pre-registered – not for deliverables: partial correlations, goal rate held
+  fixed: defence -0.09, attack -0.04 (Spearman of matches with sd after removing the last-20-match mean modelled
+  conceded or scoring rate, n = 139). Mechanism figures from the same exploration: Spearman of matches with the mean
+  modelled conceded rate -0.48, and of that rate with the defence sd -0.98. These are not in claims.json, FINDINGS,
+  ratings_check.md or any fan page. One post-hoc look only; no further runs. Approved: n/a, recorded.
+- 2026-10-28 Wording changes. (1) The reading of check 4 now says, in order, that the expectation did not hold, that
+  defence sd rises (Spearman +0.456) while attack sd falls (Spearman -0.396), and n = 139 established teams; n is beside
+  every statistic. It is generated from the computed values (fan_features.reading_sentence) and a test checks that
+  ratings_check.md and fan/NOTES.md contain it. The earlier mechanism sentence was removed because it rested on the
+  post-hoc exploration. (2) "Not an underpowered null" appears in no committed file (it was only in the diagnosis
+  message) and a test forbids "underpowered" in ratings_check.md. The smallest |rho| is stated as about 0.17 at n = 139
+  established teams; it is the usual two-sided significance threshold, 1.96 / sqrt(n - 1), not an 80% power figure, and
+  the text says so. (3) The phrase "independent recomputation" appears in no committed fan file. Earlier entries in this
+  log use "independent" for other sessions' checks; they are append-only and unchanged.
+- 2026-10-28 Gap: fan/NOTES.md had no update equations, so the plain-loop check could not be written from it. They were
+  added to NOTES.md (written from stage2_dynamic.py by the same author as the code and the test) and
+  tests/test_fan_independent.py was written from them without importing fan_features.py. It takes lambda and mu per
+  match from the model's own output, so it checks variance bookkeeping and state capture (max difference below 1e-9
+  against the committed ratings), not the rates. Because the equations and the test share an author, the check is NOT
+  described as independent anywhere; the file name is the one the prompt required. Approved: n/a, stricter reading.
+- 2026-10-28 Simulation (fan_features.simulate_matches, seed 20261028 pinned in code, results/fan/ratings_sim.json):
+  eight synthetic leagues of 20 teams over seven seasons, true strengths from the model's own prior (initial_var), the
+  model's random-walk step (process_noise) at each appearance, the model's cold-start prior for later entrants, goals
+  Poisson with the model's clipped rates; the three weakest teams by points then goal difference leave each season.
+  The league, team, season and exit counts are design constants, not fitted. Same frozen filter code, no real data.
+  Result: defence +0.236, attack -0.130 (n = 136): the signs match the real teams. The design has two things that can
+  produce the shape (filter variance dynamics, and strong teams staying longer); one simulation cannot separate them,
+  and a random-exit variant was not run (the prompt asked for one simulation). The text says "what the model implies",
+  not a football finding. The defence-bar note the prompt prescribes ("a property of the model, not of the team") is
+  therefore supported only to that extent; it is kept as prescribed and the limit is in FINAL_REPORT.md.
+  Approved: n/a, pre-registered default.
+- 2026-10-28 Labels and the fan page: the page does not exist and the prompt forbids starting the dashboard, so the label
+  "model uncertainty, not measured accuracy" (on every team record) and the defence-bar note (on every league) are data
+  fields in results/fan/ratings.json, also printed in ratings_check.md, with a test. Page text is not built or tested.
+- 2026-10-28 Claims scope. Every number in results/fan/ratings_check.md, fan/FINAL_REPORT.md and FINDINGS section 11
+  is a value in claims.json; tests/test_fan.py checks the first two and tools/verify_claims.py checks FINDINGS. The
+  per-team factors, sds and per-league values that used to be tables in ratings_check.md now live only in
+  ratings.json (a data file). NOT covered, open: results/fan/markets_calibration.md (committed before this rule) and
+  fan/NOTES.md contain numbers with no claim, and the JSON data files are not claim-checked. Verifier unchanged.
+- 2026-10-28 Byte-identity test (item 9): the committed metric files results/fan/markets_calibration.json,
+  results/live2627/primary.json and results/p2/S0.json, S1.json, S2.json are hashed (sha256 of the LF-normalised bytes)
+  against pins taken from base commit 695d4e1. They are hashed as opaque bytes, never parsed or scored.
+  results/p2/test_descriptive.json (TEST) is not touched. Experiment JSONs under results/experiments do not hold
+  RPS, LogLoss or Brier under those key names and are not pinned.
+- 2026-10-28 fan_features.py --markets no longer rewrites committed files: it recomputes the payload and requires it to
+  equal the committed markets_calibration.json apart from the provenance block (it did, exactly), then leaves the
+  files unchanged. This keeps item 9 true on every rerun. The Phase 4 outputs and tests/test_fan.py from the first fan
+  prompt, not yet written at the start of this session, were completed here: results/fan/model_constants.json,
+  results/fan/sample_forecasts.json and the listed tests. README.md does not exist and was not created.

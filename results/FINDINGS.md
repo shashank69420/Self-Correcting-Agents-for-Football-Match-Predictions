@@ -215,3 +215,13 @@ matches are the first weeks of the season only. This is not a forward test: that
   tables, so they have no club_id. They were kept in the test set. Their best same-league WRatio scores are 72.7, 69.2 and
   72.0, all below 88. If any of them is an alias of an earlier name, its matches are still in the test set; this was not
   checked further.
+
+## 11. Fan ratings: team ratings with model uncertainty (descriptive)
+Figures: `results/fan/ratings.json` and `results/fan/ratings_sim.json`, produced by `fan_features.py --ratings`; the reading is in `results/fan/ratings_check.md`. Parameters were fixed before 2026-27 data was fetched. Forecasts were recomputed after the matches were played and are not timestamped before kickoff. DESCRIPTIVE: no test, no claim beyond the figures below.
+
+- Ratings are the final states of the frozen P2 goals-only filter, centred within each league. Every bar is labelled "model uncertainty, not measured accuracy"; the bars come from the filter's own variance and their coverage was not checked.
+- The expectation that defence sd falls as matches played rises did not hold: defence sd rises with matches played (Spearman +0.456) while attack sd falls (Spearman -0.396); n = 139 established teams.
+- The smallest |rho| that is significant at the usual two-sided level with n = 139 established teams is about 0.17. That is a significance threshold for established teams, not a power calculation.
+- Defence sd across the established teams (n = 139) ranges from 0.177 to 0.240, so the half-width factor of a defence bar ranges from 1.19 to 1.27 times.
+- 10 of 10 newcomers have both the attack sd and the defence sd above their league's median for established teams.
+- Simulation, what the model implies and not a football finding (synthetic matches from the model's own prior, no real data, seed 20261028, n = 136 synthetic established teams): defence Spearman +0.236, attack Spearman -0.130. The signs match the real teams. The simulation does not separate the filter's variance dynamics from its rule that the weakest teams leave each season.
