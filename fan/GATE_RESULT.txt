@@ -1,0 +1,9 @@
+[FAIL] branch: actual 'demo', expected 'main'
+[PASS] status: clean (0 staged file(s) allowed)
+[PASS] anchors: stage1_rps 0.2057, stage2_rps 0.2060, all_3829_rps 0.2059, change_scale 0
+[PASS] tests: 123 ran with pytest, OK
+[PASS] claims: every number in results/FINDINGS.md is backed
+[PASS] hygiene: no data/, outputs/, venv/, *.csv or *.pkl tracked
+[PASS] ownership: 96 changed file(s) since 17af108, all allowed
+[PASS] test-once: 1 DECISIONS entry, 1 commit
+GATE: FAIL (1)
