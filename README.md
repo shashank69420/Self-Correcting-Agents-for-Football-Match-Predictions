@@ -66,6 +66,7 @@ worse than closing odds [10]. Closing odds use information from after the foreca
 | `main.py` | runs the baseline stages; `main_original.py` is the original pipeline kept for reference |
 | `results/` | every reported result, `FINDINGS.md`, `claims.json`, and the source files they cite |
 | `presentation/` | figure script and figures |
+| `site/` | offline project website; serve with `python -m http.server -d site 8000` and open http://localhost:8000 (`site/build_data.py` rebuilds `site/data.json` from committed results) |
 | `tools/gate.py`, `tools/verify_claims.py` | the verification gate and the claims checker |
 | `tests/` | unit and reproduction tests (131) |
 
